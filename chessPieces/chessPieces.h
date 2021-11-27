@@ -4,7 +4,7 @@
 #include <vector>
 class Position;
 class ChessPieces {
-    // -1:black; 1:white;
+    // 0:black; 1:white;
     int ownerIdentifier;
     bool isFirstMove;
     
