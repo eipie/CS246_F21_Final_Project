@@ -7,9 +7,9 @@
 
 int main() {
     ChessGame *g = ChessGame(setup);
-    Player wp = Player(1, 0);    //creates white player
-    Player bp = Player(-1, 0);   //creates blackc player
-    Board * b = new Board(players, boardSetup);
+    // Player wp = Player(1, 0);    //creates white player
+    // Player bp = Player(-1, 0);   //creates blackc player
+    // Board * b = new Board(players, boardSetup);
     std::string command;
     while (std::cin >> command) {
         if (command == "game") {
@@ -20,19 +20,24 @@ int main() {
             } else {
                 cout << "White Wins!" << endl;
             }
-        } else if (command == "move") {
+        } else if (command == "move") {  // move e1 g1
             string from_str;
             string to_str;
             position from;
             position to;
             std::cin >> from_str;
             std::cin >> to_str;
-            from.x = from_str[0];
-            from.y = from_str[1];
-            to.x = to_str[0];
+            from.x = from_str[0] - 'a' + 1;
+            from.y = from_str[1] - '0';
+            to.x = to_str[0] - 'a' + 1;
             to.y = to_str[1] - '0';
-            b->makeAMove(from, to);
-            b->changePlayer();
+            Move nextMove;
+            nextMove.from = from;
+            nextMove.to = to;
+            g->makeAMove(nextMove);
+            
+            // b->makeAMove(from, to);
+            // b->changePlayer();
         } else if (command == "setup") {
             string operation;
             cin >> operation;
@@ -42,7 +47,7 @@ int main() {
                 cin >> p >> pos_str;
                 pos.x = pos_str[0];
                 pos.y = pos_str[1] - '0';
-                b->addPieces(p, pos);  //?? add
+                // b->addPieces(p, pos);  //?? add
             } else if (operation == "-") {
                 position pos;
                 string pos_str: //position
