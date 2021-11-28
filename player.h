@@ -19,7 +19,7 @@ class Player {
     
     public:
     // use map for easier lookup
-    std::shared_ptr<std::map<Position, std::shared_ptr<ChessPieces>>> playerPieces;
+    std::map<Position, std::shared_ptr<ChessPieces>> playerPieces;
 
     Player(int identifier, int currentScore=0);
     void removePieces(Position p);

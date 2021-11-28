@@ -12,9 +12,10 @@ class Position;
 // class BoardSetup;
 // class Position;
 class ChessGame {
-    std::vector<std::shared_ptr<Player> > players;
+    std::vector<std::shared_ptr<Player>> players;
     std::shared_ptr<Board> board;
     std::vector<Observer *> observers;
+    std::shared_ptr<Observer> textObserver;
     // std::vector<Observer> observers;
     public:
     ChessGame();
