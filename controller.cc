@@ -7,24 +7,24 @@
 #include <iostream>
 
 int main() {
-    ChessGame *chess = ChessGame();
+    ChessGame *chess = new ChessGame();
 
     std::string command;
     while (std::cin >> command) {
         if (command == "game") {
             //determine human-computer game
         } else if (command == "resign") {
-            if ((chess->board).currentPlayer == 0) {
-                cout << "Black Wins!" << endl;
+            if (chess->currentPlayer == 0) {
+                std::cout << "Black Wins!" << std::endl;
             } else {
-                cout << "White Wins!" << endl;
+                std::cout << "White Wins!" << std::endl;
             }
             break;
         } else if (command == "move") {
-            string from_str;
-            string to_str;
-            position from;
-            position to;
+            std::string from_str;
+            std::string to_str;
+            Position from;
+            Position to;
             std::cin >> from_str;
             std::cin >> to_str;
             from.x = from_str[0] - 'a' + 1;
@@ -36,42 +36,43 @@ int main() {
             nextMove.to = to;
             char promo;
             if (std::cin >> promo) {
-                isPromotion = true;
-                promotionType = promo;
+                nextMove.isPromotion = true;
+                nextMove.promotionType = promo;
             }
             chess->makeAMove(nextMove);
         } else if (command == "setup") {
-            string operation;
-            cin >> operation;
+            std::string operation;
+            std::cin >> operation;
             if (operation == "+") {
                 char p; //piece
-                string pos_str: //position
-                cin >> p >> pos_str;
+                std::string pos_str; //position
+                std::cin >> p >> pos_str;
+                Position pos;
                 pos.x = pos_str[0] - 'a' + 1;
                 pos.y = pos_str[1] - '0';
-                (chess->board).addPieces(pos, p);
+                (chess->addPieces(pos, p);
             } else if (operation == "-") {
-                position pos;
-                string pos_str:
+                Position pos;
+                std::string pos_str:
                 cin >> pos_str;
                 pos.x = pos_str[0] - 'a' + 1;
                 pos.y = pos_str[1] - '0';
-                (chess->board).removePieces(pos);
+                (chess->removePieces(pos);
             } else if (operation == "=") {
-                string colour;
-                cin >> colour;
+                std::string colour;
+                std::cin >> colour;
                 if (colour == "black") {
-                    currentPlayer = 0;
+                    (chess->currentPlayer = 0;
                 } else if (colour == "white") {
-                    currentPlayer = 1;
+                    (chess->currentPlayer = 1;
                 }
             } else if (operation == "done") {
                 continue;
             }
         }
     }
-    cout << "Final Score:" << endl;
-    cout << "White: " << wp.currentScore << endl;
-    cout << "Black: " << bp.currentScore << endl;    
-    delete b;
+    std::cout << "Final Score:" << std::endl;
+    std::cout << "White: " << wp.currentScore << std::endl;
+    std::cout << "Black: " << bp.currentScore << std::endl;
+    delete chess;
 }
