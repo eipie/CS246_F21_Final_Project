@@ -2,6 +2,7 @@
 #include "player.h"
 #include "move.h"
 #include "board.h"
+#include "position.h"
 // #include  "boardSetup.h"
 
 ChessGame::ChessGame() {
@@ -28,6 +29,7 @@ void ChessGame::makeAMove(Move nextMove) {
     if (isMoveValid(nextMove)) {
         board.get()->makeAMove(nextMove.from, nextMove.to);
         board.get()->changePlayer();
+        // notifyObservers();
     }
 }
 
@@ -49,6 +51,19 @@ void ChessGame::notifyObservers() {
     for (auto &ob: observers) {
         ob->update();
     }
+}
+
+void ChessGame::removePiece(Position p) {
+    board.get()->removePiece(p);
+}
+void ChessGame::addPiece(Position p, char c) {
+    board.get()->addPiece(p, c);
+}
+bool ChessGame::isBoardSetupValid() {
+    return board.get()->isBoardSetupValid();
+}
+char ChessGame::getPieceCharAt(Position p) {
+    return board.get()->getPieceCharAt(p);
 }
 
 void ChessGame::render() {

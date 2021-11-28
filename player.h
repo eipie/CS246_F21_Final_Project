@@ -26,6 +26,8 @@ class Player {
     // void addPieces(Position p, char c);
     void resetAllPieces();
     void movePiece(Position from, Position to);
+    void addPiece(Position p, char c);
+    char getPieceCharAt(Position p);
 };
 
 #endif

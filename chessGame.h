@@ -8,6 +8,7 @@ class Player;
 class Move;
 class Observer;
 
+class Position;
 // class BoardSetup;
 // class Position;
 class ChessGame {
@@ -17,10 +18,15 @@ class ChessGame {
     // std::vector<Observer> observers;
     public:
     ChessGame();
+    // [to be implemented], dummy variable
     bool isMoveValid(Move nextMove);
     // attempt to makeAMove; return true success, return false, failure
     void makeAMove(Move nextMove);
     void newRound();
+    void removePiece(Position p);
+    void addPiece(Position p, char c);
+    bool isBoardSetupValid();
+    char getPieceCharAt(Position p);
     // void changePieceAt(Position ini_p, Position target_p);
 
     void attachObserver(Observer *o);
