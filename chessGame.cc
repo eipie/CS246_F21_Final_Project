@@ -3,6 +3,7 @@
 #include "move.h"
 #include "board.h"
 #include "position.h"
+#include "observer.h"
 // #include  "boardSetup.h"
 
 ChessGame::ChessGame() {
@@ -33,6 +34,26 @@ void ChessGame::makeAMove(Move nextMove) {
     }
 }
 
+void ChessGame::attachObserver(Observer *o) {
+    observers.emplace_back(o);
+}
+
+void ChessGame::detachObserver(Observer *o) {
+    for (auto it = observers.begin(); it != observers.end();) {
+        if (*it == o) {
+            it = observers.erase(it);
+        } else {
+            ++it;
+        }
+   }
+}
+
+void ChessGame::notifyObservers() {
+    for (auto &ob: observers) {
+        ob->update();
+    }
+}
+
 void ChessGame::removePiece(Position p) {
     board.get()->removePiece(p);
 }
@@ -45,6 +66,18 @@ bool ChessGame::isBoardSetupValid() {
 char ChessGame::getPieceCharAt(Position p) {
     return board.get()->getPieceCharAt(p);
 }
+
+<<<<<<< HEAD
+// oponent (black:0; white:1);
+// int playerResign()
+
+// 
+// vecotr<int> gameEnd()
+=======
+void ChessGame::render() {
+    notifyObservers();
+}
+>>>>>>> e70a05de947db2b515e8509ba44e26f01f32c796
 
 /* // Basic check: check if piece hit enemy piece(stop&capture), pop all consequtive moves
 //              check if piece hit own piece, pop all current the following moves.
