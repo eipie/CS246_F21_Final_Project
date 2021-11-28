@@ -6,18 +6,19 @@
 class Board;
 class Player;
 class Move;
-class BoardSetup;
+// class BoardSetup;
 // class Position;
 // class Observer;
 class ChessGame {
-    std::shared_ptr<std::vector<Player>> players;
+    std::vector<std::shared_ptr<Player>> players;
     std::shared_ptr<Board> board;
     // std::vector<Observer> observers;
     public:
-    ChessGame(BoardSetup setup);
+    ChessGame();
+    bool isMoveValid(Move nextMove);
     // attempt to makeAMove; return true success, return false, failure
-    bool makeAMove(Move nextMove);
-
+    void makeAMove(Move nextMove);
+    void newRound();
     // void changePieceAt(Position ini_p, Position target_p);
 
     // char getState(Position p);
@@ -26,6 +27,13 @@ class ChessGame {
     // void detachObserver(shared_ptr<Observer> o);
     // void notifyObservers();
 
+
+private:
+/*     // return all Positions the piece at current location can go
+    std::shared_ptr<std::vector<Position>> getAllPossibleMoves(Move nextMove);
+    // return all legal Positions the piece at current location can go, 
+    // including the piece it will be able to capture as value in map
+    std::map<Position, char> getAllLegalMove(std::vector<Position> possMove, Move nextMove); */
 };
 
 #endif

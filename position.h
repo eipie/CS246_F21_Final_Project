@@ -4,8 +4,14 @@ struct Position
 {
     int x;
     int y;
-    bool operator==(Position p) {
+    bool operator==(Position p) const{
         return (x==p.x && y==p.y);
+    }
+    Position& operator=(const Position& p)
+    {
+        x = p.x;
+        y = p.y;
+        return *this;
     }
 };
 
