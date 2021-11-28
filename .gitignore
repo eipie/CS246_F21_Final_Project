@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+# ignore json file
+*.json
+/Users/henryma/Documents/GitHub/CS246_F21_Final_Project/.vscode/c_cpp_properties.json
+/Users/henryma/Documents/GitHub/CS246_F21_Final_Project/.vscode/settings.json
