@@ -46,6 +46,12 @@ char ChessGame::getPieceCharAt(Position p) {
     return board.get()->getPieceCharAt(p);
 }
 
+// oponent (black:0; white:1);
+// int playerResign()
+
+// 
+// vecotr<int> gameEnd()
+
 /* // Basic check: check if piece hit enemy piece(stop&capture), pop all consequtive moves
 //              check if piece hit own piece, pop all current the following moves.
 // Check if move [player]'s piece from [from] to [to] will cause enemy piece be able to capture [player]'s king
