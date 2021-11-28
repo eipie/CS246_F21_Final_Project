@@ -33,8 +33,6 @@ class ChessGame {
     void detachObserver(Observer *o);
     void notifyObservers();
     void render();
-    char getState(Position p);
-
 
 
 private:
