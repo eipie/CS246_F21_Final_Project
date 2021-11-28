@@ -9,9 +9,9 @@ int main() {
     ChessGame *g = ChessGame();
     Player wp = Player(1, 0);    //creates white player
     Player bp = Player(-1, 0);   //creates blackc player
-    std::vector<std::shared_ptr<Player>> players;
+    //std::vector<std::shared_ptr<Player>> players;
     //emplace players
-    Board * b = new Board(players);
+    //Board * b = new Board(players);
     std::string command;
     while (std::cin >> command) {
         if (command == "game") {
@@ -30,7 +30,7 @@ int main() {
             std::cin >> from_str;
             std::cin >> to_str;
             from.x = from_str[0];
-            from.y = from_str[1];
+            from.y = from_str[1] - '0';
             to.x = to_str[0];
             to.y = to_str[1] - '0';
             b->makeAMove(from, to);
