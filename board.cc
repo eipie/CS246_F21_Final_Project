@@ -2,6 +2,7 @@
 #include "move.h"
 // #include "boardSetup.h"
 #include "player.h"
+#include <iostream>
 
 Board::Board(std::vector<std::shared_ptr<Player>> players) 
     : players{players}, currentPlayer{1} {}
@@ -16,7 +17,8 @@ void Board::changePlayer() {
 
 void Board::makeAMove(Position from, Position to) {
     removePiece(to);
-    players.at(currentPlayer).get()->movePiece(from, to);
+    std::cout << "current player is: "<< currentPlayer << std::endl;
+    players[currentPlayer].get()->movePiece(from, to);
 }
 
 void Board::removePiece(Position p) {
@@ -41,7 +43,7 @@ void Board::addPiece(Position p, char c) {
 
 // return ' ' if not find 
 char Board::getPieceCharAt(Position p) {
-    char c;
+    char c = ' ';
     for(auto player: players) {
        c = player.get()->getPieceCharAt(p);
        if (c!=' ') {

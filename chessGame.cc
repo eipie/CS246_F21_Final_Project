@@ -4,6 +4,8 @@
 #include "board.h"
 #include "position.h"
 #include "observer.h"
+#include "text_display.h"
+#include <iostream>
 // #include  "boardSetup.h"
 
 ChessGame::ChessGame() {
@@ -13,7 +15,10 @@ ChessGame::ChessGame() {
     players.emplace_back(playerOne);
     board = std::make_shared<Board>(players);
     // populate board
-    board.get()->resetBoard();
+    // board.get()->resetBoard();
+    textObserver = std::make_shared<Text_Display>(this);
+    observers.emplace_back(textObserver.get());
+    render();
 }
 
 void ChessGame::newRound() {
@@ -27,10 +32,11 @@ bool ChessGame::isMoveValid(Move nextMove) {
 }
 
 void ChessGame::makeAMove(Move nextMove) {
+    std::cout << nextMove.from.x << nextMove.from.y << "   " << nextMove.to.x <<nextMove.to.y  << std::endl;
     if (isMoveValid(nextMove)) {
         board.get()->makeAMove(nextMove.from, nextMove.to);
         board.get()->changePlayer();
-        // notifyObservers();
+        render();
     }
 }
 
