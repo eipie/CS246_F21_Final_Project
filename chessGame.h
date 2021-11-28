@@ -6,12 +6,14 @@
 class Board;
 class Player;
 class Move;
+class Observer;
+
 // class BoardSetup;
 // class Position;
-// class Observer;
 class ChessGame {
     std::vector<std::shared_ptr<Player> > players;
     std::shared_ptr<Board> board;
+    std::vector<Observer *> observers;
     // std::vector<Observer> observers;
     public:
     ChessGame();
@@ -21,11 +23,12 @@ class ChessGame {
     void newRound();
     // void changePieceAt(Position ini_p, Position target_p);
 
-    // char getState(Position p);
-    // void render();
-    // void attachObserver(shared_ptr<Observer> o);
-    // void detachObserver(shared_ptr<Observer> o);
-    // void notifyObservers();
+    void attachObserver(Observer *o);
+    void detachObserver(Observer *o);
+    void notifyObservers();
+    void render();
+    char getState(Position p);
+
 
 
 private:

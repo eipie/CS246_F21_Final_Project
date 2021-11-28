@@ -31,7 +31,35 @@ void ChessGame::makeAMove(Move nextMove) {
     }
 }
 
+void ChessGame::attachObserver(Observer *o) {
+    observers.emplace_back(o);
+}
 
+void ChessGame::detachObserver(Observer *o) {
+    for (auto it = observers.begin(); it != observers.end();) {
+        if (*it == o) {
+            it = observers.erase(it);
+        } else {
+            ++it;
+        }
+   }
+}
+
+void ChessGame::notifyObservers() {
+    for (auto &ob: observers) {
+        ob->update();
+    }
+}
+
+void ChessGame::render() {
+    notifyObservers();
+}
+
+char ChessGame::getState(Position p) {
+
+
+
+}
 /* // Basic check: check if piece hit enemy piece(stop&capture), pop all consequtive moves
 //              check if piece hit own piece, pop all current the following moves.
 // Check if move [player]'s piece from [from] to [to] will cause enemy piece be able to capture [player]'s king
