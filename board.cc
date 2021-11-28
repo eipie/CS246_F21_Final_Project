@@ -16,9 +16,14 @@ void Board::changePlayer() {
 }
 
 void Board::makeAMove(Position from, Position to) {
-    removePiece(to);
-    std::cout << "current player is: "<< currentPlayer << std::endl;
-    players[currentPlayer].get()->movePiece(from, to);
+    if (players[currentPlayer].get()->getPieceCharAt(from) != ' ') {
+        removePiece(to);
+        std::cout << "current player is: "<< currentPlayer << std::endl;
+        players[currentPlayer].get()->movePiece(from, to);
+    } else {
+        // error, player moving the piece does not own the piece
+    }
+    
 }
 
 void Board::removePiece(Position p) {

@@ -16,7 +16,7 @@ Player::Player(int identifier, int currentScore) : identifier{identifier}, curre
 
 // strong expection
 void Player::movePiece(Position from, Position to) {
-    std::cout << "moving pieces..." << from.x << ", " << from.y << "  " << to.x << to.y << std::endl;
+    // std::cout << "moving pieces..." << from.x << ", " << from.y << "  " << to.x << to.y << std::endl;
     auto fromFindResult = playerPieces.find(from);
     // auto toFindResult = playerPieces.find(to);
     if(fromFindResult != playerPieces.end()) {
