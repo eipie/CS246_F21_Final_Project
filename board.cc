@@ -30,3 +30,28 @@ void Board::resetBoard() {
        player.get()->resetAllPieces();
     }
 }
+
+void Board::addPiece(Position p, char c) {
+    if(isupper(c)) {
+        players[1].get()->addPiece( p,  c);
+    } else {
+        players[0].get()->addPiece( p,  c);
+    }
+}
+
+// return ' ' if not find 
+char Board::getPieceCharAt(Position p) {
+    char c;
+    for(auto player: players) {
+       c = player.get()->getPieceCharAt(p);
+       if (c!=' ') {
+           break;
+       }
+    }
+    return c;
+}
+
+// dummy return value
+bool Board::isBoardSetupValid() {
+    return true;
+}

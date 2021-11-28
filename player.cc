@@ -29,6 +29,51 @@ void Player::removePieces(Position p) {
     playerPieces.get()->erase(p);
 }
 
+char Player::getPieceCharAt(Position p) {
+    auto findResult = playerPieces.get()->find(p);
+    if(findResult != playerPieces.get()->end()) {
+        return findResult->second.get()->icon;
+    } else {
+        return ' ';
+    }
+}
+
+void Player::addPiece(Position p, char c) {
+    std::shared_ptr<ChessPieces> newPiece;
+    switch (c)
+    {
+    case 'b':
+    case 'B':
+        newPiece = std::make_shared<Bishop>(p,identifier);
+        break;
+    case 'k':
+    case 'K':
+        newPiece = std::make_shared<King>(p,identifier);
+        break;
+    case 'p':
+    case 'P':
+        newPiece = std::make_shared<Pawn>(p,identifier);
+        break;
+    case 'q':
+    case 'Q':
+        newPiece = std::make_shared<Queen>(p,identifier);
+        break;
+    case 'r':
+    case 'R':
+        newPiece = std::make_shared<Rook>(p,identifier);
+        break;
+    case 'n':
+    case 'N':
+        newPiece = std::make_shared<Knight>(p,identifier);
+        break;
+    default:
+        // error
+        break;
+    }
+    playerPieces.get()->find(p)->second = newPiece;
+    playerPieces.get()->insert({p,newPiece});
+}
+
 // 8*8 square:
 // white:1; black:-1
 // start counting from bottom left 
