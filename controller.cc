@@ -1,27 +1,25 @@
 #include "chessGame.h"
 #include "board.h"
+#include "move.h"
 #include "position.h"
 #include "player.h"
 #include <string>
 #include <iostream>
 
 int main() {
-    ChessGame *g = ChessGame();
-    Player wp = Player(1, 0);    //creates white player
-    Player bp = Player(-1, 0);   //creates blackc player
-    //std::vector<std::shared_ptr<Player>> players;
-    //emplace players
-    //Board * b = new Board(players);
+    ChessGame *chess = ChessGame();
+
     std::string command;
     while (std::cin >> command) {
         if (command == "game") {
             //determine human-computer game
         } else if (command == "resign") {
-            if (b->currentPlayer == 0) {
+            if ((chess->board).currentPlayer == 0) {
                 cout << "Black Wins!" << endl;
             } else {
                 cout << "White Wins!" << endl;
             }
+            break;
         } else if (command == "move") {
             string from_str;
             string to_str;
@@ -29,12 +27,19 @@ int main() {
             position to;
             std::cin >> from_str;
             std::cin >> to_str;
-            from.x = from_str[0];
+            from.x = from_str[0] - 'a' + 1;
             from.y = from_str[1] - '0';
-            to.x = to_str[0];
+            to.x = to_str[0] - 'a' + 1;
             to.y = to_str[1] - '0';
-            b->makeAMove(from, to);
-            b->changePlayer();
+            Move nextMove;
+            nextMove.from = from;
+            nextMove.to = to;
+            char promo;
+            if (std::cin >> promo) {
+                isPromotion = true;
+                promotionType = promo;
+            }
+            chess->makeAMove(nextMove);
         } else if (command == "setup") {
             string operation;
             cin >> operation;
@@ -42,16 +47,16 @@ int main() {
                 char p; //piece
                 string pos_str: //position
                 cin >> p >> pos_str;
-                pos.x = pos_str[0];
+                pos.x = pos_str[0] - 'a' + 1;
                 pos.y = pos_str[1] - '0';
-                b->addPieces(pos, p);
+                (chess->board).addPieces(pos, p);
             } else if (operation == "-") {
                 position pos;
-                string pos_str: //position
+                string pos_str:
                 cin >> pos_str;
-                pos.x = pos_str[0];
+                pos.x = pos_str[0] - 'a' + 1;
                 pos.y = pos_str[1] - '0';
-                b->removePieces(pos);
+                (chess->board).removePieces(pos);
             } else if (operation == "=") {
                 string colour;
                 cin >> colour;

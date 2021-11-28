@@ -4,17 +4,17 @@
 #include <vector>
 #include <map>
 class Player;
-// class BoardSetup;
+// class BoardSetup; 
 class Move;
 class Position;
 class Board{
     // 0:black; 1:white
     int currentPlayer;
-    std::vector<std::shared_ptr<Player>> players;
-    void resetBoardByPlayer(std::map<Position, std::shared_ptr<ChessPieces>> *playerPieces, int identifier);
+    std::vector<std::shared_ptr<Player> > players;
+    void resetBoardByPlayer(std::map<Position, std::shared_ptr<ChessPieces> > *playerPieces, int identifier);
 
     public:
-    Board(std::vector<std::shared_ptr<Player>> players);
+    Board(std::vector<std::shared_ptr<Player> > players);
     void changePlayer();
     void makeAMove(Position from, Position to);
     void resetBoard();
