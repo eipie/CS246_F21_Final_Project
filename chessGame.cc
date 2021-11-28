@@ -28,6 +28,7 @@ void ChessGame::makeAMove(Move nextMove) {
     if (isMoveValid(nextMove)) {
         board.get()->makeAMove(nextMove.from, nextMove.to);
         board.get()->changePlayer();
+        // notifyObservers();
     }
 }
 
