@@ -6,10 +6,12 @@
 #include <iostream>
 
 int main() {
-    ChessGame *g = ChessGame(setup);
+    ChessGame *g = ChessGame();
     Player wp = Player(1, 0);    //creates white player
     Player bp = Player(-1, 0);   //creates blackc player
-    Board * b = new Board(players, boardSetup);
+    std::vector<std::shared_ptr<Player>> players;
+    //emplace players
+    Board * b = new Board(players);
     std::string command;
     while (std::cin >> command) {
         if (command == "game") {
@@ -42,14 +44,14 @@ int main() {
                 cin >> p >> pos_str;
                 pos.x = pos_str[0];
                 pos.y = pos_str[1] - '0';
-                b->addPieces(p, pos);  //?? add
+                b->addPieces(pos, p);
             } else if (operation == "-") {
                 position pos;
                 string pos_str: //position
                 cin >> pos_str;
                 pos.x = pos_str[0];
                 pos.y = pos_str[1] - '0';
-                b->removePieces(pos);  //?? add
+                b->removePieces(pos);
             } else if (operation == "=") {
                 string colour;
                 cin >> colour;
