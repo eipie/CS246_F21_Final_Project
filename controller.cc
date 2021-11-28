@@ -8,7 +8,7 @@
 int main() {
     ChessGame *g = ChessGame(setup);
     Player wp = Player(1, 0);    //creates white player
-    Player bp = Player(-1, 0);   //creates blackc player
+    Player bp = Player(-1, 0);   //creates black player
     Board * b = new Board(players, boardSetup);
     std::string command;
     while (std::cin >> command) {
