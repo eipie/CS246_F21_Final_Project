@@ -6,29 +6,21 @@
 #include <iostream>
 
 int main() {
-    //create game;
-    // create a board "board"
+    ChessGame *g = ChessGame(setup);
     Player wp = Player(1, 0);    //creates white player
     Player bp = Player(-1, 0);   //creates blackc player
+    Board * b = new Board(players, boardSetup);
     std::string command;
     while (std::cin >> command) {
-        if (command.eof()) {
-            cin.clear();
-            cin.ignore();
-            cout << "Final Score:" << endl;
-            cout << "White: " << wp.currentScore << endl;
-            cout << "Black: " << bp.currentScore << endl;
-            break;
-        } else if (command == "game") {
+        if (command == "game") {
             //determine human-computer game
         } else if (command == "resign") {
-            if (currentPlayer == 0) {
+            if (b->currentPlayer == 0) {
                 cout << "Black Wins!" << endl;
             } else {
                 cout << "White Wins!" << endl;
             }
         } else if (command == "move") {
-            // if struct.x is char
             string from_str;
             string to_str;
             position from;
@@ -39,8 +31,8 @@ int main() {
             from.y = from_str[1];
             to.x = to_str[0];
             to.y = to_str[1] - '0';
-            makeAMove(from, to);
-            changePlayer();
+            b->makeAMove(from, to);
+            b->changePlayer();
         } else if (command == "setup") {
             string operation;
             cin >> operation;
@@ -50,14 +42,14 @@ int main() {
                 cin >> p >> pos_str;
                 pos.x = pos_str[0];
                 pos.y = pos_str[1] - '0';
-                //add piece to the board
+                b->addPieces(p, pos);  //?? add
             } else if (operation == "-") {
                 position pos;
                 string pos_str: //position
                 cin >> pos_str;
                 pos.x = pos_str[0];
                 pos.y = pos_str[1] - '0';
-                board.removePieces(pos);
+                b->removePieces(pos);  //?? add
             } else if (operation == "=") {
                 string colour;
                 cin >> colour;
@@ -71,5 +63,8 @@ int main() {
             }
         }
     }
-
+    cout << "Final Score:" << endl;
+    cout << "White: " << wp.currentScore << endl;
+    cout << "Black: " << bp.currentScore << endl;    
+    delete b;
 }
