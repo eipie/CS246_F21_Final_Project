@@ -9,6 +9,7 @@ void Text_Display::update() {
         out << " ";
         out << std::endl;
     }
-    
+    std::cout << "abcdefg" << std::endl;
+    // new changes to henry_branch
 
 }
