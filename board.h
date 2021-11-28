@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 class Player;
-// class BoardSetup;
+// class BoardSetup; 
 class Move;
 class Position;
 
