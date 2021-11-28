@@ -19,6 +19,9 @@ class Board{
     void makeAMove(Position from, Position to);
     void resetBoard();
     void removePiece(Position p);
+    // bool addPiece(Position p, char c);
+    // bool isBoardSetupValid();
+    // char getCharAt(Position p);
 };
 
 #endif
