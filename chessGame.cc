@@ -3,6 +3,7 @@
 #include "move.h"
 #include "board.h"
 #include "position.h"
+#include "observer.h"
 // #include  "boardSetup.h"
 
 ChessGame::ChessGame() {
