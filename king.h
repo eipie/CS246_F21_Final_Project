@@ -3,6 +3,7 @@
 #include "chessPieces.h"
 class King : public ChessPieces {
     public:
+    bool isInCheck;
     King(Position p, int identifier, bool isFirstMove=true);
     std::shared_ptr<std::vector<Position>> getPossibleMoves() override;
 };

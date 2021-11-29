@@ -1,7 +1,8 @@
 #include "king.h"
 #include "position.h"
 
-King::King(Position p, int identifier, bool isFirstMove) : ChessPieces(p, identifier, isFirstMove){
+King::King(Position p, int identifier, bool isFirstMove) 
+    : ChessPieces(p, identifier, isFirstMove), isInCheck{false}{
     if(identifier==1) {
         icon='K';
     } else {

@@ -21,8 +21,10 @@ void Player::movePiece(Position from, Position to) {
     // auto toFindResult = playerPieces.find(to);
     if(fromFindResult != playerPieces.end()) {
         playerPieces.erase(to);
+        // fromFindResult->second.get()->isFirstMove=false;
         playerPieces[to] = fromFindResult->second;
         playerPieces.erase(from);
+        
     } else {
         // error, no piece at from
     }

@@ -10,6 +10,17 @@ class ChessPieces {
     
     // std::shared_ptr<std::vector<Position>> possibleMoves;
     public:
+    // void makingAMove(Position form, Position to);
+    // if(isFirstMove==true);
+            // all pieces except Pawn:
+            // change isFirstMove=false;
+            // for Pawn:
+            // 1) to.y-from.y == 1
+            //      change isFirstMove=false;
+            // 1) to.y-from.y == 2;
+            //      change isFirstMove=false;
+    // else 
+    //      do nothing
     Position pos;
     char icon;
     ChessPieces(Position p, int identifier, bool isFirstMove=true);

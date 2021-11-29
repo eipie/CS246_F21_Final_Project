@@ -11,6 +11,7 @@ class Observer;
 class Position;
 // class BoardSetup;
 // class Position;
+int currentPlayer;
 class ChessGame {
     std::vector<std::shared_ptr<Player>> players;
     std::shared_ptr<Board> board;

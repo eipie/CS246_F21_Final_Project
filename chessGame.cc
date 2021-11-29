@@ -9,6 +9,7 @@
 // #include  "boardSetup.h"
 
 ChessGame::ChessGame() {
+    // ****[Samantha add]int currentPlay
     std::shared_ptr<Player> playerOne = std::make_shared<Player>(1);
     std::shared_ptr<Player> playerTwo = std::make_shared<Player>(0);
     players.emplace_back(playerTwo);
@@ -25,8 +26,83 @@ void ChessGame::newRound() {
     board.get()->resetBoard();
 }
 
+// isCurrentPlayerKingInCheckAfterMove(vector<Move> moves)
+// check if king is in check after a move
+// 1. Copy the current board (2 players' piece)
+// 2. initate the move (loop through the vector, and do the movePiece method)
+// 3. loop through enemy pieces and check if piece.possibleMove()==king position
+
+// piece.possibleMove()
+
 // check if the current user move is valid
 bool ChessGame::isMoveValid(Move nextMove) {
+    // first detect special case
+    // bool isCastleAndValid();
+        // Detect castling (1&&2)
+        // 1. check if move is castling
+        // ifCastling(Move nextMove);
+            // if white(capital letter), then legal castling 
+            // move e1 g1
+            // move e1 c1
+            //  else if black (lower case letter), then legal castling
+            // move e8 g8
+            // move e8 c8
+            // AND
+            // if getPieceCharAt(ex) == 'K'/'k' based on the current player's color
+            // AND
+            // if getPieceCharAt(ax||hx) == 'R'/'r' based on the current player's color
+        // 2. check if castling is allowed
+            // AND
+            // if king isFirstMove==true
+            // AND
+            // if King isInCheck==false
+            // AND
+            // if rook at Position ax||hx isFirstMove=true;
+            // AND
+            // getPieceCharAt(fx) and (gx) are ' ' (empty)
+            // AND
+            // Move newMove;
+            // newMove.from = ex
+            // newMove.to = fx || dx
+            // isCurrentPlayerKingInCheckAfterMove(newMove) == false
+            // AND
+            // Move rookMove; // create new Position from and to for Rook
+            // moves.emplace(nextMove);
+            // moves.emplace(rookMove);
+            // isCurrentPlayerKingInCheckAfterMove(vector<Move> moves) == false;
+        // 3. finally move both King and Rook
+            // move Board.makeAMove Rook
+        // return true;
+
+
+        // check if move is promotion
+        // 
+        // 1. ifPromotion(Move nextMove);
+        //      if(isPromotion==ture);
+        // 2. ifPromotionValue(Move nextMove);
+        //      Position from is currentplayer's Pawn
+        //      AND
+        //      if nextMove.promotionType isValidType(char promotionType); (Q/R/B/N || q/r/b/n)
+        //      AND
+        //      if the Pawn at Position to, to.y==8||1; (depending on player color)
+        //      AND
+        //      isCurrentPlayerKingInCheckAfterMove(newMove) == false
+        // 3. Do the promotion
+        //      change pawn at Position from to type desired
+        //      return true;
+
+        // En passant/Pawn capture
+        // 1. ifEnPassant
+        //  if Position from is Pawn of current color
+        //  AND
+        // Position to is either (x+1, y+1) || (x-1, y+1)
+        // 2. isEnPasantValid(Move nextMove);
+        // if Position to a piece of opponent type
+        //
+        
+
+        //  Position(to.x+1, from.x) == Position() || Position(to.x-1, from.x)
+        // 3. doEnPasant(Move nextMove)
     // dummy variable
     return true;
 }
