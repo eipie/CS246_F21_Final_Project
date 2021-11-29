@@ -13,6 +13,9 @@ class Position;
 // class Position;
 int currentPlayer;
 class ChessGame {
+    // player id
+    const int white = 1;
+    const int black = 0;
     std::vector<std::shared_ptr<Player>> players;
     std::shared_ptr<Board> board;
     std::vector<Observer *> observers;
@@ -20,6 +23,8 @@ class ChessGame {
     // std::vector<Observer> observers;
     public:
     ChessGame();
+    void nextTurn();
+    void setCurrentPlayer(int playerId);
     // [to be implemented], dummy variable
     bool isMoveValid(Move nextMove);
     // attempt to makeAMove; return true success, return false, failure

@@ -22,8 +22,22 @@ ChessGame::ChessGame() {
     render();
 }
 
+void ChessGame::setCurrentPlayer(int playerId) {
+    currentPlayer = playerId;
+}
+
+void ChessGame::nextTurn() {
+    if(currentPlayer==black) {
+        currentPlayer=white;
+    } else {
+        currentPlayer=black;
+    }
+}
+
+
 void ChessGame::newRound() {
     board.get()->resetBoard();
+    setCurrentPlayer(white);
 }
 
 // isCurrentPlayerKingInCheckAfterMove(vector<Move> moves)
@@ -110,8 +124,9 @@ bool ChessGame::isMoveValid(Move nextMove) {
 void ChessGame::makeAMove(Move nextMove) {
     // std::cout << nextMove.from.x << nextMove.from.y << "   " << nextMove.to.x <<nextMove.to.y  << std::endl;
     if (isMoveValid(nextMove)) {
-        board.get()->makeAMove(nextMove.from, nextMove.to);
-        board.get()->changePlayer();
+        board.get()->makeAMove(nextMove.from, nextMove.to, currentPlayer);
+        // pass to next player
+        nextTurn();
         render();
     }
 }

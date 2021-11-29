@@ -5,17 +5,11 @@
 #include <iostream>
 
 Board::Board(std::vector<std::shared_ptr<Player>> players) 
-    : players{players}, currentPlayer{1} {}
+    : players{players}{}
 
-void Board::changePlayer() {
-    if(currentPlayer==0) {
-        currentPlayer=1;
-    } else {
-        currentPlayer=0;
-    }
-}
 
-void Board::makeAMove(Position from, Position to) {
+
+void Board::makeAMove(Position from, Position to, int currentPlayer) {
     if (players[currentPlayer].get()->getPieceCharAt(from) != ' ') {
         removePiece(to);
         // std::cout << "current player is: "<< currentPlayer << std::endl;
