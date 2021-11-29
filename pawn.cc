@@ -8,6 +8,15 @@ Pawn::Pawn(Position p, int identifier, bool isFirstMove) : ChessPieces(p, identi
         icon='p';
     }
 }
+
+void Pawn::afterFirstMove() {
+    if(isFirstMove) {
+        isFirstMove = false;
+        availableForEnPassant = true;
+    } else {
+        availableForEnPassant = false;
+    }
+}
 // Pawn
 // ** En passant must be available, or else -1v +1v can't do it!
 // if (caputreCase: enemy piece +-1v+1h)

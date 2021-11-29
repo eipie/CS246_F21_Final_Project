@@ -6,6 +6,7 @@
 class ChessPieces {
     // 0:black; 1:white;
     int ownerIdentifier;
+    protected:
     bool isFirstMove;
     
     // std::shared_ptr<std::vector<Position>> possibleMoves;
@@ -25,5 +26,7 @@ class ChessPieces {
     char icon;
     ChessPieces(Position p, int identifier, bool isFirstMove=true);
     virtual std::shared_ptr<std::vector<Position>> getPossibleMoves() = 0;
+    // change isFirstMove to false if true; special case for Pawn
+    virtual void afterFirstMove();
 };
 #endif

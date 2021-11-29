@@ -11,11 +11,13 @@ class Observer;
 class Position;
 // class BoardSetup;
 // class Position;
-int currentPlayer;
+
 class ChessGame {
     // player id
     const int white = 1;
     const int black = 0;
+    // 0:black; 1:white
+    int currentPlayer;
     std::vector<std::shared_ptr<Player>> players;
     std::shared_ptr<Board> board;
     std::vector<Observer *> observers;

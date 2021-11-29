@@ -22,6 +22,7 @@ void Player::movePiece(Position from, Position to) {
     if(fromFindResult != playerPieces.end()) {
         playerPieces.erase(to);
         // fromFindResult->second.get()->isFirstMove=false;
+        fromFindResult->second.get()->afterFirstMove();
         playerPieces[to] = fromFindResult->second;
         playerPieces.erase(from);
         

@@ -8,8 +8,7 @@
 #include <iostream>
 // #include  "boardSetup.h"
 
-ChessGame::ChessGame() {
-    // ****[Samantha add]int currentPlay
+ChessGame::ChessGame() : currentPlayer{white} {
     std::shared_ptr<Player> playerOne = std::make_shared<Player>(1);
     std::shared_ptr<Player> playerTwo = std::make_shared<Player>(0);
     players.emplace_back(playerTwo);
@@ -125,7 +124,8 @@ void ChessGame::makeAMove(Move nextMove) {
     // std::cout << nextMove.from.x << nextMove.from.y << "   " << nextMove.to.x <<nextMove.to.y  << std::endl;
     if (isMoveValid(nextMove)) {
         board.get()->makeAMove(nextMove.from, nextMove.to, currentPlayer);
-        // pass to next player
+        // pass to next player; 
+        // ***issue still increment by one if moving opponent piece
         nextTurn();
         render();
     }
