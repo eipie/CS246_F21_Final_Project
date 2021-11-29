@@ -32,7 +32,7 @@ bool ChessGame::isMoveValid(Move nextMove) {
 }
 
 void ChessGame::makeAMove(Move nextMove) {
-    std::cout << nextMove.from.x << nextMove.from.y << "   " << nextMove.to.x <<nextMove.to.y  << std::endl;
+    // std::cout << nextMove.from.x << nextMove.from.y << "   " << nextMove.to.x <<nextMove.to.y  << std::endl;
     if (isMoveValid(nextMove)) {
         board.get()->makeAMove(nextMove.from, nextMove.to);
         board.get()->changePlayer();
