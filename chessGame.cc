@@ -55,7 +55,7 @@ bool ChessGame::isMoveValid(Move nextMove) {
         // check if move is promotion
         // 
         // 1. ifPromotion(Move nextMove);
-        //      if(isPromotion==ture);
+        //      if(isPromotion==true);
         // 2. ifPromotionValue(Move nextMove);
         //      Position from is currentplayer's Pawn
         //      AND
@@ -128,11 +128,11 @@ char ChessGame::getPieceCharAt(Position p) {
     return board.get()->getPieceCharAt(p);
 }
 
-// oponent (black:0; white:1);
+// opponent (black:0; white:1);
 // int playerResign()
 
 // 
-// vecotr<int> gameEnd()
+// vector<int> gameEnd()
 
 void ChessGame::render() {
     notifyObservers();
