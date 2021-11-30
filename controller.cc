@@ -1,32 +1,35 @@
 #include "chessGame.h"
 #include "board.h"
+#include "move.h"
 #include "position.h"
 #include "player.h"
 #include <string>
 #include <iostream>
+#include <sstream>
 
 int main() {
-    ChessGame *g = ChessGame(setup);
-    // Player wp = Player(1, 0);    //creates white player
-    // Player bp = Player(-1, 0);   //creates blackc player
-    // Board * b = new Board(players, boardSetup);
-    std::string command;
-    while (std::cin >> command) {
+    ChessGame *chess = new ChessGame();
+
+    std::string line;
+    while (std::getline(std::cin, line)) {
+        std::string command;
+        std::stringstream ss(line);
+        ss >> command;
         if (command == "game") {
             //determine human-computer game
         } else if (command == "resign") {
-            if (b->currentPlayer == 0) {
-                cout << "Black Wins!" << endl;
+            //if ((chess->board).currentPlayer == 0) {
+             /*   std::cout << "Black Wins!" << std::endl;
             } else {
-                cout << "White Wins!" << endl;
-            }
-        } else if (command == "move") {  // move e1 g1
-            string from_str;
-            string to_str;
-            position from;
-            position to;
-            std::cin >> from_str;
-            std::cin >> to_str;
+                std::cout << "White Wins!" << std::endl;
+            }*/
+            break;
+        } else if (command == "move") {
+            std::string from_str;
+            std::string to_str;
+            Position from;
+            Position to;
+            ss >> from_str >> to_str;
             from.x = from_str[0] - 'a' + 1;
             from.y = from_str[1] - '0';
             to.x = to_str[0] - 'a' + 1;
@@ -34,42 +37,50 @@ int main() {
             Move nextMove;
             nextMove.from = from;
             nextMove.to = to;
-            g->makeAMove(nextMove);
-            
-            // b->makeAMove(from, to);
-            // b->changePlayer();
-        } else if (command == "setup") {
-            string operation;
-            cin >> operation;
-            if (operation == "+") {
-                char p; //piece
-                string pos_str: //position
-                cin >> p >> pos_str;
-                pos.x = pos_str[0];
-                pos.y = pos_str[1] - '0';
-                // b->addPieces(p, pos);  //?? add
-            } else if (operation == "-") {
-                position pos;
-                string pos_str: //position
-                cin >> pos_str;
-                pos.x = pos_str[0];
-                pos.y = pos_str[1] - '0';
-                b->removePieces(pos);  //?? add
-            } else if (operation == "=") {
-                string colour;
-                cin >> colour;
-                if (colour == "black") {
-                    currentPlayer = 0;
-                } else if (colour == "white") {
-                    currentPlayer = 1;
+            char promo;
+            if (ss >> promo) {
+                nextMove.isPromotion = true;
+                nextMove.promotionType = promo;
+            }
+            chess->makeAMove(nextMove);
+        } else if (command == "setup") { // check if the game has started, then allow setup;
+            // while loop until the user type done, then call isboardvalid
+            std::string operation;
+            ss >> operation;
+            while (true) {
+                if (operation != "done") {
+                    break;
+                } else if (operation == "+") {
+                    char p;
+                    std::string pos_str;
+                    ss >> p >> pos_str;
+                    Position pos;
+                    pos.x = pos_str[0] - 'a' + 1;
+                    pos.y = pos_str[1] - '0';
+                    chess->addPiece(pos, p);
+                } else if (operation == "-") {
+                    Position pos;
+                    std::string pos_str;
+                    ss >> pos_str;
+                    pos.x = pos_str[0] - 'a' + 1;
+                    pos.y = pos_str[1] - '0';
+                    chess->removePiece(pos);
+                } else if (operation == "=") {
+                    std::string colour;
+                    ss >> colour;
+                    if (colour == "black") {
+                        //chess->changePlayer();
+                    } else if (colour == "white") {
+                        //chess->changePlayer();
+                    }
                 }
-            } else if (operation == "done") {
-                continue;
+                // else invalid
             }
         }
     }
-    cout << "Final Score:" << endl;
-    cout << "White: " << wp.currentScore << endl;
-    cout << "Black: " << bp.currentScore << endl;    
-    delete b;
+
+    /*std::cout << "Final Score:" << std::endl;
+    std::cout << "White: " << wp.currentScore << std::endl;
+    std::cout << "Black: " << bp.currentScore << std::endl;*/
+    delete chess;
 }

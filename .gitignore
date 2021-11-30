@@ -30,8 +30,12 @@
 *.exe
 *.out
 *.app
+*.log
 
 # ignore json file
 *.json
 /Users/henryma/Documents/GitHub/CS246_F21_Final_Project/.vscode/c_cpp_properties.json
 /Users/henryma/Documents/GitHub/CS246_F21_Final_Project/.vscode/settings.json
+
+# makefile
+C:\Users\saman\Downloads\course notes_ materials\CS 246\final project\project\CS246_F21_Final_Project\Makefile

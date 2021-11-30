@@ -4,25 +4,28 @@
 #include <vector>
 #include <map>
 class Player;
-// class BoardSetup;
+// class BoardSetup; 
 class Move;
 class Position;
-class Board{
-    // 0:black; 1:white
-    int currentPlayer;
-    std::vector<std::shared_ptr<Player> > players;
-    void resetBoardByPlayer(std::map<Position, std::shared_ptr<ChessPieces> > *playerPieces, int identifier);
+class ChessPieces;
 
+class Board{
+
+    std::vector<std::shared_ptr<Player>> players;
+    const int white =1;
+    const int black = 0;
     public:
     Board(std::vector<std::shared_ptr<Player> > players);
-    void changePlayer();
-    void makeAMove(Position from, Position to);
+    void makeAMove(Position from, Position to, int currentPlayer);
     void resetBoard();
     void removePiece(Position p);
     void addPiece(Position p, char c);
     // to be implemented, dummy variable
-    bool isBoardSetupValid();
-    char getPieceCharAt(Position p);
+    bool isBoardSetupValid() const;
+    char getPieceCharAt(Position p) const;
+
+    char isOpponentPiece(Position target, int identifier) const;
+    bool isEmpty(Position target) const;
 };
 
 #endif
