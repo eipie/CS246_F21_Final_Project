@@ -10,6 +10,7 @@ void ChessPieces::afterFirstMove() {
 }
 
 int ChessPieces::tryAddNextMoveCandidate(const Board & board, std::vector<PossibleMove> & possibleMove, Position candidate) {
+    if(candidate.x <= 8 && candidate.y <= 8 && candidate.x >=1 && candidate.y >=1) {
         const char noCapture = ' ';
         const char currentPlayerPiece = ' ';
         if(board.isEmpty(candidate)) {
@@ -30,4 +31,6 @@ int ChessPieces::tryAddNextMoveCandidate(const Board & board, std::vector<Possib
                 return 1;
             }
         }
+    }
+    return -1;
 }
