@@ -178,14 +178,14 @@ void ChessGame::render() {
 //              check if piece hit own piece, pop all current the following moves.
 // Check if move [player]'s piece from [from] to [to] will cause enemy piece be able to capture [player]'s king
 
-std::shared_ptr<std::vector<Position>> Board::getAllPossibleMoves(Move nextMove) {
-    std::shared_ptr<std::vector<Position>> possMoves;
+std::vector<PossibleMove> Board::getAllPossibleMoves(Move nextMove) {
+    std::vector<PossibleMove> possMoves;
     Position from = nextMove.from;
     auto playerPieces = players.get()->at(currentPlayer).get()->playerPieces;
     auto pair = playerPieces.find(from);
     if(pair!=playerPieces.end()) {
         std::shared_ptr<ChessPieces> piece = pair->second;
-        auto possMoves = piece.get()->getPossibleMoves();
+        auto possMoves = piece.get()->getPossibleMoves(const Board & board);
     } else {
         // error, no piece at given location
     }

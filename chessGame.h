@@ -46,7 +46,7 @@ class ChessGame {
 
 private:
 /*     // return all Positions the piece at current location can go
-    std::shared_ptr<std::vector<Position>> getAllPossibleMoves(Move nextMove);
+    std::vector<PossibleMove> getAllPossibleMoves(Move nextMove);
     // return all legal Positions the piece at current location can go, 
     // including the piece it will be able to capture as value in map
     std::map<Position, char> getAllLegalMove(std::vector<Position> possMove, Move nextMove); */

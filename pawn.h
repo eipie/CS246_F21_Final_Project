@@ -6,7 +6,7 @@ class Pawn : public ChessPieces {
     bool availableForEnPassant;
     virtual void afterFirstMove() override;
     Pawn(Position p, int identifier, bool isFirstMove=true);
-    std::shared_ptr<std::vector<Position>> getPossibleMoves() override;
+    std::vector<PossibleMove> getPossibleMoves(const Board & board) override;
 };
 
 #endif

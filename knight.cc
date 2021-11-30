@@ -1,5 +1,6 @@
 #include "knight.h"
 #include "position.h"
+#include "board.h"
 
 Knight::Knight(Position p, int identifier, bool isFirstMove) : ChessPieces(p, identifier, isFirstMove){
     if(identifier==1) {
@@ -12,6 +13,6 @@ Knight::Knight(Position p, int identifier, bool isFirstMove) : ChessPieces(p, id
 // Knight 
 //      +1v+2h || +2v+1h || -1v+2h || -2v+1h
 //      +1v-2h || +2v-1h || -1v-2h || -2v-1h
-std::shared_ptr<std::vector<Position>> Knight::getPossibleMoves() {
+std::vector<PossibleMove> Knight::getPossibleMoves(const Board & board) {
 
 }

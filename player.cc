@@ -9,7 +9,7 @@
 #include "bishop.h"
 #include <iostream>
 
-Player::Player(int identifier, int currentScore) : identifier{identifier}, currentScore{currentScore}{
+Player::Player(int identifier, int currentScore) : currentScore{currentScore}, identifier{identifier}{
     // std::cout<< "calling constructor" << std::endl;
     resetAllPieces();
 };
@@ -22,6 +22,7 @@ void Player::movePiece(Position from, Position to) {
     if(fromFindResult != playerPieces.end()) {
         playerPieces.erase(to);
         // fromFindResult->second.get()->isFirstMove=false;
+        fromFindResult->second.get()->pos = to;
         fromFindResult->second.get()->afterFirstMove();
         playerPieces[to] = fromFindResult->second;
         playerPieces.erase(from);

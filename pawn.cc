@@ -1,5 +1,6 @@
 #include "pawn.h"
 #include "position.h"
+#include "board.h"
 
 Pawn::Pawn(Position p, int identifier, bool isFirstMove) : ChessPieces(p, identifier, isFirstMove){
     if(identifier==1) {
@@ -29,6 +30,6 @@ void Pawn::afterFirstMove() {
 //      +1v 
 //      
 // *promotion*
-std::shared_ptr<std::vector<Position>> Pawn::getPossibleMoves() {
+std::vector<PossibleMove> Pawn::getPossibleMoves(const Board & board) {
 
 }

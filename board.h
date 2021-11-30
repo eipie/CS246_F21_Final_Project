@@ -7,10 +7,13 @@ class Player;
 // class BoardSetup; 
 class Move;
 class Position;
+class ChessPieces;
 
 class Board{
 
-    std::vector<std::shared_ptr<Player> > players;
+    std::vector<std::shared_ptr<Player>> players;
+    const int white =1;
+    const int black = 0;
     public:
     Board(std::vector<std::shared_ptr<Player> > players);
     void makeAMove(Position from, Position to, int currentPlayer);
@@ -18,8 +21,11 @@ class Board{
     void removePiece(Position p);
     void addPiece(Position p, char c);
     // to be implemented, dummy variable
-    bool isBoardSetupValid();
-    char getPieceCharAt(Position p);
+    bool isBoardSetupValid() const;
+    char getPieceCharAt(Position p) const;
+
+    char isOpponentPiece(Position target, int identifier) const;
+    bool isEmpty(Position target) const;
 };
 
 #endif
