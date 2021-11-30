@@ -1,6 +1,7 @@
 #include "king.h"
 #include "position.h"
 #include "board.h"
+#include "move.h"
 
 King::King(Position p, int identifier, bool isFirstMove) 
     : ChessPieces(p, identifier, isFirstMove), isInCheck{false}{
@@ -10,7 +11,6 @@ King::King(Position p, int identifier, bool isFirstMove)
         icon='k';
     }
 }
-
 
 bool King::isKingNextToKing(Position candidate, const Board & board) {
     // check all surrounding 8 squares, make sure it is not original position
@@ -42,74 +42,78 @@ std::vector<PossibleMove> King::getPossibleMoves(const Board & board) {
     int y =pos.y;
     // horizontal moves:
     // check right
-    Position candidate{x+1,y};
-    // if ther is no king at the following:
-    // (x+2, y), (x+2, y+1), (x+2, y-1)
-    // then:
-/*     if((board.getPieceCharAt(Position{x+2, y})==('k'||'K'))|| ) {
-
-    } */
-    if(!isKingNextToKing(candidate, board)) {
-        tryAddNextMoveCandidate(board, possMoves, candidate);
+    Position candidate1{x+1,y};
+    if(!isKingNextToKing(candidate1, board)) {
+        tryAddNextMoveCandidate(board, possMoves, candidate1);
     }
-    
-
     // check left
-    candidate.x = x-1;
-    candidate.y= y;
-    // Position candidate{x-1,y};
-    // if ther is no king at the following:
-    // (x-2, y), (x-2, y+1), (x-2, y-1)
-    // then:
-    int tryAddResult = tryAddNextMoveCandidate(board, possMoves, candidate);
-
+    Position candidate2{x-1,y};
+    if(!isKingNextToKing(candidate2, board)) {
+        tryAddNextMoveCandidate(board, possMoves, candidate2);
+    }
     // check up
-    Position candidate{x,y+1};
-    // if ther is no king at the following:
-    // (x, y+2), (x-1, y+2), (x+1, y+2)
-    // then:
-    int tryAddResult = tryAddNextMoveCandidate(board, possMoves, candidate);
+    Position candidate3{x,y+1};
+    if(!isKingNextToKing(candidate3, board)) {
+        tryAddNextMoveCandidate(board, possMoves, candidate3);
+    }
 
     // check down
-    Position candidate{x,y-1};
-    // if ther is no king at the following:
-    // (x, y-2), (x-1, y-2), (x+1, y-2)
-    // then:
-    int tryAddResult = tryAddNextMoveCandidate(board, possMoves, candidate);
-
+    Position candidate4{x,y-1};
+    if(!isKingNextToKing(candidate4, board)) {
+        tryAddNextMoveCandidate(board, possMoves, candidate4);
+    }
     //diagonal moves:
     // check up right
-    Position candidate{x+1,y+1};
-    // if ther is no king at the following:
-    // (x+2, y), (x+2, y+1), (x+2, y+2), (x+1, y+2), (x, y+2)
-    // then:
-    int tryAddResult = tryAddNextMoveCandidate(board, possMoves, candidate);
-
+    Position candidate5{x+1,y+1};
+    if(!isKingNextToKing(candidate5, board)) {
+        tryAddNextMoveCandidate(board, possMoves, candidate5);
+    }
     // check up left
-    Position candidate{x-1,y+1};
-    // if ther is no king at the following:
-    // (x-2, y), (x-2, y+1), (x-2, y+2), (x-1, y+2), (x, y+2)
-    // then:
-    int tryAddResult = tryAddNextMoveCandidate(board, possMoves, candidate);
-
+    Position candidate6{x-1,y+1};
+    if(!isKingNextToKing(candidate6, board)) {
+        tryAddNextMoveCandidate(board, possMoves, candidate6);
+    }
     // check down left
-    Position candidate{x-1,y+1};
-    // if ther is no king at the following:
-    // (x-2, y), (x-2, y-1), (x-2, y-2), (x-1, y-2), (x, y-2)
-    // then:
-    int tryAddResult = tryAddNextMoveCandidate(board, possMoves, candidate);
-
+    Position candidate7{x-1,y+1};
+    if(!isKingNextToKing(candidate7, board)) {
+        tryAddNextMoveCandidate(board, possMoves, candidate7);
+    }
     // check down right
-    Position candidate{x-1,y+1};
-    // if ther is no king at the following:
-    // (x, y-2), (x+1, y-2), (x+2, y-2), (x+2, y-1), (x+2, y)
-    // then:
-    int tryAddResult = tryAddNextMoveCandidate(board, possMoves, candidate);
-
+    Position candidate8{x-1,y+1};
+    if(!isKingNextToKing(candidate8, board)) {
+        tryAddNextMoveCandidate(board, possMoves, candidate8);
+    }
     return possMoves;   
 }
 
 
+
+bool ifCastling(Move nextMove, const Board & board) {
+    Position from = nextMove.from;
+    Position to = nextMove.to;
+    Position rook1{1, 1};
+    Position rook2{8, 1};
+    Position rook3{1, 8};
+    Position rook4{8, 8};
+    if (board.getPieceCharAt(from) == 'K') {
+        if ((from.x == 5 && from.y == 1) && 
+        ((to.x == 7 && to.y == 1 && board.getPieceCharAt(rook2) == 'R') || 
+        (to.x == 3 && to.y == 1 && board.getPieceCharAt(rook1) == 'R'))) {
+            return true;
+        }
+    } else if (board.getPieceCharAt(from) == 'k') {
+        if ((from.x == 5 && from.y == 8) && 
+        ((to.x == 7 && to.y == 8 && board.getPieceCharAt(rook4) == 'r') || 
+        (to.x == 3 && to.y == 8 && board.getPieceCharAt(rook3) == 'r'))) {
+            return true;
+        }       
+    }
+    return false;
+}
+
+bool CastlingisAllowed(Move nextMove, const Board & board) {
+    Position from = nextMove.from;
+}
 
 // first detect special case
     // bool isCastleAndValid();
@@ -148,3 +152,7 @@ std::vector<PossibleMove> King::getPossibleMoves(const Board & board) {
         // 3. finally move both King and Rook
             // move Board.makeAMove Rook
         // return true;
+
+bool isCastleAndValid(Move nextMove, const Board & board) {
+    return ifCastling(nextMove, board) && CastlingisAllowed(nextMove, board);
+}

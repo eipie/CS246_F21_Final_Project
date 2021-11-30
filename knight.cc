@@ -25,7 +25,7 @@ std::vector<PossibleMove> Knight::getPossibleMoves(const Board & board) {
     Position candidate6{x-2, y+1};
     Position candidate7{x-2, y-1};
     Position candidate8{x-1, y-2};
-    // (if x+1 <= 8 && y+2 <= 8) ?????
+    
     tryAddNextMoveCandidate(board, possMoves, candidate1);
     tryAddNextMoveCandidate(board, possMoves, candidate2);
     tryAddNextMoveCandidate(board, possMoves, candidate3);
