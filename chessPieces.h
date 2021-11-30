@@ -7,8 +7,9 @@
 #include "possibleMove.h"
 class ChessPieces {
     // 0:black; 1:white;
-    int ownerIdentifier;
     protected:
+    int ownerIdentifier;
+    
     bool isFirstMove;
     // return 0: if candidate is empty, add success
     // return 1: if candidate is enemy, add success
