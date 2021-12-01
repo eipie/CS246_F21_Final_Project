@@ -6,6 +6,7 @@
 
 class Position;
 class ChessPieces;
+class Board;
 class Player {
 /*     int numPawn = 8;
     int numKnight = 2;
@@ -13,6 +14,7 @@ class Player {
     int numBishop = 2;
     int numKing = 1;
     int numQueen = 1; */
+    protected:
     int currentScore;
     // 0:black; 1:white;
     int identifier;
@@ -28,6 +30,7 @@ class Player {
     void addPiece(Position p, char c);
     char getPieceCharAt(Position p);
     std::shared_ptr<ChessPieces> getPieceAt(Position p) const;
+    virtual bool tryMakeMove(Move m, const Board & board) = 0;
 
 };
 

@@ -26,6 +26,7 @@ class Board{
     std::shared_ptr<ChessPieces> getPieceAt(Position p) const;
     char isOpponentPiece(Position target, int identifier) const;
     bool isEmpty(Position target) const;
+    bool tryMakeMove(Move m, int identifier);
 };
 
 #endif
