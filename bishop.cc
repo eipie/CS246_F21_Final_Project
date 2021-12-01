@@ -10,9 +10,7 @@ Bishop::Bishop(Position p, int identifier, bool isFirstMove) : ChessPieces(p, id
     }
 }
 // Bishop (v|h|d *1)
-//      +1v || -1v || +1h || -1h
-//      +1v+1h || +1v-1h || -1v+1h || -1v-1h
-// *castling*
+
 std::vector<PossibleMove> Bishop::getPossibleMoves(const Board & board) {
     std::vector<PossibleMove> possMoves;
     int x =pos.x;

@@ -27,6 +27,7 @@ class Player {
     void movePiece(Position from, Position to);
     void addPiece(Position p, char c);
     char getPieceCharAt(Position p);
+    std::shared_ptr<ChessPieces> getPieceAt(Position p) const;
 
 };
 

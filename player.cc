@@ -46,6 +46,15 @@ char Player::getPieceCharAt(Position p) {
     }
 }
 
+std::shared_ptr<ChessPieces> Player::getPieceAt(Position p) const {
+    auto findResult = playerPieces.find(p);
+    if(findResult != playerPieces.end()) {
+        return findResult->second;
+    } else {
+        return nullptr;
+    }
+}
+
 
 
 // 8*8 square:

@@ -75,7 +75,20 @@ char Board::getPieceCharAt(Position p) const{
     return c;
 }
 
+// return nullptr if not found
+std::shared_ptr<ChessPieces> Board::getPieceAt(Position p) const {
+    std::shared_ptr<ChessPieces> c = nullptr;
+    for(auto player: players) {
+       c = player.get()->getPieceAt(p);
+       if (c!=nullptr) {
+           break;
+       }
+    }
+    return c;
+}
+
 // dummy return value
 bool Board::isBoardSetupValid() const{
     return true;
 }
+
