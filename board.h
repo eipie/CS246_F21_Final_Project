@@ -23,9 +23,10 @@ class Board{
     // to be implemented, dummy variable
     bool isBoardSetupValid() const;
     char getPieceCharAt(Position p) const;
-
+    std::shared_ptr<ChessPieces> getPieceAt(Position p) const;
     char isOpponentPiece(Position target, int identifier) const;
     bool isEmpty(Position target) const;
+    bool tryMakeMove(Move m, int identifier);
 };
 
 #endif

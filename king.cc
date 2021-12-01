@@ -40,6 +40,20 @@ std::vector<PossibleMove> King::getPossibleMoves(const Board & board) {
     std::vector<PossibleMove> possMoves;
     int x =pos.x;
     int y =pos.y;
+    std::vector<int> change = {-1,0,1};
+    for(int x_change:change) {
+        for(int y_change:change) {
+            Position candidate;
+            candidate.x=x+x_change;
+            candidate.y=y+y_change;
+            if(!(candidate==pos)) {
+                if(!isKingNextToKing(candidate, board)) {
+                    tryAddNextMoveCandidate(board, possMoves, candidate);
+                }
+            }
+        }
+    }
+/* 
     // horizontal moves:
     // check right
     Position candidate1{x+1,y};
@@ -83,9 +97,14 @@ std::vector<PossibleMove> King::getPossibleMoves(const Board & board) {
     if(!isKingNextToKing(candidate8, board)) {
         tryAddNextMoveCandidate(board, possMoves, candidate8);
     }
+    // find all castling if possible
+    // emplace
     return possMoves;   
 }
+ */
 
+// bool Kingsidecastle()
+// bool Queensidecatle();
 
 
 bool ifCastling(Move nextMove, const Board & board) {
@@ -111,8 +130,13 @@ bool ifCastling(Move nextMove, const Board & board) {
     return false;
 }
 
-bool CastlingisAllowed(Move nextMove, const Board & board) {
+bool King::CastlingisAllowed(Move nextMove, const Board & board) {
     Position from = nextMove.from;
+    if(isFirstMove && (!isInCheck))  {
+
+    }
+    return false;
+    // getPieceAt()
 }
 
 // first detect special case

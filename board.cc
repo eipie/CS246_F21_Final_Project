@@ -8,7 +8,6 @@ Board::Board(std::vector<std::shared_ptr<Player>> players)
     : players{players}{}
 
 
-
 void Board::makeAMove(Position from, Position to, int currentPlayer) {
     if (players[currentPlayer].get()->getPieceCharAt(from) != ' ') {
         removePiece(to);
@@ -75,7 +74,24 @@ char Board::getPieceCharAt(Position p) const{
     return c;
 }
 
+// return nullptr if not found
+std::shared_ptr<ChessPieces> Board::getPieceAt(Position p) const {
+    std::shared_ptr<ChessPieces> c = nullptr;
+    for(auto player: players) {
+       c = player.get()->getPieceAt(p);
+       if (c!=nullptr) {
+           break;
+       }
+    }
+    return c;
+}
+
 // dummy return value
 bool Board::isBoardSetupValid() const{
     return true;
 }
+
+bool Board::tryMakeMove(Move m, int identifier) {
+    return players[identifier].get()->tryMakeMove(m, *this);
+}
+
