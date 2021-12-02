@@ -18,6 +18,7 @@ class ChessPieces {
     int tryAddNextMoveCandidate(const Board & board, std::vector<PossibleMove> & possibleMove, Position candidate);
     bool withinBound(Position candidate);
     bool isCurrentPlayerKingInCheckAfterMove(Move newMove, const Board & board);
+    bool isCurrentPlayerKingInCheckAfterMove(PossibleMove newMove, const Board & board);
 
     public:
     bool isFirstMove=true;

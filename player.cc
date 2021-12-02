@@ -41,16 +41,19 @@ void Player::movePiece(Position from, Position to) {
     }
 }
 
-std::vector<PossibleMove> Player::kingEscapeTrap(Board & board) {
+/* std::vector<PossibleMove> Player::kingEscapeTrap(Board & board) {
     std::vector<PossibleMove> allKingMove = getKing().get()->getPossibleMoves(board);
     auto allOpponentsNextMove = board.getPlayerPossibleMoves(opponentIdentifier);
-    for(auto oppMoveSet : allOpponentsNextMove) {
+    for(auto kingMove : allKingMove) {
+        
+    }
+     for(auto oppMoveSet : allOpponentsNextMove) {
         for(auto oppPossMove : *oppMoveSet.second.get()) {
             allKingMove.erase(std::find(allKingMove.begin(), allKingMove.end(), oppPossMove));
         }  
-    }
+    } 
     return allKingMove;
-}   
+}    */
 
 void Player::removePieces(Position p) {
     playerPieces.erase(p);
@@ -207,3 +210,21 @@ bool Player::tryDoPawnPromotion(char promotion, std::shared_ptr<ChessPieces> tar
     } 
     return false;
 }
+
+
+/* void Player::moveWithSpecial(std::shared_ptr<ChessPieces> targetPiece, PossibleMove possMove, Board & board) {
+    if(possMove.kingSideCastle || possMove.queenSideCastle) {
+        movePiece(possMove.rookFrom, possMove.rookTo);
+    } 
+    if(possMove.enPassant) { 
+        // remove opponent pawn
+        board.removePiece(possMove.enPassantLoc, opponentIdentifier);
+    } 
+    if(m.isPromotion) {
+        if(!tryDoPawnPromotion(m.promotionType,targetPiece)) {
+            return false;
+        }
+    } 
+    movePiece(from, to);
+    return true;
+} */

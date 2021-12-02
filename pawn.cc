@@ -83,7 +83,9 @@ void Pawn::addEnPassantIfPoss(Position to, Position captureLoc, std::vector<Poss
                 newPossMove.to = to;
                 newPossMove.enPassant=true;
                 newPossMove.enPassantLoc = captureLoc;
-                possMoves.emplace_back(newPossMove);
+                if(!isCurrentPlayerKingInCheckAfterMove(newPossMove,board)) { 
+                    possMoves.emplace_back(newPossMove);
+                }
             }
         }
     }

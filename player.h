@@ -3,6 +3,7 @@
 #include <memory>
 #include <vector>
 #include <map>
+#include "move.h"
 
 class PossibleMove;
 class Position;
@@ -21,7 +22,10 @@ class Player {
     int identifier;
     int opponentIdentifier;
     std::shared_ptr<ChessPieces> getKing();
+    // computer always true
     bool tryDoPawnPromotion(char promotion, std::shared_ptr<ChessPieces> target);
+    // computer always true
+    bool moveWithSpecial(PossibleMove possMove);
     // return all possible ways current player can escape Check
     
     public:
@@ -29,7 +33,7 @@ class Player {
     bool isInCheck = false;
     int currentScore;
     std::map<Position, std::shared_ptr<ChessPieces>> playerPieces;
-    std::vector<PossibleMove> Player::kingEscapeTrap(Board & board);
+    // std::vector<PossibleMove> Player::kingEscapeTrap(Board & board);
     Player(int identifier, int currentScore=0);
     
     void removePieces(Position p);
