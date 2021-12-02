@@ -28,12 +28,31 @@ bool ComputerPlayer::tryMakeMove(Move move, const Board & board) {
     return true;
 }
 
+bool ComputerPlayer::SimpleMakeMove(Position currentPosition, PossibleMove nextMove，Board &board) {
+
+    if (nextMove.kingSideCastle || nextMove.queenSideCastle) {
+        movePiece(nextMove.rookFrom, nextMove.rookTo);
+    }
+    if (nextMove.enPassant) {
+        board.removePiece(nextMove.enPassantLoc, opponentIdentifier);
+    }
+    if (currentPosition.isPromotion) {
+        if (!tryDoPawnPromotion(currentPosition.promotionType, targetPiece)) {
+            return false;
+        }
+    }
+    movePiece(currentPosition, nextMove.to);
+    return true;
+
+}
+
+
 bool ComputerPlayer::MakeMoveAtLevel1(Position currentPosition, std::vector<PossibleMove> availableMoves) {
 
     auto it = availableMoves.begin();
     std::advance(it, rand() % availableMoves.size());
     
-    movePiece(currentPosition, it->to);
+    SimpleMakeMove(currentPosition, it);
     return true;
 
 }
@@ -47,26 +66,41 @@ bool ComputerPlayer::MakeMoveAtLevel2(const Board & board) {
         Position current_position = i.first;
         for (auto j: allPossibleMoves) {
             // if the move is a capture, then make that move and return
-            // hasCaptureMove = true;
             if (j.capture == ' ') {
                 hasCaptureMove = true;
-                movePiece(current_position, j.to);
+                SimpleMakeMove(currentPosition, j);
                 return true;
             }
-            // if the move is a check, then make that move and return
-            // hasCheckMove = true;
+
         }
     }
 
+    // copy the board: 
+    // put in check(opponent_identifier): check the current layout of the board and return a vector containing all pieces that I can move to cause a check
+    
+    // std::vector<std::shared_ptr<ChessPieces>> putInCheck(int identifier);
+    for (auto i: playerPieces) {
+        Board tempBoard = board;
+        std::vector<PossibleMove> allPossibleMoves = i.second->getPossibleMoves(tempBoard);
+        for (auto j: allPossibleMoves) {
+            Position current_position = i.first;
+            tempBoard->makeAMove(Move(currentPosition, j.to), identifier);
+            std::vector<std::shared_ptr<ChessPieces>> checkMovePieces = tempBoard->putInCheck(opponentIdentifier);
+            if (checkMovePieces.size() != 0) {
+                // found piece that can check the opponent
+                hasCheckMove = true;
+                SimpleMakeMove(currentPosition, j, board);
+                return true;
+            }
+        }
+    }
+
+    // if there is no capturing move and check move available to the player, the player will make a random, legal move
     if (!hasCaptureMove && !hasCheckMove) {
-        auto it = playerPieces.begin();
+        auto it = playerPieces.begin();·
         std::advance(it, rand() % playerPieces.size());
         std::vector<PossibleMove> allPossibleMoves = it->second->getPossibleMoves(board);
         MakeMoveAtLevel1(it->second->pos, allPossibleMoves);
     }
-    
-    // copy the board: 
-    // put in check(opponent_identifier): check the current layout of the board and return a vector containing all pieces that I can move to cause a check
-    
     return true;
 }

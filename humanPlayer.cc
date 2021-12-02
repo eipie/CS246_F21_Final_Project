@@ -41,18 +41,15 @@ bool HumanPlayer::tryMakeMove(Move m, Board & board) {
     std::vector<PossibleMove> allPossibleMoves = targetPiece.get()->getPossibleMoves(board);
     for(auto possMove : allPossibleMoves) {
         if(possMove.to == to) {
-            if(possMove.kingSideCastle) {
-                // move rook
-            } 
-            if(possMove.queenSideCastle) {
-                // move rook
+            if(possMove.kingSideCastle || possMove.queenSideCastle) {
+                movePiece(possMove.rookFrom, possMove.rookTo);
             } 
             if(possMove.enPassant) { 
                 // remove opponent pawn
                 board.removePiece(possMove.enPassantLoc, opponentIdentifier);
             } 
             if(m.isPromotion) {
-                if(!validPromotion(m.promotionType,targetPiece)) {
+                if(!tryDoPawnPromotion(m.promotionType,targetPiece)) {
                     return false;
                 }
             } 
@@ -61,4 +58,3 @@ bool HumanPlayer::tryMakeMove(Move m, Board & board) {
         }
     }
 }
-

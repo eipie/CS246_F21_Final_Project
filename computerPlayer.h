@@ -14,7 +14,9 @@ class ComputerPlayer : public Player {
     public:
     // white/black AND level of player
         ComputerPlayer(int identifier, int level, int currentScore=0);
+        
         bool tryMakeMove(Move m, const Board & board) override;
+        bool ComputerPlayer::SimpleMakeMove(Position currentPosition, PossibleMove nextMove，Board &board);
         bool MakeMoveAtLevel1(Position currentPosition, std::vector<PossibleMove> availableMoves);
         bool MakeMoveAtLevel2(const Board & board);
 
