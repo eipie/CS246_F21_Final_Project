@@ -24,8 +24,10 @@ bool Board::makeAMove(Move m, int currentPlayer) {
         } else {
             opponent = white;
         }
+        // ***checkopponent
         auto checkResult = putInCheck(opponent);
         if(checkResult.size() != 0) {
+            // ***see if surrounding square will also be in check
             auto checkMateResult = players[opponent].get()->kingEscapeTrap(*this);
             if(checkMateResult.size()==0) {
                 // opponent checkmate; opponent loses

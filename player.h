@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 
+class PossibleMove;
 class Position;
 class ChessPieces;
 class Board;
@@ -16,7 +17,6 @@ class Player {
     int numQueen = 1; */
     
     protected:
-    int currentScore;
     // 0:black; 1:white;
     int identifier;
     int opponentIdentifier;
@@ -27,6 +27,7 @@ class Player {
     
     public:
     // use map for easier lookup
+    int currentScore;
     std::map<Position, std::shared_ptr<ChessPieces>> playerPieces;
     std::vector<PossibleMove> Player::kingEscapeTrap(Board & board);
     Player(int identifier, int currentScore=0);

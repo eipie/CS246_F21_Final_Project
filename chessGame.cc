@@ -39,6 +39,22 @@ void ChessGame::newRound() {
     setCurrentPlayer(white);
 }
 
+std::string ChessGame::resign() {
+    if(currentPlayer==white) {
+        players[black].get()->currentScore++;
+        return "Black Wins!";
+    } else {
+        players[white].get()->currentScore++;
+        return "White Wins!";
+    }
+}
+
+/* std::string ChessGame::printFinalScore(std::cout out) {
+    return "Final Score:\nWhite: "+players[white].get()->currentScore+'\n'+"Black: "+players[black].get()->currentScore;
+}
+ */
+
+
 // isCurrentPlayerKingInCheckAfterMove(vector<Move> moves)
 // check if king is in check after a move
 // 1. Copy the current board (2 players' piece)

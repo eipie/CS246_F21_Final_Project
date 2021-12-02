@@ -4,6 +4,7 @@
 class King : public ChessPieces {
     bool isKingNextToKing(Position candidate, const Board & board);
     bool Kingsidecastle(const Board & board);
+    bool Queensidecastle(const Board & board);
     public:
     bool isInCheck;
     King(Position p, int identifier, bool isFirstMove=true);

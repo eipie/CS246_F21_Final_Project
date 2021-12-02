@@ -54,29 +54,46 @@ std::vector<PossibleMove> King::getPossibleMoves(const Board & board) {
         }
     }
     if (Kingsidecastle(board)) {
-        tryAddNextMoveCandidate(board, possMoves, pos_king_w);
+        Position newKCastle;
+        newKCastle.y = pos.y;
+        newKCastle.x = 7;
+        tryAddNextMoveCandidate(board, possMoves, newKCastle);
     }
-    if (Queensidecatle(board)) {
-        tryAddNextMoveCandidate(board, possMoves, pos_king_w);
+    if (Queensidecastle(board)) {
+        Position newKCastle;
+        newKCastle.y = pos.y;
+        newKCastle.x = 2;
+        tryAddNextMoveCandidate(board, possMoves, newKCastle);
     }
 }
 
 
-bool King::Kingsidecastle(const Board & board) {
+bool King::Queensidecastle(const Board & board) {
+    for(int i = 2; i <= 4; i++) {
+        Position shouldBeEmpty;
+        shouldBeEmpty.x=i;
+        shouldBeEmpty.y = pos.y;
+        if(!board.isEmpty(shouldBeEmpty)) {
+            return false;
+        }
+    }
+    char rookChar;
+    if(ownerIdentifier==1) {
+        rookChar = 'R';
+    } else {
+        rookChar = 'r';
+    }
     //white king
-    if (board.getPieceCharAt(Position{5, 1}) == 'K') {
-        if (!isFirstMove) {
+    if (this->isFirstMove) {
+        if (board.getPieceCharAt(Position{1, pos.y}) != rookChar) {
             return false;
         }
-        if (board.getPieceCharAt(Position{1, 1}) != 'R') {
-            return false;
-        }
-        if (!((board.getPieceAt(Position{1, 1}))->isFirstMove)) { //???
+        if (!((board.getPieceAt(Position{1, pos.y}))->isFirstMove)) { //???
             return false;
         }
         Move newMove;
-        newMove.from = Position{5, 1};
-        newMove.to = Position{4, 1};
+        newMove.from = Position{5, pos.y};
+        newMove.to = Position{4, pos.y};
         if (isCurrentPlayerKingInCheckAfterMove(newMove)) {
             return false;
         }
@@ -84,107 +101,48 @@ bool King::Kingsidecastle(const Board & board) {
         if (isCurrentPlayerKingInCheckAfterMove(newMove)) {
             return false;
         }
-        Move rookMove; 
-        rookMove.from = Position{1, 1}; 
-        rookMove.to = Position{4, 1}; // create new Position from and to for Rook
-        if (isCurrentPlayerKingInCheckAfterMove(rookMove)) {
-            return false;
-        }
         return true;
     } 
-    //black king
-    else if (board.getPieceCharAt(Position{5, 8}) == 'k') {
-                if (!isFirstMove) {
-            return false;
-        }
-        if (board.getPieceCharAt(Position{1, 8}) != 'r') {
-            return false;
-        }
-        if (!((board.getPieceAt(Position{1, 1}))->isFirstMove)) { //???
-            return false;
-        }
-        Move newMove;
-        newMove.from = Position{5, 8};
-        newMove.to = Position{4, 8};
-        if (isCurrentPlayerKingInCheckAfterMove(newMove)) {
-            return false;
-        }
-        newMove.to = Position{3, 8};
-        if (isCurrentPlayerKingInCheckAfterMove(newMove)) {
-            return false;
-        }
-        Move rookMove; 
-        rookMove.from = Position{1, 8}; 
-        rookMove.to = Position{4, 8}; // create new Position from and to for Rook
-        if (isCurrentPlayerKingInCheckAfterMove(rookMove)) {
-            return false;
-        }
-        return true;
-    }
     return false;
 }
 
 
 
-bool Queensidecatle(const Board & board) {
+bool King::Kingsidecastle(const Board & board) {
+    for(int i = 6; i <= 7; i++) {
+        Position shouldBeEmpty;
+        shouldBeEmpty.x=i;
+        shouldBeEmpty.y = pos.y;
+        if(!board.isEmpty(shouldBeEmpty)) {
+            return false;
+        }
+    }
+    char rookChar;
+    if(ownerIdentifier==1) {
+        rookChar = 'R';
+    } else {
+        rookChar = 'r';
+    }
     //white king
-    if (board.getPieceCharAt(Position{5, 1}) == 'K') {
-        if (!isFirstMove) {
+    if (this->isFirstMove) {
+        if (board.getPieceCharAt(Position{8, pos.y}) != rookChar) {
             return false;
         }
-        if (board.getPieceCharAt(Position{8, 1}) != 'R') {
-            return false;
-        }
-        if (!((board.getPieceAt(Position{8, 1}))->isFirstMove)) { //???
+        if (!((board.getPieceAt(Position{8, pos.y}).get())->isFirstMove)) { //???
             return false;
         }
         Move newMove;
-        newMove.from = Position{5, 1};
-        newMove.to = Position{6, 1};
+        newMove.from = Position{5, pos.y};
+        newMove.to = Position{6, pos.y};
         if (isCurrentPlayerKingInCheckAfterMove(newMove)) {
             return false;
         }
-        newMove.to = Position{7, 1};
+        newMove.to = Position{7, pos.y};
         if (isCurrentPlayerKingInCheckAfterMove(newMove)) {
-            return false;
-        }
-        Move rookMove; 
-        rookMove.from = Position{8, 1}; 
-        rookMove.to = Position{6, 1}; // create new Position from and to for Rook
-        if (isCurrentPlayerKingInCheckAfterMove(rookMove)) {
             return false;
         }
         return true;
     } 
-    //black king
-    else if (board.getPieceCharAt(Position{5, 8}) == 'k') {
-                if (!isFirstMove) {
-            return false;
-        }
-        if (board.getPieceCharAt(Position{8, 8}) != 'r') {
-            return false;
-        }
-        if (!((board.getPieceAt(Position{8, 8}))->isFirstMove)) { //???
-            return false;
-        }
-        Move newMove;
-        newMove.from = Position{5, 8};
-        newMove.to = Position{6, 8};
-        if (isCurrentPlayerKingInCheckAfterMove(newMove)) {
-            return false;
-        }
-        newMove.to = Position{7, 8};
-        if (isCurrentPlayerKingInCheckAfterMove(newMove)) {
-            return false;
-        }
-        Move rookMove; 
-        rookMove.from = Position{8, 8}; 
-        rookMove.to = Position{6, 8}; // create new Position from and to for Rook
-        if (isCurrentPlayerKingInCheckAfterMove(rookMove)) {
-            return false;
-        }
-        return true;
-    }
     return false;
 }
 

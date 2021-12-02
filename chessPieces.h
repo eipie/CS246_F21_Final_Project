@@ -11,14 +11,15 @@ class ChessPieces {
     protected:
    
     int ownerIdentifier;
-    bool isFirstMove=true;
+    
     // return 0: if candidate is empty, add success
     // return 1: if candidate is enemy, add success
     // return -1: if candidate is currentPlayer's piece, add fail;
     int tryAddNextMoveCandidate(const Board & board, std::vector<PossibleMove> & possibleMove, Position candidate);
     bool withinBound(Position candidate);
     public:
-     bool checkOpponent;
+    bool isFirstMove=true;
+    bool checkOpponent;
     bool availableForEnPassant = false;
     // void makingAMove(Position form, Position to);
     // if(isFirstMove==true);
