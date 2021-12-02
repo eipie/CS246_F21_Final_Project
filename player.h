@@ -1,3 +1,4 @@
+
 #ifndef PLAYER_H
 #define PLAYER_H
 #include <memory>
@@ -28,7 +29,7 @@ class Player {
     public:
     // use map for easier lookup
     int currentScore;
-    std::map<Position, std::shared_ptr<ChessPieces>> playerPieces;
+    std::map<Position, std::shared_ptr<ChessPieces> > playerPieces;
     std::vector<PossibleMove> Player::kingEscapeTrap(Board & board);
     Player(int identifier, int currentScore=0);
     
@@ -41,7 +42,7 @@ class Player {
     std::shared_ptr<ChessPieces> getPieceAt(Position p) const;
     virtual bool tryMakeMove(Move m, Board & board) = 0;
     void disableAllEnPassant();
-    std::map<std::shared_ptr<ChessPieces>, std::vector<PossibleMove>> getPlayerPossibleMoves();
+    std::map<std::shared_ptr<ChessPieces>, std::vector<PossibleMove> > getPlayerPossibleMoves();
 
 };
 

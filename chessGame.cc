@@ -71,7 +71,7 @@ bool ChessGame::isMoveValid(Move nextMove) {
         // check if move is promotion
         // 
         // 1. ifPromotion(Move nextMove);
-        //      if(isPromotion==ture);
+        //      if(isPromotion==true);
         // 2. ifPromotionValue(Move nextMove);
         //      Position from is currentplayer's Pawn
         //      AND
@@ -146,11 +146,11 @@ char ChessGame::getPieceCharAt(Position p) {
     return board.get()->getPieceCharAt(p);
 }
 
-// oponent (black:0; white:1);
+// opponent (black:0; white:1);
 // int playerResign()
 
 // 
-// vecotr<int> gameEnd()
+// vector<int> gameEnd()
 
 void ChessGame::render() {
     notifyObservers();
@@ -159,7 +159,6 @@ void ChessGame::render() {
 /* // Basic check: check if piece hit enemy piece(stop&capture), pop all consequtive moves
 //              check if piece hit own piece, pop all current the following moves.
 // Check if move [player]'s piece from [from] to [to] will cause enemy piece be able to capture [player]'s king
-
 std::vector<PossibleMove> Board::getAllPossibleMoves(Move nextMove) {
     std::vector<PossibleMove> possMoves;
     Position from = nextMove.from;

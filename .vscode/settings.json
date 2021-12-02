@@ -1,16 +1,5 @@
 {
-<<<<<<< HEAD
-    "C_Cpp.errorSquiggles": "Enabled",
-    "files.associations": {
-        "string": "cpp",
-        "iosfwd": "cpp",
-        "iostream": "cpp",
-        "ostream": "cpp"
-=======
     "C_Cpp.errorSquiggles": "Disabled",
-    "cSpell.words": [
-        "blackc"
-    ],
     "files.associations": {
         "__bit_reference": "cpp",
         "__bits": "cpp",
@@ -76,6 +65,5 @@
         "unordered_map": "cpp",
         "utility": "cpp",
         "vector": "cpp"
->>>>>>> origin/stage_1
     }
 }
