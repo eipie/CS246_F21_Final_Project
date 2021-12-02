@@ -31,6 +31,7 @@ Pawn::Pawn(Position p, int identifier, bool isFirstMove) : ChessPieces(p, identi
 //      
 // *promotion*
 std::vector<PossibleMove> Pawn::getPossibleMoves(const Board & board) {
+    checkOpponent=false;
     std::vector<PossibleMove> possMoves;
     int x = pos.x;
     int y = pos.y;

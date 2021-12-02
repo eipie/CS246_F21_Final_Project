@@ -1,5 +1,6 @@
 #include "chessPieces.h"
 #include "position.h"
+#include "move.h"
 ChessPieces::ChessPieces(Position p, int identifier, bool isFirstMove) 
     : ownerIdentifier{identifier}, isFirstMove{isFirstMove}, pos{p}{}
 
@@ -53,4 +54,15 @@ int ChessPieces::tryAddNextMoveCandidate(const Board & board, std::vector<Possib
         }
     }
     return returnKey;
+}
+
+bool ChessPieces::isCurrentPlayerKingInCheckAfterMove(Move newMove, const Board & board) {
+    if(!(withinBound(newMove.from) && withinBound(newMove.to))) {
+        // error
+        throw;
+    }
+    // **Make a copy of the board
+    Board newBoard = board;
+    newBoard.makeAMove(newMove, ownerIdentifier);
+    return (newBoard.putInCheck(ownerIdentifier).size()==0);
 }

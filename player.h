@@ -21,12 +21,12 @@ class Player {
     int identifier;
     int opponentIdentifier;
     std::shared_ptr<ChessPieces> getKing();
+    bool tryDoPawnPromotion(char promotion, std::shared_ptr<ChessPieces> target);
     // return all possible ways current player can escape Check
-    
-
     
     public:
     // use map for easier lookup
+    bool isInCheck = false;
     int currentScore;
     std::map<Position, std::shared_ptr<ChessPieces>> playerPieces;
     std::vector<PossibleMove> Player::kingEscapeTrap(Board & board);
@@ -41,7 +41,7 @@ class Player {
     std::shared_ptr<ChessPieces> getPieceAt(Position p) const;
     virtual bool tryMakeMove(Move m, Board & board) = 0;
     void disableAllEnPassant();
-    std::map<std::shared_ptr<ChessPieces>, std::vector<PossibleMove>> getPlayerPossibleMoves();
+    // std::map<std::shared_ptr<ChessPieces>, std::vector<PossibleMove>> getPlayerPossibleMoves();
 
 };
 

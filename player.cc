@@ -99,6 +99,8 @@ void Player::disableAllEnPassant() {
 // 1    
 //   1   2   3   4   ....
 void Player::resetAllPieces() {
+    isInCheck=false;
+    currentScore=0;
     playerPieces.clear();
     // initialize Pawn*8
     for(int i = 1; i<=8; i++) {
@@ -180,4 +182,28 @@ void Player::addPiece(Position p, char c) {
     }
     playerPieces.find(p)->second = newPiece;
     playerPieces.insert({p,newPiece});
+}
+
+
+bool Player::tryDoPawnPromotion(char promotion, std::shared_ptr<ChessPieces> target) {
+    if((identifier==0 && (promotion == 'p'|| promotion == 'r'|| promotion == 'n'|| promotion == 'b'|| promotion == 'q'))
+        || (identifier==1 && (promotion == 'P'|| promotion == 'R'|| promotion == 'N'|| promotion == 'B'|| promotion == 'Q'))) {
+        if(promotion== 'p'||promotion=='P') {
+
+        } else if(promotion== 'r'||promotion=='R') {
+            std::shared_ptr<ChessPieces> newPiece = std::make_shared<Rook>(target.get()->pos, identifier, false);
+            target.swap(newPiece);
+        } else if(promotion== 'n'||promotion=='N') {
+            std::shared_ptr<ChessPieces> newPiece = std::make_shared<Knight>(target.get()->pos, identifier, false);
+            target.swap(newPiece);
+        } else if(promotion== 'b'||promotion=='B') {
+            std::shared_ptr<ChessPieces> newPiece = std::make_shared<Bishop>(target.get()->pos, identifier, false);
+            target.swap(newPiece);
+        } else if(promotion== 'q'||promotion=='Q') {
+            std::shared_ptr<ChessPieces> newPiece = std::make_shared<Queen>(target.get()->pos, identifier, false);
+            target.swap(newPiece);
+        }
+        return true;
+    } 
+    return false;
 }

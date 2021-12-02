@@ -14,6 +14,7 @@ Knight::Knight(Position p, int identifier, bool isFirstMove) : ChessPieces(p, id
 //      +1v+2h || +2v+1h || -1v+2h || -2v+1h
 //      +1v-2h || +2v-1h || -1v-2h || -2v-1h
 std::vector<PossibleMove> Knight::getPossibleMoves(const Board & board) {
+    checkOpponent=false;
     std::vector<PossibleMove> possMoves;
     int x =pos.x;
     int y =pos.y;
