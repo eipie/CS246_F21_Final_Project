@@ -108,10 +108,12 @@ bool King::Queensidecastle(const Board & board) {
 
 
 
-bool Kingsidecatle(const Board & board) {
-    //white king
-    if (board.getPieceCharAt(Position{5, 1}) == 'K') {
-        if (!isFirstMove) {
+bool King::Kingsidecastle(const Board & board) {
+    for(int i = 6; i <= 7; i++) {
+        Position shouldBeEmpty;
+        shouldBeEmpty.x=i;
+        shouldBeEmpty.y = pos.y;
+        if(!board.isEmpty(shouldBeEmpty)) {
             return false;
         }
     }
