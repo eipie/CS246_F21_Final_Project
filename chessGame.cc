@@ -49,11 +49,14 @@ std::string ChessGame::resign() {
     }
 }
 
-/* std::string ChessGame::printFinalScore(std::cout out) {
-    return "Final Score:\nWhite: "+players[white].get()->currentScore+'\n'+"Black: "+players[black].get()->currentScore;
-}
- */
 
+int ChessGame::whitePlayerScore() {
+    return players[white].get()->currentScore;
+}
+
+int ChessGame::blackPlayerScore() {
+    return players[black].get()->currentScore;
+}
 
 // isCurrentPlayerKingInCheckAfterMove(vector<Move> moves)
 // check if king is in check after a move
