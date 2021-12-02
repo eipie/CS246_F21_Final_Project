@@ -57,7 +57,7 @@ std::vector<PossibleMove> King::getPossibleMoves(const Board & board) {
         tryAddNextMoveCandidate(board, possMoves, pos_king_w);
     }
     if (Queensidecatle(board)) {
-        tryAddNextMoveCandidate(board, possMoves, pos_king_w);
+        
     }
 }
 
