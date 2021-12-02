@@ -17,6 +17,8 @@ class ChessPieces {
     // return -1: if candidate is currentPlayer's piece, add fail;
     int tryAddNextMoveCandidate(const Board & board, std::vector<PossibleMove> & possibleMove, Position candidate);
     bool withinBound(Position candidate);
+    bool isCurrentPlayerKingInCheckAfterMove(Move newMove, const Board & board);
+
     public:
     bool isFirstMove=true;
     bool checkOpponent;

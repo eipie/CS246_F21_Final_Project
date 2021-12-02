@@ -33,6 +33,7 @@ bool Board::makeAMove(Move m, int currentPlayer) {
                 // opponent checkmate; opponent loses
             }
             // opponent in check
+            players[opponent].get()->isInCheck=true;
         }
         return true;
     } else {
@@ -158,4 +159,7 @@ bool Board::isBoardSetupValid() const{
     return true;
 }
 
+bool Board::ifInCheck(int identifier) const{
+    return players[identifier].get()->isInCheck;
+}
 

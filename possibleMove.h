@@ -9,6 +9,8 @@ struct PossibleMove {
     // ChessPieces* capture;
     bool kingSideCastle;
 	bool queenSideCastle;
+    Position rookFrom;
+    Position rookTo;
 	bool enPassant;
     Position enPassantLoc;
     bool isPromotion;

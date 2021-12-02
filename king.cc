@@ -37,6 +37,7 @@ bool King::isKingNextToKing(Position candidate, const Board & board) {
 //      +1v+1h || +1v-1h || -1v+1h || -1v-1h
 // *castling*
 std::vector<PossibleMove> King::getPossibleMoves(const Board & board) {
+    checkOpponent=false;
     std::vector<PossibleMove> possMoves;
     int x =pos.x;
     int y =pos.y;
@@ -53,18 +54,28 @@ std::vector<PossibleMove> King::getPossibleMoves(const Board & board) {
             }
         }
     }
-    if (Kingsidecastle(board)) {
-        Position newKCastle;
-        newKCastle.y = pos.y;
-        newKCastle.x = 7;
-        tryAddNextMoveCandidate(board, possMoves, newKCastle);
+
+    // ****
+    // CAN"T CASTLE OUT OF CHECK
+    // ****
+    if(!board.ifInCheck(ownerIdentifier)) {
+        if (Kingsidecastle(board)) {
+            Position newKCastle;
+            newKCastle.y = pos.y;
+            newKCastle.x = 7;
+            tryAddNextMoveCandidate(board, possMoves, newKCastle);
+            // possMoves.end()->kingSideCastle=true;
+            // possMoves.end()->rookFrom{8,pos.y};
+            // possMoves.end()->rookTo{5,pos.y};
+        }
+        if (Queensidecastle(board)) {
+            Position newKCastle;
+            newKCastle.y = pos.y;
+            newKCastle.x = 2;
+            tryAddNextMoveCandidate(board, possMoves, newKCastle);
+        }
     }
-    if (Queensidecastle(board)) {
-        Position newKCastle;
-        newKCastle.y = pos.y;
-        newKCastle.x = 2;
-        tryAddNextMoveCandidate(board, possMoves, newKCastle);
-    }
+    
 }
 
 
@@ -94,11 +105,11 @@ bool King::Queensidecastle(const Board & board) {
         Move newMove;
         newMove.from = Position{5, pos.y};
         newMove.to = Position{4, pos.y};
-        if (isCurrentPlayerKingInCheckAfterMove(newMove)) {
+        if (isCurrentPlayerKingInCheckAfterMove(newMove, board)) {
             return false;
         }
         newMove.to = Position{3, 1};
-        if (isCurrentPlayerKingInCheckAfterMove(newMove)) {
+        if (isCurrentPlayerKingInCheckAfterMove(newMove, board)) {
             return false;
         }
         return true;
@@ -134,11 +145,11 @@ bool King::Kingsidecastle(const Board & board) {
         Move newMove;
         newMove.from = Position{5, pos.y};
         newMove.to = Position{6, pos.y};
-        if (isCurrentPlayerKingInCheckAfterMove(newMove)) {
+        if (isCurrentPlayerKingInCheckAfterMove(newMove, board)) {
             return false;
         }
         newMove.to = Position{7, pos.y};
-        if (isCurrentPlayerKingInCheckAfterMove(newMove)) {
+        if (isCurrentPlayerKingInCheckAfterMove(newMove, board)) {
             return false;
         }
         return true;

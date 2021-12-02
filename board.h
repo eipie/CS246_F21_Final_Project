@@ -27,9 +27,12 @@ class Board{
     std::shared_ptr<ChessPieces> getPieceAt(Position p) const;
     char isOpponentPiece(Position target, int identifier) const;
     bool isEmpty(Position target) const;
-
+    // return all pieces that currently puts identifier's king in check
     std::vector<std::shared_ptr<ChessPieces>> putInCheck(int identifier);
+    // all possible moves of all the pieces player identifier has
     std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> getPlayerPossibleMoves(int identifier);
+    // check if a player is in check (incheck variable in Player class)
+    bool ifInCheck(int identifier) const;
 };
 
 #endif
