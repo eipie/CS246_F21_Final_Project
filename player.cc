@@ -8,29 +8,49 @@
 #include "rook.h"
 #include "bishop.h"
 #include <iostream>
+#include <algorithm>
 
 Player::Player(int identifier, int currentScore) : currentScore{currentScore}, identifier{identifier}{
     // std::cout<< "calling constructor" << std::endl;
+    if(identifier==1) {
+        opponentIdentifier = 0;
+    } else {
+        opponentIdentifier = 1;
+    }
     resetAllPieces();
 };
 
+// do not check if legal, make move directly
+// tryMakeMove in child handle legal/illegal detection
 // strong expection
 void Player::movePiece(Position from, Position to) {
     // std::cout << "moving pieces..." << from.x << ", " << from.y << "  " << to.x << to.y << std::endl;
     auto fromFindResult = playerPieces.find(from);
     // auto toFindResult = playerPieces.find(to);
     if(fromFindResult != playerPieces.end()) {
+        // enPassantAvailabilityCorrect(fromFindResult->second, from, to);
+        fromFindResult->second.get()->afterFirstMove();
         playerPieces.erase(to);
         // fromFindResult->second.get()->isFirstMove=false;
         fromFindResult->second.get()->pos = to;
         fromFindResult->second.get()->afterFirstMove();
         playerPieces[to] = fromFindResult->second;
         playerPieces.erase(from);
-        
     } else {
         // error, no piece at from
     }
 }
+
+std::vector<PossibleMove> Player::kingEscapeTrap(Board & board) {
+    std::vector<PossibleMove> allKingMove = getKing().get()->getPossibleMoves(board);
+    auto allOpponentsNextMove = board.getPlayerPossibleMoves(opponentIdentifier);
+    for(auto oppMoveSet : allOpponentsNextMove) {
+        for(auto oppPossMove : *oppMoveSet.second.get()) {
+            allKingMove.erase(std::find(allKingMove.begin(), allKingMove.end(), oppPossMove));
+        }  
+    }
+    return allKingMove;
+}   
 
 void Player::removePieces(Position p) {
     playerPieces.erase(p);
@@ -46,6 +66,16 @@ char Player::getPieceCharAt(Position p) {
     }
 }
 
+std::shared_ptr<ChessPieces> Player::getKing() {
+    for(auto pieceSet: playerPieces) {
+        auto pieceCandidate = pieceSet.second;
+        if(pieceCandidate.get()->icon=='K'||pieceCandidate.get()->icon=='k') {
+            return pieceCandidate;
+        }
+    }
+    return nullptr;
+}
+
 std::shared_ptr<ChessPieces> Player::getPieceAt(Position p) const {
     auto findResult = playerPieces.find(p);
     if(findResult != playerPieces.end()) {
@@ -55,7 +85,11 @@ std::shared_ptr<ChessPieces> Player::getPieceAt(Position p) const {
     }
 }
 
-
+void Player::disableAllEnPassant() {
+    for(auto piecePair : playerPieces) {
+        piecePair.second.get()->availableForEnPassant=false;
+    }
+}
 
 // 8*8 square:
 // white:1; black:-1

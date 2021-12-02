@@ -9,8 +9,13 @@ void ChessPieces::afterFirstMove() {
     }
 }
 
+bool ChessPieces::withinBound(Position candidate) {
+    return candidate.x <= 8 && candidate.y <= 8 && candidate.x >=1 && candidate.y >=1;
+}
+
 int ChessPieces::tryAddNextMoveCandidate(const Board & board, std::vector<PossibleMove> & possibleMove, Position candidate) {
-    if(candidate.x <= 8 && candidate.y <= 8 && candidate.x >=1 && candidate.y >=1) {
+    char returnKey = -1;
+    if(withinBound(candidate)) {
         const char noCapture = ' ';
         const char currentPlayerPiece = ' ';
         if(board.isEmpty(candidate)) {
@@ -18,19 +23,34 @@ int ChessPieces::tryAddNextMoveCandidate(const Board & board, std::vector<Possib
             newPossMove.capture = noCapture;
             newPossMove.to = candidate;
             possibleMove.emplace_back(newPossMove);
-            return 0;
+            returnKey = 0;
         } else {
             char pieceResult = board.isOpponentPiece(candidate, ownerIdentifier);
             if(pieceResult == currentPlayerPiece) {
-                return -1;
+                return returnKey;
             } else {
+                if(pieceResult=='K'||pieceResult=='k') {
+                    checkOpponent = true;
+                }
                 PossibleMove newPossMove;
                 newPossMove.capture = pieceResult;
                 newPossMove.to = candidate;
                 possibleMove.emplace_back(newPossMove);
-                return 1;
+                returnKey = 1;
             }
         }
     }
-    return -1;
+    // check if Pawn is eligable for Promotion
+    if((returnKey==1 || returnKey == 0) && (icon == 'p'||icon=='P')) {
+        if(candidate.y == 8 || candidate.y == 1) {
+            possibleMove.end()->isPromotion=true;
+            // assign default promotionType [mainly for computerPlayer]
+            if(ownerIdentifier==1) {
+                possibleMove.end()->promotionType='Q';
+            } else{
+                possibleMove.end()->promotionType='q';
+            }
+        }
+    }
+    return returnKey;
 }

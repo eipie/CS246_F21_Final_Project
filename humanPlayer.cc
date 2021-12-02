@@ -34,25 +34,30 @@ bool HumanPlayer::validPromotion(char promotion, std::shared_ptr<ChessPieces> ta
     return false;
 }
 
-bool HumanPlayer::tryMakeMove(Move m, const Board & board) {
+bool HumanPlayer::tryMakeMove(Move m, Board & board) {
     Position from = m.from;
     Position to = m.to;
     std::shared_ptr<ChessPieces> targetPiece = this->getPieceAt(from);
     std::vector<PossibleMove> allPossibleMoves = targetPiece.get()->getPossibleMoves(board);
     for(auto possMove : allPossibleMoves) {
         if(possMove.to == to) {
+            if(possMove.kingSideCastle) {
+                // move rook
+            } 
+            if(possMove.queenSideCastle) {
+                // move rook
+            } 
+            if(possMove.enPassant) { 
+                // remove opponent pawn
+                board.removePiece(possMove.enPassantLoc, opponentIdentifier);
+            } 
             if(m.isPromotion) {
                 if(!validPromotion(m.promotionType,targetPiece)) {
                     return false;
                 }
-            } else if(m.kingSideCastle) {
-                // move rook
-            } else if(m.queenSideCastle) {
-                // move rook
-            } else if(m.enPassant) {
-                // remove opponent pawn
-            }
+            } 
             movePiece(from, to);
+            return true;
         }
     }
 }

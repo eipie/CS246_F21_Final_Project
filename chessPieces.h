@@ -6,17 +6,20 @@
 #include "board.h"
 #include "possibleMove.h"
 class ChessPieces {
+    
     // 0:black; 1:white;
     protected:
+   
     int ownerIdentifier;
-    
-    bool isFirstMove;
+    bool isFirstMove=true;
     // return 0: if candidate is empty, add success
     // return 1: if candidate is enemy, add success
     // return -1: if candidate is currentPlayer's piece, add fail;
     int tryAddNextMoveCandidate(const Board & board, std::vector<PossibleMove> & possibleMove, Position candidate);
-
+    bool withinBound(Position candidate);
     public:
+     bool checkOpponent;
+    bool availableForEnPassant = false;
     // void makingAMove(Position form, Position to);
     // if(isFirstMove==true);
             // all pieces except Pawn:
@@ -34,7 +37,7 @@ class ChessPieces {
     virtual std::vector<PossibleMove> getPossibleMoves(const Board & board) = 0;
     
     // change isFirstMove to false if true; special case for Pawn
-    virtual void afterFirstMove();
+    void afterFirstMove();
 
     
 };

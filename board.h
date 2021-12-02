@@ -14,11 +14,12 @@ class Board{
     std::vector<std::shared_ptr<Player>> players;
     const int white =1;
     const int black = 0;
+    void enPassantAvailabilityCorrect(std::shared_ptr<ChessPieces> pieceToBeMoved, Position from, Position to);
     public:
     Board(std::vector<std::shared_ptr<Player> > players);
-    void makeAMove(Position from, Position to, int currentPlayer);
+    bool makeAMove(Move m, int currentPlayer);
     void resetBoard();
-    void removePiece(Position p);
+    void removePiece(Position p, int currentPlayer);
     void addPiece(Position p, char c);
     // to be implemented, dummy variable
     bool isBoardSetupValid() const;
@@ -26,7 +27,9 @@ class Board{
     std::shared_ptr<ChessPieces> getPieceAt(Position p) const;
     char isOpponentPiece(Position target, int identifier) const;
     bool isEmpty(Position target) const;
-    bool tryMakeMove(Move m, int identifier);
+
+    std::vector<std::shared_ptr<ChessPieces>> putInCheck(int identifier);
+    std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> getPlayerPossibleMoves(int identifier);
 };
 
 #endif

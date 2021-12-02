@@ -14,15 +14,23 @@ class Player {
     int numBishop = 2;
     int numKing = 1;
     int numQueen = 1; */
+    
     protected:
     int currentScore;
     // 0:black; 1:white;
     int identifier;
+    int opponentIdentifier;
+    std::shared_ptr<ChessPieces> getKing();
+    // return all possible ways current player can escape Check
+    
+
+    
     public:
     // use map for easier lookup
     std::map<Position, std::shared_ptr<ChessPieces>> playerPieces;
-
+    std::vector<PossibleMove> Player::kingEscapeTrap(Board & board);
     Player(int identifier, int currentScore=0);
+    
     void removePieces(Position p);
     // void addPieces(Position p, char c);
     void resetAllPieces();
@@ -30,7 +38,9 @@ class Player {
     void addPiece(Position p, char c);
     char getPieceCharAt(Position p);
     std::shared_ptr<ChessPieces> getPieceAt(Position p) const;
-    virtual bool tryMakeMove(Move m, const Board & board) = 0;
+    virtual bool tryMakeMove(Move m, Board & board) = 0;
+    void disableAllEnPassant();
+    std::map<std::shared_ptr<ChessPieces>, std::vector<PossibleMove>> getPlayerPossibleMoves();
 
 };
 

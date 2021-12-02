@@ -86,11 +86,12 @@ bool ChessGame::isMoveValid(Move nextMove) {
 
 void ChessGame::makeAMove(Move nextMove) {
     // std::cout << nextMove.from.x << nextMove.from.y << "   " << nextMove.to.x <<nextMove.to.y  << std::endl;
-    if (isMoveValid(nextMove)) {
-        board.get()->makeAMove(nextMove.from, nextMove.to, currentPlayer);
+    if (board.get()->makeAMove(nextMove, currentPlayer)) {
         // pass to next player; 
         // ***issue still increment by one if moving opponent piece
         nextTurn();
+        render();
+    } else {
         render();
     }
 }
@@ -116,7 +117,8 @@ void ChessGame::notifyObservers() {
 }
 
 void ChessGame::removePiece(Position p) {
-    board.get()->removePiece(p);
+    board.get()->removePiece(p, white);
+    board.get()->removePiece(p, black);
 }
 void ChessGame::addPiece(Position p, char c) {
     board.get()->addPiece(p, c);

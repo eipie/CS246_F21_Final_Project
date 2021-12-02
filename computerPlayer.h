@@ -7,6 +7,6 @@ class ComputerPlayer : public Player {
     public:
     // white/black AND level of player
         ComputerPlayer(int identifier, int level, int currentScore=0);
-        bool tryMakeMove(Move m, const Board & board) override;
+        bool tryMakeMove(Move m, Board & board) override;
 };
 #endif
