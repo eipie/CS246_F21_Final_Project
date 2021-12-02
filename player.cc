@@ -20,6 +20,19 @@ Player::Player(int identifier, int currentScore) : currentScore{currentScore}, i
     resetAllPieces();
 };
 
+Player::Player(const Player &player) {
+    identifier = player.identifier;
+    opponentIdentifier = player.opponentIdentifier;
+    isInCheck = player.isInCheck;
+    currentScore = player.currentScore;
+    std::map<Position, std::shared_ptr<ChessPieces>> pieces;
+    for(auto piecePair:player.playerPieces) {
+        std::shared_ptr<ChessPieces> newPiece = std::make_shared<ChessPieces>(*piecePair.second.get());
+        pieces[piecePair.first] = newPiece;
+    }
+    copyPlayer(player);
+}
+
 // do not check if legal, make move directly
 // tryMakeMove in child handle legal/illegal detection
 // strong expection

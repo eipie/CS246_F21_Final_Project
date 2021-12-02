@@ -8,6 +8,14 @@
 Board::Board(std::vector<std::shared_ptr<Player>> players) 
     : players{players}{}
 
+Board::Board(const Board &board) {
+    std::vector<std::shared_ptr<Player>> copyPlayers;
+    for(auto player:board.players) {
+        std::shared_ptr<Player> copiedPlayer = std::make_shared<Player>(*player.get());
+        copyPlayers.emplace_back(copiedPlayer);
+    }
+    players = copyPlayers;
+}
 
 bool Board::makeAMove(Move m, int currentPlayer) {
     if (players[currentPlayer].get()->tryMakeMove(m,*this)) {

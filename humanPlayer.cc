@@ -10,6 +10,9 @@
 #include "bishop.h"
 
 HumanPlayer::HumanPlayer(int identifier, int currentScore) : Player{identifier, currentScore}{}
+void HumanPlayer::copyPlayer(const Player &player) {
+
+}
 
 bool HumanPlayer::tryMakeMove(Move m, Board & board) {
     Position from = m.from;
