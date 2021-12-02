@@ -1,4 +1,3 @@
-
 #ifndef PLAYER_H
 #define PLAYER_H
 #include <memory>
@@ -36,7 +35,9 @@ class Player {
     std::map<Position, std::shared_ptr<ChessPieces>> playerPieces;
     // std::vector<PossibleMove> Player::kingEscapeTrap(Board & board);
     Player(int identifier, int currentScore=0);
-    
+    Player(const Player &player);
+    virtual void copyPlayer(const Player &player)=0;
+
     void removePieces(Position p);
     // void addPieces(Position p, char c);
     void resetAllPieces();
