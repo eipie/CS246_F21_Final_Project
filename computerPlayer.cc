@@ -51,6 +51,7 @@ bool ComputerPlayer::MakeMoveAtLevel2(const Board & board) {
             if (j.capture == ' ') {
                 hasCaptureMove = true;
                 movePiece(current_position, j.to);
+                return true;
             }
             // if the move is a check, then make that move and return
             // hasCheckMove = true;
