@@ -64,6 +64,9 @@ bool ComputerPlayer::MakeMoveAtLevel2(const Board & board) {
         std::vector<PossibleMove> allPossibleMoves = it->second->getPossibleMoves(board);
         MakeMoveAtLevel1(it->second->pos, allPossibleMoves);
     }
-
+    
+    // copy the board: 
+    // put in check(opponent_identifier): check the current layout of the board and return a vector containing all pieces that I can move to cause a check
+    
     return true;
 }
