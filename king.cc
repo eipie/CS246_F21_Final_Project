@@ -62,7 +62,7 @@ std::vector<PossibleMove> King::getPossibleMoves(const Board & board) {
 }
 
 
-bool King::Kingsidecastle(const Board & board) {
+bool King::Queensidecastle(const Board & board) {
     //white king
     if (board.getPieceCharAt(Position{5, 1}) == 'K') {
         if (!isFirstMove) {
@@ -126,7 +126,7 @@ bool King::Kingsidecastle(const Board & board) {
 
 
 
-bool Queensidecatle(const Board & board) {
+bool Kingsidecatle(const Board & board) {
     //white king
     if (board.getPieceCharAt(Position{5, 1}) == 'K') {
         if (!isFirstMove) {
