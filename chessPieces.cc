@@ -1,5 +1,6 @@
 #include "chessPieces.h"
 #include "position.h"
+#include "move.h"
 ChessPieces::ChessPieces(Position p, int identifier, bool isFirstMove) 
     : ownerIdentifier{identifier}, isFirstMove{isFirstMove}, pos{p}{}
 
@@ -19,24 +20,35 @@ int ChessPieces::tryAddNextMoveCandidate(const Board & board, std::vector<Possib
         const char noCapture = ' ';
         const char currentPlayerPiece = ' ';
         if(board.isEmpty(candidate)) {
+            // Move possPossMove{pos, candidate};
             PossibleMove newPossMove;
             newPossMove.capture = noCapture;
             newPossMove.to = candidate;
-            possibleMove.emplace_back(newPossMove);
-            returnKey = 0;
+            if(!isCurrentPlayerKingInCheckAfterMove(newPossMove,board)) {    
+                possibleMove.emplace_back(newPossMove);
+                returnKey = 0;
+            } else {
+                returnKey = -2;
+            }
+            
         } else {
             char pieceResult = board.isOpponentPiece(candidate, ownerIdentifier);
             if(pieceResult == currentPlayerPiece) {
                 return returnKey;
             } else {
-                if(pieceResult=='K'||pieceResult=='k') {
-                    checkOpponent = true;
-                }
+                // Move possPossMove{pos, candidate};
                 PossibleMove newPossMove;
                 newPossMove.capture = pieceResult;
                 newPossMove.to = candidate;
-                possibleMove.emplace_back(newPossMove);
-                returnKey = 1;
+                if(!isCurrentPlayerKingInCheckAfterMove(newPossMove,board)) {
+                    if(pieceResult=='K'||pieceResult=='k') {
+                        checkOpponent = true;
+                    }    
+                    possibleMove.emplace_back(newPossMove);
+                    returnKey = 1;
+                } else {
+                    returnKey = -2;
+                }
             }
         }
     }
@@ -53,4 +65,39 @@ int ChessPieces::tryAddNextMoveCandidate(const Board & board, std::vector<Possib
         }
     }
     return returnKey;
+}
+
+bool ChessPieces::isCurrentPlayerKingInCheckAfterMove(Move newMove, const Board & board) {
+    if(!(withinBound(newMove.from) && withinBound(newMove.to))) {
+        // error
+        throw;
+    }
+    // **Make a copy of the board
+    Board newBoard{board};
+    newBoard.makeAMove(newMove, ownerIdentifier);
+    return (newBoard.putInCheck(ownerIdentifier).size()!=0);
+}
+
+bool ChessPieces::isCurrentPlayerKingInCheckAfterMove(PossibleMove possMove, const Board & board) {
+    int opponentIdentifier;
+    if(ownerIdentifier==1) {
+        opponentIdentifier=0;
+    } else {
+        opponentIdentifier=1;
+    }
+    if(!(withinBound(possMove.to))) {
+        // error
+        throw;
+    }
+    // **Make a copy of the board
+    Board newBoard{board};
+    if(possMove.kingSideCastle || possMove.queenSideCastle) {
+        newBoard.makeAMove({possMove.rookFrom, possMove.rookTo}, ownerIdentifier);
+    } 
+    if(possMove.enPassant) { 
+        // remove opponent pawn
+        newBoard.removePiece(possMove.enPassantLoc, opponentIdentifier);
+    } 
+    newBoard.makeAMove({pos, possMove.to}, ownerIdentifier);
+    return (newBoard.putInCheck(ownerIdentifier).size()!=0);
 }

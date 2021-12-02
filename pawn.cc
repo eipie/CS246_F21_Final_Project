@@ -31,6 +31,7 @@ Pawn::Pawn(Position p, int identifier, bool isFirstMove) : ChessPieces(p, identi
 //      
 // *promotion*
 std::vector<PossibleMove> Pawn::getPossibleMoves(const Board & board) {
+    checkOpponent=false;
     std::vector<PossibleMove> possMoves;
     int x = pos.x;
     int y = pos.y;
@@ -82,7 +83,9 @@ void Pawn::addEnPassantIfPoss(Position to, Position captureLoc, std::vector<Poss
                 newPossMove.to = to;
                 newPossMove.enPassant=true;
                 newPossMove.enPassantLoc = captureLoc;
-                possMoves.emplace_back(newPossMove);
+                if(!isCurrentPlayerKingInCheckAfterMove(newPossMove,board)) { 
+                    possMoves.emplace_back(newPossMove);
+                }
             }
         }
     }

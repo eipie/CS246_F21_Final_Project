@@ -15,6 +15,7 @@ Queen::Queen(Position p, int identifier, bool isFirstMove) : ChessPieces(p, iden
 //      +nv || -nv || +nh || -nh
 //      +nv+nh || +nv-nh || -nv+nh || -nv-nh
 std::vector<PossibleMove> Queen::getPossibleMoves(const Board & board) {
+    checkOpponent=false;
     std::vector<PossibleMove> possMoves;
     int x =pos.x;
     int y =pos.y;

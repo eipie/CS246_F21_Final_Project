@@ -12,6 +12,7 @@ Bishop::Bishop(Position p, int identifier, bool isFirstMove) : ChessPieces(p, id
 // Bishop (v|h|d *1)
 
 std::vector<PossibleMove> Bishop::getPossibleMoves(const Board & board) {
+    checkOpponent=false;
     std::vector<PossibleMove> possMoves;
     int x =pos.x;
     int y =pos.y;

@@ -13,6 +13,7 @@ Rook::Rook(Position p, int identifier, bool isFirstMove) : ChessPieces(p, identi
 //      +nv || -nv || +nh || -nh
 // *castling*
 std::vector<PossibleMove> Rook::getPossibleMoves(const Board & board) {
+    checkOpponent=false;
     std::vector<PossibleMove> possMoves;
     int x =pos.x;
     int y =pos.y;

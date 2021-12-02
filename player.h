@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <map>
+#include "move.h"
 
 class PossibleMove;
 class Position;
@@ -22,15 +23,18 @@ class Player {
     int identifier;
     int opponentIdentifier;
     std::shared_ptr<ChessPieces> getKing();
+    // computer always true
+    bool tryDoPawnPromotion(char promotion, std::shared_ptr<ChessPieces> target);
+    // computer always true
+    bool moveWithSpecial(PossibleMove possMove);
     // return all possible ways current player can escape Check
-    
-
     
     public:
     // use map for easier lookup
+    bool isInCheck = false;
     int currentScore;
-    std::map<Position, std::shared_ptr<ChessPieces> > playerPieces;
-    std::vector<PossibleMove> Player::kingEscapeTrap(Board & board);
+    std::map<Position, std::shared_ptr<ChessPieces>> playerPieces;
+    // std::vector<PossibleMove> Player::kingEscapeTrap(Board & board);
     Player(int identifier, int currentScore=0);
     
     void removePieces(Position p);
@@ -42,7 +46,7 @@ class Player {
     std::shared_ptr<ChessPieces> getPieceAt(Position p) const;
     virtual bool tryMakeMove(Move m, Board & board) = 0;
     void disableAllEnPassant();
-    std::map<std::shared_ptr<ChessPieces>, std::vector<PossibleMove> > getPlayerPossibleMoves();
+    // std::map<std::shared_ptr<ChessPieces>, std::vector<PossibleMove>> getPlayerPossibleMoves();
 
 };
 
