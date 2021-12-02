@@ -7,6 +7,29 @@ struct PossibleMove {
     // ' ' if no capture
     char capture;
     // ChessPieces* capture;
+    bool kingSideCastle;
+	bool queenSideCastle;
+	bool enPassant;
+    Position enPassantLoc;
+    bool isPromotion;
+    char promotionType;
+    bool operator==(PossibleMove pm) const{
+        return (pm.to == to);
+    }
+    bool operator<(const PossibleMove& pm) const { 
+        return to < pm.to; 
+    }
+    PossibleMove& operator=(const PossibleMove& pm)
+    {
+        to = pm.to;
+        capture = pm.capture;
+        kingSideCastle = pm.kingSideCastle;
+        queenSideCastle = pm.queenSideCastle;
+        enPassant = pm.enPassant;
+        enPassantLoc = pm.enPassantLoc;
+        promotionType = pm.promotionType;
+        return *this;
+    }
 };
 
 

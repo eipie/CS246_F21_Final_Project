@@ -18,11 +18,7 @@ int main() {
         if (command == "game") {
             //determine human-computer game
         } else if (command == "resign") {
-            //if ((chess->board).currentPlayer == 0) {
-             /*   std::cout << "Black Wins!" << std::endl;
-            } else {
-                std::cout << "White Wins!" << std::endl;
-            }*/
+            std::cout<< chess->resign() <<std::endl;
             break;
         } else if (command == "move") {
             std::string from_str;

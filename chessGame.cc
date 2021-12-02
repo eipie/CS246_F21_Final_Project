@@ -39,6 +39,22 @@ void ChessGame::newRound() {
     setCurrentPlayer(white);
 }
 
+std::string ChessGame::resign() {
+    if(currentPlayer==white) {
+        players[black].get()->currentScore++;
+        return "Black Wins!";
+    } else {
+        players[white].get()->currentScore++;
+        return "White Wins!";
+    }
+}
+
+/* std::string ChessGame::printFinalScore(std::cout out) {
+    return "Final Score:\nWhite: "+players[white].get()->currentScore+'\n'+"Black: "+players[black].get()->currentScore;
+}
+ */
+
+
 // isCurrentPlayerKingInCheckAfterMove(vector<Move> moves)
 // check if king is in check after a move
 // 1. Copy the current board (2 players' piece)
@@ -55,7 +71,7 @@ bool ChessGame::isMoveValid(Move nextMove) {
         // check if move is promotion
         // 
         // 1. ifPromotion(Move nextMove);
-        //      if(isPromotion==true);
+        //      if(isPromotion==ture);
         // 2. ifPromotionValue(Move nextMove);
         //      Position from is currentplayer's Pawn
         //      AND
@@ -86,11 +102,12 @@ bool ChessGame::isMoveValid(Move nextMove) {
 
 void ChessGame::makeAMove(Move nextMove) {
     // std::cout << nextMove.from.x << nextMove.from.y << "   " << nextMove.to.x <<nextMove.to.y  << std::endl;
-    if (isMoveValid(nextMove)) {
-        board.get()->makeAMove(nextMove.from, nextMove.to, currentPlayer);
+    if (board.get()->makeAMove(nextMove, currentPlayer)) {
         // pass to next player; 
         // ***issue still increment by one if moving opponent piece
         nextTurn();
+        render();
+    } else {
         render();
     }
 }
@@ -116,7 +133,8 @@ void ChessGame::notifyObservers() {
 }
 
 void ChessGame::removePiece(Position p) {
-    board.get()->removePiece(p);
+    board.get()->removePiece(p, white);
+    board.get()->removePiece(p, black);
 }
 void ChessGame::addPiece(Position p, char c) {
     board.get()->addPiece(p, c);
@@ -128,11 +146,11 @@ char ChessGame::getPieceCharAt(Position p) {
     return board.get()->getPieceCharAt(p);
 }
 
-// opponent (black:0; white:1);
+// oponent (black:0; white:1);
 // int playerResign()
 
 // 
-// vector<int> gameEnd()
+// vecotr<int> gameEnd()
 
 void ChessGame::render() {
     notifyObservers();
@@ -141,6 +159,7 @@ void ChessGame::render() {
 /* // Basic check: check if piece hit enemy piece(stop&capture), pop all consequtive moves
 //              check if piece hit own piece, pop all current the following moves.
 // Check if move [player]'s piece from [from] to [to] will cause enemy piece be able to capture [player]'s king
+
 std::vector<PossibleMove> Board::getAllPossibleMoves(Move nextMove) {
     std::vector<PossibleMove> possMoves;
     Position from = nextMove.from;

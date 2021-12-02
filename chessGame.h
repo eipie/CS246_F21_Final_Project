@@ -42,6 +42,8 @@ class ChessGame {
     void detachObserver(Observer *o);
     void notifyObservers();
     void render();
+    std::string resign();
+    std::string printFinalScore();
 
 
 private:

@@ -10,14 +10,14 @@ Pawn::Pawn(Position p, int identifier, bool isFirstMove) : ChessPieces(p, identi
     }
 }
 
-void Pawn::afterFirstMove() {
+/* void Pawn::afterFirstMove() {
     if(isFirstMove) { 
         isFirstMove = false;
         availableForEnPassant = true; //should consider if it has moved two squares or one??
     } else {
         availableForEnPassant = false;
     }
-}
+} */
 // Pawn
 // ** En passant must be available, or else -1v +1v can't do it!
 // if (caputreCase: enemy piece +-1v+1h)
@@ -34,20 +34,57 @@ std::vector<PossibleMove> Pawn::getPossibleMoves(const Board & board) {
     std::vector<PossibleMove> possMoves;
     int x = pos.x;
     int y = pos.y;
-    Position candidate1{x, y+2};
-    Position candidate2{x, y+1};
-    Position candidate3{x+1, y+1};
-    Position candidate4{x-1, y+1};
-    if (isFirstMove && board.getPieceCharAt(candidate1) == ' ') {
-        tryAddNextMoveCandidate(board, possMoves, candidate1);
+    std::vector<Position> candidates;
+    if (ownerIdentifier == 1) {
+        candidates.emplace_back(x, y+2);
+        candidates.emplace_back(x, y+1);
+        candidates.emplace_back(x+1, y+1);
+        candidates.emplace_back(x-1, y+1);
+    } else {
+        candidates.emplace_back(x, y-2);
+        candidates.emplace_back(x, y-1);
+        candidates.emplace_back(x-1, y-1);
+        candidates.emplace_back(x+1, y-1);
     }
-    if (board.getPieceCharAt(candidate2) == ' ') {
-        tryAddNextMoveCandidate(board, possMoves, candidate2);
+
+    if (isFirstMove && board.isEmpty(candidates[0])) {
+        tryAddNextMoveCandidate(board, possMoves, candidates[0]);
     }
-    if (!(board.isEmpty(candidate3)) && board.isOpponentPiece(candidate3, ownerIdentifier)) {
-        tryAddNextMoveCandidate(board, possMoves, candidate3);
+    if (board.isEmpty(candidates[1])) {
+        tryAddNextMoveCandidate(board, possMoves, candidates[1]);
     }
-    if (!(board.isEmpty(candidate4)) && board.isOpponentPiece(candidate4, ownerIdentifier)) {
-        tryAddNextMoveCandidate(board, possMoves, candidate4);
+    if (!(board.isEmpty(candidates[2])) && board.isOpponentPiece(candidates[2], ownerIdentifier) != ' ') {
+        tryAddNextMoveCandidate(board, possMoves, candidates[2]);
     }
+    if (!(board.isEmpty(candidates[3])) && board.isOpponentPiece(candidates[3], ownerIdentifier)  != ' ') {
+        tryAddNextMoveCandidate(board, possMoves, candidates[3]);
+    }
+    
+    // en passant
+    std::vector<Position> enPassantCaptureLoc;
+    enPassantCaptureLoc.emplace_back(x+1,y);
+    enPassantCaptureLoc.emplace_back(x-1,y);
+    addEnPassantIfPoss(candidates[2], enPassantCaptureLoc[0], possMoves,board);
+    addEnPassantIfPoss(candidates[2], enPassantCaptureLoc[1], possMoves,board);
+    addEnPassantIfPoss(candidates[3], enPassantCaptureLoc[0], possMoves,board);
+    addEnPassantIfPoss(candidates[3], enPassantCaptureLoc[1], possMoves,board);
+    
+}
+
+
+void Pawn::addEnPassantIfPoss(Position to, Position captureLoc, std::vector<PossibleMove> & possMoves, const Board & board) {
+    if(withinBound(to) && withinBound(captureLoc)) {
+        char captureLocChar = board.isOpponentPiece(captureLoc,ownerIdentifier);
+        if(board.isEmpty(to) && (!board.isEmpty(captureLoc)) && (captureLocChar=='p' || captureLocChar=='P')) {
+            if(board.getPieceAt(captureLoc).get()->availableForEnPassant) {
+                PossibleMove newPossMove;
+                newPossMove.capture = captureLocChar;
+                newPossMove.to = to;
+                newPossMove.enPassant=true;
+                newPossMove.enPassantLoc = captureLoc;
+                possMoves.emplace_back(newPossMove);
+            }
+        }
+    }
+    
 }

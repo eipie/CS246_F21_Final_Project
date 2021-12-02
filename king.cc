@@ -53,6 +53,175 @@ std::vector<PossibleMove> King::getPossibleMoves(const Board & board) {
             }
         }
     }
+    if (Kingsidecastle(board)) {
+        Position newKCastle;
+        newKCastle.y = pos.y;
+        newKCastle.x = 7;
+        tryAddNextMoveCandidate(board, possMoves, newKCastle);
+    }
+    if (Queensidecastle(board)) {
+        Position newKCastle;
+        newKCastle.y = pos.y;
+        newKCastle.x = 2;
+        tryAddNextMoveCandidate(board, possMoves, newKCastle);
+    }
+}
+
+
+bool King::Queensidecastle(const Board & board) {
+    for(int i = 2; i <= 4; i++) {
+        Position shouldBeEmpty;
+        shouldBeEmpty.x=i;
+        shouldBeEmpty.y = pos.y;
+        if(!board.isEmpty(shouldBeEmpty)) {
+            return false;
+        }
+    }
+    char rookChar;
+    if(ownerIdentifier==1) {
+        rookChar = 'R';
+    } else {
+        rookChar = 'r';
+    }
+    //white king
+    if (this->isFirstMove) {
+        if (board.getPieceCharAt(Position{1, pos.y}) != rookChar) {
+            return false;
+        }
+        if (!((board.getPieceAt(Position{1, pos.y}))->isFirstMove)) { //???
+            return false;
+        }
+        Move newMove;
+        newMove.from = Position{5, pos.y};
+        newMove.to = Position{4, pos.y};
+        if (isCurrentPlayerKingInCheckAfterMove(newMove)) {
+            return false;
+        }
+        newMove.to = Position{3, 1};
+        if (isCurrentPlayerKingInCheckAfterMove(newMove)) {
+            return false;
+        }
+        return true;
+    } 
+    return false;
+}
+
+
+
+bool King::Kingsidecastle(const Board & board) {
+    for(int i = 6; i <= 7; i++) {
+        Position shouldBeEmpty;
+        shouldBeEmpty.x=i;
+        shouldBeEmpty.y = pos.y;
+        if(!board.isEmpty(shouldBeEmpty)) {
+            return false;
+        }
+    }
+    char rookChar;
+    if(ownerIdentifier==1) {
+        rookChar = 'R';
+    } else {
+        rookChar = 'r';
+    }
+    //white king
+    if (this->isFirstMove) {
+        if (board.getPieceCharAt(Position{8, pos.y}) != rookChar) {
+            return false;
+        }
+        if (!((board.getPieceAt(Position{8, pos.y}).get())->isFirstMove)) { //???
+            return false;
+        }
+        Move newMove;
+        newMove.from = Position{5, pos.y};
+        newMove.to = Position{6, pos.y};
+        if (isCurrentPlayerKingInCheckAfterMove(newMove)) {
+            return false;
+        }
+        newMove.to = Position{7, pos.y};
+        if (isCurrentPlayerKingInCheckAfterMove(newMove)) {
+            return false;
+        }
+        return true;
+    } 
+    return false;
+}
+
+
+/*bool King::ifCastling(Move nextMove, const Board & board) {
+    Position from = nextMove.from;
+    Position to = nextMove.to;
+    Position rook1{1, 1};
+    Position rook2{8, 1};
+    Position rook3{1, 8};
+    Position rook4{8, 8};
+    if (board.getPieceCharAt(from) == 'K') {
+        if (isFirstMove && 
+        ((to.x == 7 && to.y == 1 && board.getPieceCharAt(rook2) == 'R') || 
+        (to.x == 3 && to.y == 1 && board.getPieceCharAt(rook1) == 'R'))) {
+            return true;
+        }
+    } else if (board.getPieceCharAt(from) == 'k') {
+        if (isFirstMove && 
+        ((to.x == 7 && to.y == 8 && board.getPieceCharAt(rook4) == 'r') || 
+        (to.x == 3 && to.y == 8 && board.getPieceCharAt(rook3) == 'r'))) {
+            return true;
+        }       
+    }
+    return false;
+}
+
+bool King::CastlingisAllowed(Move nextMove, const Board & board) {
+    Position from = nextMove.from;
+    if(isFirstMove && (!isInCheck))  {
+
+    }
+    return false;
+    // getPieceAt()
+}*/
+
+// first detect special case
+    // bool isCastleAndValid();
+        // Detect castling (1&&2)
+        // 1. check if move is castling
+        // ifCastling(Move nextMove);
+            // if white(capital letter), then legal castling 
+            // move e1 g1
+            // move e1 c1
+            //  else if black (lower case letter), then legal castling
+            // move e8 g8
+            // move e8 c8
+            // AND
+            // if getPieceCharAt(ex) == 'K'/'k' based on the current player's color
+            // AND
+            // if getPieceCharAt(ax||hx) == 'R'/'r' based on the current player's color
+        // 2. check if castling is allowed
+            // AND
+            // if king isFirstMove==true
+            // AND
+            // if King isInCheck==false
+            // AND
+            // if rook at Position ax||hx isFirstMove=true;
+            // AND
+            // getPieceCharAt(fx) and (gx) are ' ' (empty)
+            // AND
+            // Move newMove;
+            // newMove.from = ex
+            // newMove.to = fx || dx
+            // isCurrentPlayerKingInCheckAfterMove(newMove) == false
+            // AND
+            // Move rookMove; // create new Position from and to for Rook
+            // moves.emplace(nextMove);
+            // moves.emplace(rookMove);
+            // isCurrentPlayerKingInCheckAfterMove(vector<Move> moves) == false;
+        // 3. finally move both King and Rook
+            // move Board.makeAMove Rook
+        // return true;
+
+//bool isCastleAndValid(Move nextMove, const Board & board) {
+  //  return ifCastling(nextMove, board) && CastlingisAllowed(nextMove, board);
+//}
+
+
 /* 
     // horizontal moves:
     // check right
@@ -102,81 +271,3 @@ std::vector<PossibleMove> King::getPossibleMoves(const Board & board) {
     return possMoves;   
 }
  */
-
-// bool Kingsidecastle()
-// bool Queensidecatle();
-
-
-bool ifCastling(Move nextMove, const Board & board) {
-    Position from = nextMove.from;
-    Position to = nextMove.to;
-    Position rook1{1, 1};
-    Position rook2{8, 1};
-    Position rook3{1, 8};
-    Position rook4{8, 8};
-    if (board.getPieceCharAt(from) == 'K') {
-        if ((from.x == 5 && from.y == 1) && 
-        ((to.x == 7 && to.y == 1 && board.getPieceCharAt(rook2) == 'R') || 
-        (to.x == 3 && to.y == 1 && board.getPieceCharAt(rook1) == 'R'))) {
-            return true;
-        }
-    } else if (board.getPieceCharAt(from) == 'k') {
-        if ((from.x == 5 && from.y == 8) && 
-        ((to.x == 7 && to.y == 8 && board.getPieceCharAt(rook4) == 'r') || 
-        (to.x == 3 && to.y == 8 && board.getPieceCharAt(rook3) == 'r'))) {
-            return true;
-        }       
-    }
-    return false;
-}
-
-bool King::CastlingisAllowed(Move nextMove, const Board & board) {
-    Position from = nextMove.from;
-    if(isFirstMove && (!isInCheck))  {
-
-    }
-    return false;
-    // getPieceAt()
-}
-
-// first detect special case
-    // bool isCastleAndValid();
-        // Detect castling (1&&2)
-        // 1. check if move is castling
-        // ifCastling(Move nextMove);
-            // if white(capital letter), then legal castling 
-            // move e1 g1
-            // move e1 c1
-            //  else if black (lower case letter), then legal castling
-            // move e8 g8
-            // move e8 c8
-            // AND
-            // if getPieceCharAt(ex) == 'K'/'k' based on the current player's color
-            // AND
-            // if getPieceCharAt(ax||hx) == 'R'/'r' based on the current player's color
-        // 2. check if castling is allowed
-            // AND
-            // if king isFirstMove==true
-            // AND
-            // if King isInCheck==false
-            // AND
-            // if rook at Position ax||hx isFirstMove=true;
-            // AND
-            // getPieceCharAt(fx) and (gx) are ' ' (empty)
-            // AND
-            // Move newMove;
-            // newMove.from = ex
-            // newMove.to = fx || dx
-            // isCurrentPlayerKingInCheckAfterMove(newMove) == false
-            // AND
-            // Move rookMove; // create new Position from and to for Rook
-            // moves.emplace(nextMove);
-            // moves.emplace(rookMove);
-            // isCurrentPlayerKingInCheckAfterMove(vector<Move> moves) == false;
-        // 3. finally move both King and Rook
-            // move Board.makeAMove Rook
-        // return true;
-
-bool isCastleAndValid(Move nextMove, const Board & board) {
-    return ifCastling(nextMove, board) && CastlingisAllowed(nextMove, board);
-}

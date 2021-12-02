@@ -2,16 +2,17 @@
 #define MOVE_H
 #include "position.h"
 struct Move {
-	// validMove is false if 
-	// - user is computer
-	// - or invalid move 
-	bool validMove = true;
+	// check if human player did not enter input(pretending to be computer)
+	bool containsInput;
 	Position from;
 	Position to;
-	bool kingSideCastle;
-	bool queenSideCastle;
-	bool enPassant;
 	bool isPromotion;
 	char promotionType;
+	// default constructor
+	Move() : containsInput{false}, isPromotion{false}, promotionType{' '} {}
+	// constructor for no promotion
+	Move(Position from, Position to) : containsInput{true}, from{from}, to{to}, isPromotion{false}, promotionType{' '}{}
+	// constructor for with promotion
+	Move(Position from, Position to, char promotionType) : containsInput{true}, from{from}, to{to}, isPromotion{true}, promotionType{promotionType}{}
 };
 #endif
