@@ -43,7 +43,8 @@ class ChessGame {
     void notifyObservers();
     void render();
     std::string resign();
-    std::string printFinalScore();
+    int whitePlayerScore();
+    int blackPlayerScore();
 
 
 private:

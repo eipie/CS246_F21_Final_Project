@@ -18,7 +18,7 @@ int main() {
         if (command == "game") {
             //determine human-computer game
         } else if (command == "resign") {
-            std::cout<< chess->resign() <<std::endl;
+            std::cout << chess->resign() << std::endl;
             break;
         } else if (command == "move") {
             std::string from_str;
@@ -65,18 +65,19 @@ int main() {
                     std::string colour;
                     ss >> colour;
                     if (colour == "black") {
-                        //chess->changePlayer();
+                        chess->nextTurn();
                     } else if (colour == "white") {
-                        //chess->changePlayer();
+                        chess->nextTurn();
+                    } else {
+                        //invalid
                     }
                 }
                 // else invalid
             }
         }
     }
-
-    /*std::cout << "Final Score:" << std::endl;
-    std::cout << "White: " << wp.currentScore << std::endl;
-    std::cout << "Black: " << bp.currentScore << std::endl;*/
+    std::cout << "Final Score:" << std::endl;
+    std::cout << "White: " << chess->whitePlayerScore() << std::endl;
+    std::cout << "Black: " << chess->blackPlayerScore() << std::endl;
     delete chess;
 }
