@@ -10,6 +10,13 @@ Pawn::Pawn(Position p, int identifier, bool isFirstMove) : ChessPieces(p, identi
     }
 }
 
+std::shared_ptr<ChessPieces> Pawn::clone() {
+    return std::shared_ptr<ChessPieces>(new Pawn(*this));
+}
+Pawn::Pawn(const Pawn &piece) : ChessPieces(piece){
+    
+}
+
 /* void Pawn::afterFirstMove() {
     if(isFirstMove) { 
         isFirstMove = false;

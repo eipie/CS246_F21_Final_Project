@@ -33,10 +33,11 @@ class Player {
     bool isInCheck = false;
     int currentScore;
     std::map<Position, std::shared_ptr<ChessPieces>> playerPieces;
+    
     // std::vector<PossibleMove> Player::kingEscapeTrap(Board & board);
     Player(int identifier, int currentScore=0);
     Player(const Player &player);
-    virtual void copyPlayer(const Player &player)=0;
+    virtual std::shared_ptr<Player> clone() =0;
 
     void removePieces(Position p);
     // void addPieces(Position p, char c);

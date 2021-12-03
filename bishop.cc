@@ -9,6 +9,13 @@ Bishop::Bishop(Position p, int identifier, bool isFirstMove) : ChessPieces(p, id
         icon='b';
     }
 }
+
+std::shared_ptr<ChessPieces> Bishop::clone() {
+    return std::shared_ptr<ChessPieces>(new Bishop(*this));
+}
+Bishop::Bishop(const Bishop &piece) : ChessPieces(piece){
+    
+}
 // Bishop (v|h|d *1)
 
 std::vector<PossibleMove> Bishop::getPossibleMoves(const Board & board) {

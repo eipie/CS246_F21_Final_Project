@@ -1,5 +1,6 @@
 #include "computerPlayer.h"
 #include "board.h"
+#include <iostream>
 
 ComputerPlayer::ComputerPlayer(int identifier, int level, int currentScore) 
 : Player{identifier, currentScore}, level{level} {}

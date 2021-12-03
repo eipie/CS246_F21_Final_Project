@@ -16,8 +16,11 @@ class Board{
     const int black = 0;
     void enPassantAvailabilityCorrect(std::shared_ptr<ChessPieces> pieceToBeMoved, Position from, Position to);
     public:
+    // constructor
     Board(std::vector<std::shared_ptr<Player> > players);
-    bool makeAMove(Move m, int currentPlayer);
+    // copy constructor
+    Board(const Board &board);
+    int makeAMove(Move m, int currentPlayer);
     void resetBoard();
     void removePiece(Position p, int currentPlayer);
     void addPiece(Position p, char c);

@@ -38,6 +38,8 @@ class ChessPieces {
     Position pos;
     char icon;
     ChessPieces(Position p, int identifier, bool isFirstMove=true);
+    ChessPieces(const ChessPieces &chessPieces);
+    virtual std::shared_ptr<ChessPieces> clone() =0;
     virtual std::vector<PossibleMove> getPossibleMoves(const Board & board) = 0;
     
     // change isFirstMove to false if true; special case for Pawn
