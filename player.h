@@ -23,7 +23,8 @@ class Player {
     int opponentIdentifier;
     std::shared_ptr<ChessPieces> getKing();
     // computer always true
-    bool tryDoPawnPromotion(char promotion, std::shared_ptr<ChessPieces> target);
+    bool tryDoPawnPromotion(char promotion, Position promoteLoc, int identifier, Board & board);
+    ChessPieces * tryDoPawnPromotion(char promotion, ChessPieces * target);
     // computer always true
     bool moveWithSpecial(PossibleMove possMove);
     // return all possible ways current player can escape Check
@@ -32,7 +33,7 @@ class Player {
     public:
     // use map for easier lookup
     bool isInCheck = false;
-    int currentScore;
+    int currentScore=0;
     std::map<Position, std::shared_ptr<ChessPieces>> playerPieces;
     
     // std::vector<PossibleMove> Player::kingEscapeTrap(Board & board);
@@ -43,7 +44,7 @@ class Player {
     void removePieces(Position p);
     // void addPieces(Position p, char c);
     void resetAllPieces();
-    void movePiece(Position from, Position to);
+    void movePiece(Position from, Position to, Board & board);
     void addPiece(Position p, char c);
     char getPieceCharAt(Position p);
     std::shared_ptr<ChessPieces> getPieceAt(Position p) const;

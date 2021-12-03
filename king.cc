@@ -2,6 +2,7 @@
 #include "position.h"
 #include "board.h"
 #include "move.h"
+#include <iostream>
 
 King::King(Position p, int identifier, bool isFirstMove) 
     : ChessPieces(p, identifier, isFirstMove){
@@ -70,23 +71,37 @@ std::vector<PossibleMove> King::getPossibleMoves(const Board & board) {
             Position newKCastle;
             newKCastle.y = pos.y;
             newKCastle.x = 7;
-            tryAddNextMoveCandidate(board, possMoves, newKCastle);
-            possMoves.end()->kingSideCastle=true;
             Position rookF{8,pos.y};
             Position rookT{6,pos.y};
-            possMoves.end()->rookFrom=rookF;
-            possMoves.end()->rookTo=rookT;
+            PossibleMove pm;
+            pm.kingSideCastle = true;
+            pm.rookFrom = rookF;
+            pm.rookTo = rookT;
+            pm.to = newKCastle;
+            if(!isCurrentPlayerKingInCheckAfterMove(pm, board)) {
+                possMoves.emplace_back(pm);
+            }
         }
         if (Queensidecastle(board)) {
             Position newKCastle;
             newKCastle.y = pos.y;
             newKCastle.x = 3;
-            tryAddNextMoveCandidate(board, possMoves, newKCastle);
-            possMoves.end()->kingSideCastle=true;
+            Position rookF{1,pos.y};
+            Position rookT{4,pos.y};
+            PossibleMove pm;
+            pm.queenSideCastle=true;
+            pm.rookFrom = rookF;
+            pm.rookTo = rookT;
+            pm.to = newKCastle;
+            if(!isCurrentPlayerKingInCheckAfterMove(pm, board)) {
+                possMoves.emplace_back(pm);
+            }
+            /* tryAddNextMoveCandidate(board, possMoves, newKCastle);
+            possMoves.end()->queenSideCastle=true;
             Position rookF{1,pos.y};
             Position rookT{4,pos.y};
             possMoves.end()->rookFrom= rookF;
-            possMoves.end()->rookTo=rookT;
+            possMoves.end()->rookTo=rookT; */
         }
     }
     return possMoves;
@@ -108,7 +123,6 @@ bool King::Queensidecastle(const Board & board) {
     } else {
         rookChar = 'r';
     }
-    //white king
     if (this->isFirstMove) {
         if (board.getPieceCharAt(Position{1, pos.y}) != rookChar) {
             return false;
@@ -122,7 +136,7 @@ bool King::Queensidecastle(const Board & board) {
         if (isCurrentPlayerKingInCheckAfterMove(newMove, board)) {
             return false;
         }
-        newMove.to = Position{3, 1};
+        newMove.to = Position{3, pos.y};
         if (isCurrentPlayerKingInCheckAfterMove(newMove, board)) {
             return false;
         }

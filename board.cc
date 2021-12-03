@@ -23,6 +23,7 @@ Board::Board(const Board &board) {
 // 2 if checkmate
 // 3 if stalemate
 int Board::makeAMove(Move m, int currentPlayer) {
+    
     if (players[currentPlayer].get()->tryMakeMove(m,*this)) {
         // enPassantAvailabilityCorrect(players[currentPlayer].get()->getPieceAt(m.to), m.from, m.to);
         // check if checked opponent
@@ -67,6 +68,10 @@ int Board::makeAMove(Move m, int currentPlayer) {
         // Move is illegal
         return -1;
     }
+}
+
+void Board::makeAMoveWithoutCheck(Position from, Position to, int identifier) {
+    players[identifier].get()->movePiece(from, to, *this);
 }
 
 void Board::disableAllEnPassant() {
