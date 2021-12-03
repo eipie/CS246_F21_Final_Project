@@ -68,30 +68,40 @@ int main() {
                 } else if (operation == "+") {
                     char p;
                     std::string pos_str;
-                    ss >> p >> pos_str;
-                    Position pos;
-                    pos.x = pos_str[0] - 'a' + 1;
-                    pos.y = pos_str[1] - '0';
-                    chess->addPiece(pos, p);
+                    if (ss >> p >> pos_str) {
+                        Position pos;
+                        pos.x = pos_str[0] - 'a' + 1;
+                        pos.y = pos_str[1] - '0';
+                        chess->addPiece(pos, p);
+                    } else {
+                        //
+                    }
                 } else if (operation == "-") {
                     Position pos;
                     std::string pos_str;
-                    ss >> pos_str;
-                    pos.x = pos_str[0] - 'a' + 1;
-                    pos.y = pos_str[1] - '0';
-                    chess->removePiece(pos);
+                    if (ss >> pos_str) {
+                        pos.x = pos_str[0] - 'a' + 1;
+                        pos.y = pos_str[1] - '0';
+                        chess->removePiece(pos);
+                    } else {
+                        //
+                    }
                 } else if (operation == "=") {
                     std::string colour;
-                    ss >> colour;
-                    if (colour == "black") {
-                        chess->nextTurn();
-                    } else if (colour == "white") {
-                        chess->nextTurn();
+                    if (ss >> colour) {
+                        if (colour == "black") {
+                            chess->nextTurn();
+                        } else if (colour == "white") {
+                            chess->nextTurn();
+                        } else {
+                            //invalid
+                        }
                     } else {
-                        //invalid
+                        //
                     }
+                } else {
+                    // else invalid
                 }
-                // else invalid
             }
         }
     }
