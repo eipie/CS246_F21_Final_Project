@@ -3,7 +3,7 @@
 #include "position.h"
 struct Move {
 	// check if human player did not enter input(pretending to be computer)
-	bool containsInput;
+	bool containsInput=true;
 	Position from;
 	Position to;
 	bool isPromotion;

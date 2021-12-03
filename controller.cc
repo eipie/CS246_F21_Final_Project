@@ -30,6 +30,7 @@ int main() {
             from.y = from_str[1] - '0';
             to.x = to_str[0] - 'a' + 1;
             to.y = to_str[1] - '0';
+            // Move nextMove(from, to);
             Move nextMove;
             nextMove.from = from;
             nextMove.to = to;
