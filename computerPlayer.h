@@ -16,12 +16,12 @@ class ComputerPlayer : public Player {
         ComputerPlayer(int identifier, int level, int currentScore=0);
         ComputerPlayer(const ComputerPlayer &computerPlayer);
         std::shared_ptr<Player> clone() override;
-        bool tryMakeMove(Move m, const Board & board) override;
-        bool SimpleMakeMove(Position currentPosition, PossibleMove nextMove，Board &board);
-        bool MakeMoveAtLevel1(Position currentPosition, std::vector<PossibleMove> availableMoves);
-        bool MakeMoveAtLevel2(const Board & board);
-        bool OpponentCaptureAvailable(const Board &board);
-        Position OpponentCapturePos(const Board &board);
+        bool tryMakeMove(Move m, Board & board) override;
+        bool SimpleMakeMove(Position currentPosition, PossibleMove nextMove, Board & board);
+        bool MakeMoveAtLevel1(Position currentPosition, std::vector<PossibleMove> availableMoves, Board & board);
+        bool MakeMoveAtLevel2(Board & board);
+        bool OpponentCaptureAvailable(Board & board);
+        Position OpponentCapturePos(Board & board);
         bool MakeMoveAtLevel3(Board & board);
 
 };

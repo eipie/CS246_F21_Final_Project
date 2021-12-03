@@ -5,10 +5,10 @@
 #include <map>
 class Player;
 // class BoardSetup; 
-class Move;
-class Position;
+struct Move;
+struct Position;
 class ChessPieces;
-class PossibleMove;
+struct PossibleMove;
 class Board{
 
     

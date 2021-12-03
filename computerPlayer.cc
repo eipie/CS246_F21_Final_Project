@@ -14,7 +14,7 @@ std::shared_ptr<Player> ComputerPlayer::clone() {
     return std::shared_ptr<Player>(new ComputerPlayer(*this));
 }
 
-bool ComputerPlayer::tryMakeMove(Move move, const Board & board) {
+bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
 
     if (level == 1) {
         // select a random piece from the all the chesspieces that the player has;
@@ -22,7 +22,7 @@ bool ComputerPlayer::tryMakeMove(Move move, const Board & board) {
         std::advance(it, rand() % playerPieces.size());
         // a vector of all possible moves that the chesspiece may perform
         std::vector<PossibleMove> allPossibleMoves = it->second->getPossibleMoves(board);
-        MakeMoveAtLevel1(it->second->pos, allPossibleMoves);
+        MakeMoveAtLevel1(it->second->pos, allPossibleMoves, board);
     }
     else if (level == 2) {
         // Call level 2 make move
@@ -38,37 +38,40 @@ bool ComputerPlayer::tryMakeMove(Move move, const Board & board) {
     return true;
 }
 
-bool ComputerPlayer::SimpleMakeMove(Position currentPosition, PossibleMove nextMove，Board &board) {
+bool ComputerPlayer::SimpleMakeMove(Position currentPosition, PossibleMove nextMove, Board &board) {
+
+    std::shared_ptr<ChessPieces> targetPiece = getPieceAt(currentPosition);
 
     if (nextMove.kingSideCastle || nextMove.queenSideCastle) {
-        movePiece(nextMove.rookFrom, nextMove.rookTo);
+        movePiece(nextMove.rookFrom, nextMove.rookTo, board);
     }
     if (nextMove.enPassant) {
         board.removePiece(nextMove.enPassantLoc, opponentIdentifier);
     }
-    if (currentPosition.isPromotion) {
-        if (!tryDoPawnPromotion(currentPosition.promotionType, targetPiece)) {
+    if (nextMove.isPromotion) {
+        bool checkPromotionResult = tryDoPawnPromotion(nextMove.promotionType,targetPiece.get()->pos, targetPiece.get()->ownerIdentifier, board);
+        if(!checkPromotionResult) {
             return false;
         }
     }
-    enPassantAvailabilityCorrect(board.getPieceAt(from), board, from, to);
-    movePiece(currentPosition, nextMove.to);
+    enPassantAvailabilityCorrect(board.getPieceAt(currentPosition), board, currentPosition, nextMove.to);
+    movePiece(currentPosition, nextMove.to, board);
     return true;
  
 }
 
 
-bool ComputerPlayer::MakeMoveAtLevel1(Position currentPosition, std::vector<PossibleMove> availableMoves) {
+bool ComputerPlayer::MakeMoveAtLevel1(Position currentPosition, std::vector<PossibleMove> availableMoves, Board & board) {
 
     auto it = availableMoves.begin();
     std::advance(it, rand() % availableMoves.size());
     
-    SimpleMakeMove(currentPosition, it);
+    SimpleMakeMove(currentPosition, *it, board);
     return true;
 
 }
 
-bool ComputerPlayer::MakeMoveAtLevel2(const Board & board) {
+bool ComputerPlayer::MakeMoveAtLevel2(Board & board) {
 
     bool hasCaptureMove = false;
     bool hasCheckMove = false;
@@ -81,12 +84,12 @@ bool ComputerPlayer::MakeMoveAtLevel2(const Board & board) {
         std::vector<PossibleMove> allPossibleMoves = i.second->getPossibleMoves(tempBoard);
         for (auto j: allPossibleMoves) {
             Position current_position = i.first;
-            tempBoard->makeAMove(Move(currentPosition, j.to), identifier);
-            std::vector<std::shared_ptr<ChessPieces>> checkMovePieces = tempBoard->putInCheck(opponentIdentifier);
+            tempBoard.makeAMove(Move(current_position, j.to), identifier);
+            std::vector<std::shared_ptr<ChessPieces>> checkMovePieces = tempBoard.putInCheck(opponentIdentifier);
             if (checkMovePieces.size() != 0) {
                 // found piece that can check the opponent
                 hasCheckMove = true;
-                SimpleMakeMove(currentPosition, j, board);
+                SimpleMakeMove(current_position, j, board);
                 return true;
             }
         }
@@ -99,7 +102,7 @@ bool ComputerPlayer::MakeMoveAtLevel2(const Board & board) {
             // if the move is a capture, then make that move and return
             if (j.capture == ' ') {
                 hasCaptureMove = true;
-                SimpleMakeMove(currentPosition, j);
+                SimpleMakeMove(current_position, j, board);
                 return true;
             }
 
@@ -108,20 +111,20 @@ bool ComputerPlayer::MakeMoveAtLevel2(const Board & board) {
 
     // if there is no capturing move and check move available to the player, the player will make a random, legal move
     if (!hasCaptureMove && !hasCheckMove) {
-        auto it = playerPieces.begin();·
+        auto it = playerPieces.begin();
         std::advance(it, rand() % playerPieces.size());
         std::vector<PossibleMove> allPossibleMoves = it->second->getPossibleMoves(board);
-        MakeMoveAtLevel1(it->second->pos, allPossibleMoves);
+        MakeMoveAtLevel1(it->second->pos, allPossibleMoves, board);
     }
     return true;
 }
 
-bool ComputerPlayer::OpponentCaptureAvailable(const Board &board) {
+bool ComputerPlayer::OpponentCaptureAvailable(Board &board) {
 
-    std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> playerPossibleMoves = board.getPlayerPossibleMoves();
-    for (auto i : map) {
+    std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> playerPossibleMoves = board.getPlayerPossibleMoves(opponentIdentifier);
+    for (auto i : playerPossibleMoves) {
         // for each entry in the map
-        for (auto j: i.second) {
+        for (auto j: *i.second) {
             if (j.capture == ' ') {
                 // the opponent has capture available
                 return true;
@@ -132,12 +135,12 @@ bool ComputerPlayer::OpponentCaptureAvailable(const Board &board) {
 
 }
 
-Position ComputerPlayer::OpponentCapturePos(const Board &board) {
+Position ComputerPlayer::OpponentCapturePos(Board &board) {
 
-    std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> playerPossibleMoves = board.getPlayerPossibleMoves();
-    for (auto i : map) {
+    std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> playerPossibleMoves = board.getPlayerPossibleMoves(opponentIdentifier);
+    for (auto i : playerPossibleMoves) {
         // for each entry in the map
-        for (auto j: i.second) {
+        for (auto j: *i.second) {
             if (j.capture == ' ') {
                 // the opponent has capture available
                 return j.to;
@@ -148,7 +151,7 @@ Position ComputerPlayer::OpponentCapturePos(const Board &board) {
 
 }
 
-bool MakeMoveAtLevel3(Board &board) {
+bool ComputerPlayer::MakeMoveAtLevel3(Board &board) {
 
     bool needToAvoidCapture = OpponentCaptureAvailable(board);
     if (needToAvoidCapture) {
