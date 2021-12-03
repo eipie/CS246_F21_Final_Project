@@ -26,6 +26,7 @@ int main() {
             Position from;
             Position to;
             Move nextMove;
+            std::string moveResult;
             if (ss >> from_str >> to_str) {
                 from.x = from_str[0] - 'a' + 1;
                 from.y = from_str[1] - '0';
@@ -37,13 +38,17 @@ int main() {
                 if (ss >> promo) {
                     nextMove.isPromotion = true;
                     nextMove.promotionType = promo;
-                    Move(from , to, promo);
+                    Move nextMove(from , to, promo);
+                    moveResult = chess->makeAMove(nextMove);
                 } else {
-                    Move(from, to);
+                    Move nextMove(from, to);
+                    moveResult = chess->makeAMove(nextMove);
                 }
             } else {
-                Move();
+                Move nextMove;
+                moveResult = chess->makeAMove(nextMove);
             }
+            std::cout << moveResult << std::endl;
            /* from.x = from_str[0] - 'a' + 1;
             from.y = from_str[1] - '0';
             to.x = to_str[0] - 'a' + 1;

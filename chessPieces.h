@@ -10,7 +10,7 @@ class ChessPieces {
     // 0:black; 1:white;
     protected:
    
-    int ownerIdentifier;
+    
     
     // return 0: if candidate is empty, add success
     // return 1: if candidate is enemy, add success
@@ -21,9 +21,11 @@ class ChessPieces {
     bool isCurrentPlayerKingInCheckAfterMove(PossibleMove newMove, const Board & board);
 
     public:
+    int ownerIdentifier;
     bool isFirstMove=true;
     bool checkOpponent;
     bool availableForEnPassant = false;
+    
     // void makingAMove(Position form, Position to);
     // if(isFirstMove==true);
             // all pieces except Pawn:

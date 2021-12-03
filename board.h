@@ -11,11 +11,12 @@ class ChessPieces;
 class PossibleMove;
 class Board{
 
-    std::vector<std::shared_ptr<Player>> players;
+    
     const int white =1;
     const int black = 0;
     
     public:
+    std::vector<std::shared_ptr<Player>> players;
     // constructor
     Board(std::vector<std::shared_ptr<Player> > players);
     // copy constructor
@@ -37,6 +38,8 @@ class Board{
     // check if a player is in check (incheck variable in Player class)
     bool ifInCheck(int identifier) const;
     void disableAllEnPassant();
+    void makeAMoveWithoutCheck(Position from, Position to, int identifier);
+    // std::cout << "already reached here" << std::endl;
 };
 
 #endif

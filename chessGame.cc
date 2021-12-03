@@ -100,7 +100,7 @@ std::string ChessGame::makeAMove(Move nextMove) {
         }
         nextTurn();
         render();
-        if(moveResult!=0) {
+        if(moveResult==2 && moveResult==3) {
             newRound();
         }
     } else {

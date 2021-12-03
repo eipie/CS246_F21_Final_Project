@@ -10,7 +10,7 @@
 #include <iostream>
 #include <algorithm>
 
-Player::Player(int identifier, int currentScore) : currentScore{currentScore}, identifier{identifier}{
+Player::Player(int identifier, int currentScore) :  identifier{identifier}, isInCheck{false}, currentScore{currentScore}{
     // std::cout<< "calling constructor" << std::endl;
     if(identifier==1) {
         opponentIdentifier = 0;
@@ -45,17 +45,18 @@ void Player::enPassantAvailabilityCorrect(std::shared_ptr<ChessPieces> pieceToBe
 // do not check if legal, make move directly
 // tryMakeMove in child handle legal/illegal detection
 // strong expection
-void Player::movePiece(Position from, Position to) {
+void Player::movePiece(Position from, Position to, Board & board) {
     // std::cout << "moving pieces..." << from.x << ", " << from.y << "  " << to.x << to.y << std::endl;
     auto fromFindResult = playerPieces.find(from);
     // auto toFindResult = playerPieces.find(to);
     if(fromFindResult != playerPieces.end()) {
         // enPassantAvailabilityCorrect(fromFindResult->second, from, to);
         fromFindResult->second.get()->afterFirstMove();
-        playerPieces.erase(to);
+        // playerPieces.erase(to);
+        board.removePiece(to, opponentIdentifier);
         // fromFindResult->second.get()->isFirstMove=false;
         fromFindResult->second.get()->pos = to;
-        fromFindResult->second.get()->afterFirstMove();
+        // fromFindResult->second.get()->afterFirstMove();
         playerPieces[to] = fromFindResult->second;
         playerPieces.erase(from);
     } else {
@@ -205,19 +206,23 @@ void Player::addPiece(Position p, char c) {
         // error
         break;
     }
-    playerPieces.find(p)->second = newPiece;
-    playerPieces.insert({p,newPiece});
+    playerPieces[p] = newPiece;
+    /* playerPieces.find(p)->second = newPiece;
+    playerPieces.insert({p,newPiece}); */
 }
 
 
-bool Player::tryDoPawnPromotion(char promotion, std::shared_ptr<ChessPieces> target) {
+/* bool Player::tryDoPawnPromotion(char promotion, std::shared_ptr<ChessPieces> & target) {
     if((identifier==0 && (promotion == 'p'|| promotion == 'r'|| promotion == 'n'|| promotion == 'b'|| promotion == 'q'))
         || (identifier==1 && (promotion == 'P'|| promotion == 'R'|| promotion == 'N'|| promotion == 'B'|| promotion == 'Q'))) {
+        
         if(promotion== 'p'||promotion=='P') {
 
         } else if(promotion== 'r'||promotion=='R') {
+            std::cout << "promoting...." << promotion << std::endl;
             std::shared_ptr<ChessPieces> newPiece = std::make_shared<Rook>(target.get()->pos, identifier, false);
             target.swap(newPiece);
+            
         } else if(promotion== 'n'||promotion=='N') {
             std::shared_ptr<ChessPieces> newPiece = std::make_shared<Knight>(target.get()->pos, identifier, false);
             target.swap(newPiece);
@@ -231,6 +236,72 @@ bool Player::tryDoPawnPromotion(char promotion, std::shared_ptr<ChessPieces> tar
         return true;
     } 
     return false;
+} */
+
+bool Player::tryDoPawnPromotion(char promotion, Position promoteLoc, int identifier, Board & board) {
+    if((identifier==0 && (promotion == 'p'|| promotion == 'r'|| promotion == 'n'|| promotion == 'b'|| promotion == 'q'))
+        || (identifier==1 && (promotion == 'P'|| promotion == 'R'|| promotion == 'N'|| promotion == 'B'|| promotion == 'Q'))) {
+        
+        if(promotion== 'p'||promotion=='P') {
+
+        } else if(promotion== 'r'||promotion=='R') {
+            if(identifier==1) {
+                removePieces(promoteLoc);
+                addPiece(promoteLoc, 'R');
+            } else {
+                removePieces(promoteLoc);
+                addPiece(promoteLoc, 'r');
+            }
+            
+        } else if(promotion== 'n'||promotion=='N') {
+            if(identifier==1) {
+                removePieces(promoteLoc);
+                addPiece(promoteLoc, 'N');
+            } else {
+                removePieces(promoteLoc);
+                addPiece(promoteLoc, 'n');
+            }
+        } else if(promotion== 'b'||promotion=='B') {
+            if(identifier==1) {
+                removePieces(promoteLoc);
+                addPiece(promoteLoc, 'B');
+            } else {
+                removePieces(promoteLoc);
+                addPiece(promoteLoc, 'b');
+            }
+        } else if(promotion== 'q'||promotion=='Q') {
+            if(identifier==1) {
+                removePieces(promoteLoc);
+                addPiece(promoteLoc, 'Q');
+            } else {
+                removePieces(promoteLoc);
+                addPiece(promoteLoc, 'q');
+            }
+        }
+        return true;
+    } 
+    return false;
+}
+
+ChessPieces* Player::tryDoPawnPromotion(char promotion, ChessPieces * target) {
+    if((identifier==0 && (promotion == 'p'|| promotion == 'r'|| promotion == 'n'|| promotion == 'b'|| promotion == 'q'))
+        || (identifier==1 && (promotion == 'P'|| promotion == 'R'|| promotion == 'N'|| promotion == 'B'|| promotion == 'Q'))) {
+        
+        if(promotion== 'p'||promotion=='P') {
+
+        } else if(promotion== 'r'||promotion=='R') {
+            std::cout << "promoting...." << promotion << std::endl;
+            return new Rook(target->pos, identifier, false);
+            
+        } else if(promotion== 'n'||promotion=='N') {
+            return new Knight(target->pos, identifier, false);
+        } else if(promotion== 'b'||promotion=='B') {
+            return new Bishop(target->pos, identifier, false);
+        } else if(promotion== 'q'||promotion=='Q') {
+            return new Queen(target->pos, identifier, false);
+        }
+    } 
+    return nullptr;
 }
 
 
