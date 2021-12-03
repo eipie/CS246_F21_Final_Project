@@ -50,6 +50,7 @@ bool ComputerPlayer::SimpleMakeMove(Position currentPosition, PossibleMove nextM
             return false;
         }
     }
+    enPassantAvailabilityCorrect(board.getPieceAt(to), board, from, to);
     movePiece(currentPosition, nextMove.to);
     return true;
 
