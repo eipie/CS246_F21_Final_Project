@@ -71,15 +71,22 @@ std::vector<PossibleMove> King::getPossibleMoves(const Board & board) {
             newKCastle.y = pos.y;
             newKCastle.x = 7;
             tryAddNextMoveCandidate(board, possMoves, newKCastle);
-            // possMoves.end()->kingSideCastle=true;
-            // possMoves.end()->rookFrom{8,pos.y};
-            // possMoves.end()->rookTo{5,pos.y};
+            possMoves.end()->kingSideCastle=true;
+            Position rookF{8,pos.y};
+            Position rookT{6,pos.y};
+            possMoves.end()->rookFrom=rookF;
+            possMoves.end()->rookTo=rookT;
         }
         if (Queensidecastle(board)) {
             Position newKCastle;
             newKCastle.y = pos.y;
-            newKCastle.x = 2;
+            newKCastle.x = 3;
             tryAddNextMoveCandidate(board, possMoves, newKCastle);
+            possMoves.end()->kingSideCastle=true;
+            Position rookF{1,pos.y};
+            Position rookT{4,pos.y};
+            possMoves.end()->rookFrom= rookF;
+            possMoves.end()->rookTo=rookT;
         }
     }
     

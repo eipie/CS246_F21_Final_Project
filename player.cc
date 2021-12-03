@@ -33,6 +33,15 @@ Player::Player(const Player &player) {
     // copyPlayer(player);
 }
 
+void Player::enPassantAvailabilityCorrect(std::shared_ptr<ChessPieces> pieceToBeMoved, Board & board, Position from, Position to) {
+    board.disableAllEnPassant();
+    if((pieceToBeMoved.get()->icon=='p' || pieceToBeMoved.get()->icon=='P') && (abs(from.y-to.y)==2)) {
+        if(abs(from.y-to.y)==2) {
+            pieceToBeMoved.get()->availableForEnPassant=true;
+        } 
+    }
+}
+
 // do not check if legal, make move directly
 // tryMakeMove in child handle legal/illegal detection
 // strong expection
