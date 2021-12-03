@@ -4,6 +4,15 @@
 ChessPieces::ChessPieces(Position p, int identifier, bool isFirstMove) 
     : ownerIdentifier{identifier}, isFirstMove{isFirstMove}, pos{p}{}
 
+ChessPieces::ChessPieces(const ChessPieces &chessPieces) {
+    pos = chessPieces.pos;
+    icon = chessPieces.icon;
+    isFirstMove = chessPieces.isFirstMove;
+    checkOpponent  = chessPieces.checkOpponent;
+    availableForEnPassant = chessPieces.availableForEnPassant;
+    ownerIdentifier = chessPieces.ownerIdentifier;
+}
+
 void ChessPieces::afterFirstMove() {
     if(isFirstMove) {
         isFirstMove = false;

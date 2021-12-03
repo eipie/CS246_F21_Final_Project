@@ -4,12 +4,19 @@
 #include "move.h"
 
 King::King(Position p, int identifier, bool isFirstMove) 
-    : ChessPieces(p, identifier, isFirstMove), isInCheck{false}{
+    : ChessPieces(p, identifier, isFirstMove){
     if(identifier==1) {
         icon='K';
     } else {
         icon='k';
     }
+}
+
+std::shared_ptr<ChessPieces> King::clone() {
+    return std::shared_ptr<ChessPieces>(new King(*this));
+}
+King::King(const King &piece) : ChessPieces(piece){
+    
 }
 
 bool King::isKingNextToKing(Position candidate, const Board & board) {

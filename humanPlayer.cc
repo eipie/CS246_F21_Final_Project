@@ -8,10 +8,13 @@
 #include "queen.h"
 #include "rook.h"
 #include "bishop.h"
+#include <iostream>
 
 HumanPlayer::HumanPlayer(int identifier, int currentScore) : Player{identifier, currentScore}{}
-void HumanPlayer::copyPlayer(const Player &player) {
-
+HumanPlayer::HumanPlayer(const HumanPlayer &humanPlayer) : Player(humanPlayer){}
+std::shared_ptr<Player> HumanPlayer::clone(){
+    std::cout << "copying Human" << std::endl;
+    return std::shared_ptr<Player>(new HumanPlayer(*this));
 }
 
 bool HumanPlayer::tryMakeMove(Move m, Board & board) {

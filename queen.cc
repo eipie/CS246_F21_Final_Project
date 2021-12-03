@@ -11,6 +11,13 @@ Queen::Queen(Position p, int identifier, bool isFirstMove) : ChessPieces(p, iden
     }
 }
 
+std::shared_ptr<ChessPieces> Queen::clone() {
+    return std::shared_ptr<ChessPieces>(new Queen(*this));
+}
+Queen::Queen(const Queen &piece) : ChessPieces(piece){
+    
+}
+
 // Queen (v|h|d *n)
 //      +nv || -nv || +nh || -nh
 //      +nv+nh || +nv-nh || -nv+nh || -nv-nh
@@ -53,7 +60,7 @@ std::vector<PossibleMove> Queen::getPossibleMoves(const Board & board) {
             break;
         }
     }
-    //Bishop moves:
+    //Queen moves:
     // check up right
     int j = y + 1;
     for(int i=x+1; i<=8; i++) {

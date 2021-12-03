@@ -3,9 +3,12 @@
 #include "player.h"
 #include "move.h"
 class HumanPlayer : public Player {
+    
     public:
         HumanPlayer(int identifier, int currentScore=0);
-        void copyPlayer(const Player &player) override;
+        HumanPlayer(const HumanPlayer &humanPlayer);
+        std::shared_ptr<Player> clone() override;
+        // void copyPlayer(const Player &player) override;
         bool tryMakeMove(Move m, Board & board) override;
 };
 #endif

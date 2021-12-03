@@ -11,7 +11,7 @@ Board::Board(std::vector<std::shared_ptr<Player>> players)
 Board::Board(const Board &board) {
     std::vector<std::shared_ptr<Player>> copyPlayers;
     for(auto player:board.players) {
-        std::shared_ptr<Player> copiedPlayer = std::make_shared<Player>(*player.get());
+        std::shared_ptr<Player> copiedPlayer = player.get()->clone();;
         copyPlayers.emplace_back(copiedPlayer);
     }
     players = copyPlayers;

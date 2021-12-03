@@ -10,6 +10,13 @@ Knight::Knight(Position p, int identifier, bool isFirstMove) : ChessPieces(p, id
     }
 }
 
+std::shared_ptr<ChessPieces> Knight::clone() {
+    return std::shared_ptr<ChessPieces>(new Knight(*this));
+}
+Knight::Knight(const Knight &piece) : ChessPieces(piece){
+    
+}
+
 // Knight 
 //      +1v+2h || +2v+1h || -1v+2h || -2v+1h
 //      +1v-2h || +2v-1h || -1v-2h || -2v-1h

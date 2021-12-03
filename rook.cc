@@ -9,6 +9,14 @@ Rook::Rook(Position p, int identifier, bool isFirstMove) : ChessPieces(p, identi
         icon='r';
     }
 }
+
+std::shared_ptr<ChessPieces> Rook::clone() {
+    return std::shared_ptr<ChessPieces>(new Rook(*this));
+}
+Rook::Rook(const Rook &piece) : ChessPieces(piece){
+    
+}
+
 // Rook (v|h *n)
 //      +nv || -nv || +nh || -nh
 // *castling*

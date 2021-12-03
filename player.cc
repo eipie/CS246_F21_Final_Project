@@ -27,10 +27,10 @@ Player::Player(const Player &player) {
     currentScore = player.currentScore;
     std::map<Position, std::shared_ptr<ChessPieces>> pieces;
     for(auto piecePair:player.playerPieces) {
-        std::shared_ptr<ChessPieces> newPiece = std::make_shared<ChessPieces>(*piecePair.second.get());
+        std::shared_ptr<ChessPieces> newPiece = piecePair.second.get()->clone();;
         pieces[piecePair.first] = newPiece;
     }
-    copyPlayer(player);
+    // copyPlayer(player);
 }
 
 // do not check if legal, make move directly
