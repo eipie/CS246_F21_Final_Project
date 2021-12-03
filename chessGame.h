@@ -30,7 +30,7 @@ class ChessGame {
     // [to be implemented], dummy variable
     bool isMoveValid(Move nextMove);
     // attempt to makeAMove; return true success, return false, failure
-    void makeAMove(Move nextMove);
+    std::string makeAMove(Move nextMove);
     void newRound();
     void removePiece(Position p);
     void addPiece(Position p, char c);

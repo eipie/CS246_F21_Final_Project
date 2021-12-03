@@ -17,7 +17,12 @@ Board::Board(const Board &board) {
     players = copyPlayers;
 }
 
-bool Board::makeAMove(Move m, int currentPlayer) {
+// -1 if failed;
+// 0 if normal move, no printout;
+// 1 if check
+// 2 if checkmate
+// 3 if stalemate
+int Board::makeAMove(Move m, int currentPlayer) {
     if (players[currentPlayer].get()->tryMakeMove(m,*this)) {
         if(currentPlayer==1) {
             removePiece(m.to, 0);
@@ -33,12 +38,12 @@ bool Board::makeAMove(Move m, int currentPlayer) {
             opponent = white;
         }
         auto allPossMove = getPlayerPossibleMoves(opponent);
-            bool noPossMove =true;
-            for(auto chessPiecePair: allPossMove) {
-                if(chessPiecePair.second.get()->size()!=0) {
-                    noPossMove=false;
-                    break;
-                }
+        bool noPossMove =true;
+        for(auto chessPiecePair: allPossMove) {
+            if(chessPiecePair.second.get()->size()!=0) {
+                noPossMove=false;
+                break;
+            }
         }
         // ***checkopponent
         auto checkResult = putInCheck(opponent);
@@ -51,15 +56,21 @@ bool Board::makeAMove(Move m, int currentPlayer) {
             // opponent in check
             if(noPossMove) {
                 // checkmate
+                return 2;
             }
             players[opponent].get()->isInCheck=true;
+            return 1;
         } else if(noPossMove) {
             // stallmate
+            return 3;
         }
-        return true;
+        for(auto player:players) {
+            player.get()->isInCheck=false;
+        }
+        return 0;
     } else {
         // Move is illegal
-        return false;
+        return -1;
     }
 }
 

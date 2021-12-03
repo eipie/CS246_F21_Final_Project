@@ -37,6 +37,7 @@ void ChessGame::nextTurn() {
 void ChessGame::newRound() {
     board.get()->resetBoard();
     setCurrentPlayer(white);
+    render();
 }
 
 std::string ChessGame::resign() {
@@ -58,58 +59,48 @@ int ChessGame::blackPlayerScore() {
     return players[black].get()->currentScore;
 }
 
-// isCurrentPlayerKingInCheckAfterMove(vector<Move> moves)
-// check if king is in check after a move
-// 1. Copy the current board (2 players' piece)
-// 2. initate the move (loop through the vector, and do the movePiece method)
-// 3. loop through enemy pieces and check if piece.possibleMove()==king position
-
-// piece.possibleMove()
-
-// check if the current user move is valid
-bool ChessGame::isMoveValid(Move nextMove) {
-    
-
-
-        // check if move is promotion
-        // 
-        // 1. ifPromotion(Move nextMove);
-        //      if(isPromotion==ture);
-        // 2. ifPromotionValue(Move nextMove);
-        //      Position from is currentplayer's Pawn
-        //      AND
-        //      if nextMove.promotionType isValidType(char promotionType); (Q/R/B/N || q/r/b/n)
-        //      AND
-        //      if the Pawn at Position to, to.y==8||1; (depending on player color)
-        //      AND
-        //      isCurrentPlayerKingInCheckAfterMove(newMove) == false
-        // 3. Do the promotion
-        //      change pawn at Position from to type desired
-        //      return true;
-
-        // En passant/Pawn capture
-        // 1. ifEnPassant
-        //  if Position from is Pawn of current color
-        //  AND
-        // Position to is either (x+1, y+1) || (x-1, y+1)
-        // 2. isEnPasantValid(Move nextMove);
-        // if Position to a piece of opponent type
-        //
-        
-
-        //  Position(to.x+1, from.x) == Position() || Position(to.x-1, from.x)
-        // 3. doEnPasant(Move nextMove)
-    // dummy variable
-    return true;
-}
-
-void ChessGame::makeAMove(Move nextMove) {
+std::string ChessGame::makeAMove(Move nextMove) {
     // std::cout << nextMove.from.x << nextMove.from.y << "   " << nextMove.to.x <<nextMove.to.y  << std::endl;
-    if (board.get()->makeAMove(nextMove, currentPlayer)) {
+    int moveResult = board.get()->makeAMove(nextMove, currentPlayer);
+    std::string outputString="";
+    if (moveResult!=-1) {
         // pass to next player; 
         // ***issue still increment by one if moving opponent piece
+        switch (moveResult)
+        {
+        case 0:
+            break;
+        case 1:
+            if(currentPlayer==white) {
+                players[black].get()->isInCheck=true;
+                outputString = "Black is in check.";
+            } else {
+                players[white].get()->isInCheck=true;
+                outputString = "White is in check.";
+            }
+            break;
+        case 2:
+            players[currentPlayer].get()->currentScore++;
+            if(currentPlayer==white) {
+                outputString = "Checkmate! White wins!";
+            } else {
+                outputString = "Checkmate! Black wins!";
+            }
+            break;
+        case 3:
+            for(auto player:players) {
+                player.get()->currentScore+=0.5;
+                outputString = "Stalemate!";
+            }
+        default:
+            //error
+            break;
+        }
         nextTurn();
         render();
+        if(moveResult!=0) {
+            newRound();
+        }
     } else {
         render();
     }
@@ -174,4 +165,50 @@ std::vector<PossibleMove> Board::getAllPossibleMoves(Move nextMove) {
     } else {
         // error, no piece at given location
     }
+} */
+
+
+// isCurrentPlayerKingInCheckAfterMove(vector<Move> moves)
+// check if king is in check after a move
+// 1. Copy the current board (2 players' piece)
+// 2. initate the move (loop through the vector, and do the movePiece method)
+// 3. loop through enemy pieces and check if piece.possibleMove()==king position
+
+// piece.possibleMove()
+
+// check if the current user move is valid
+/* bool ChessGame::isMoveValid(Move nextMove) {
+    
+
+
+        // check if move is promotion
+        // 
+        // 1. ifPromotion(Move nextMove);
+        //      if(isPromotion==ture);
+        // 2. ifPromotionValue(Move nextMove);
+        //      Position from is currentplayer's Pawn
+        //      AND
+        //      if nextMove.promotionType isValidType(char promotionType); (Q/R/B/N || q/r/b/n)
+        //      AND
+        //      if the Pawn at Position to, to.y==8||1; (depending on player color)
+        //      AND
+        //      isCurrentPlayerKingInCheckAfterMove(newMove) == false
+        // 3. Do the promotion
+        //      change pawn at Position from to type desired
+        //      return true;
+
+        // En passant/Pawn capture
+        // 1. ifEnPassant
+        //  if Position from is Pawn of current color
+        //  AND
+        // Position to is either (x+1, y+1) || (x-1, y+1)
+        // 2. isEnPasantValid(Move nextMove);
+        // if Position to a piece of opponent type
+        //
+        
+
+        //  Position(to.x+1, from.x) == Position() || Position(to.x-1, from.x)
+        // 3. doEnPasant(Move nextMove)
+    // dummy variable
+    return true;
 } */

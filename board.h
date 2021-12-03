@@ -20,7 +20,7 @@ class Board{
     Board(std::vector<std::shared_ptr<Player> > players);
     // copy constructor
     Board(const Board &board);
-    bool makeAMove(Move m, int currentPlayer);
+    int makeAMove(Move m, int currentPlayer);
     void resetBoard();
     void removePiece(Position p, int currentPlayer);
     void addPiece(Position p, char c);
