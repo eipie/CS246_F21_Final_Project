@@ -26,6 +26,7 @@ int main() {
             Position from;
             Position to;
             Move nextMove;
+            std::string moveResult;
             if (ss >> from_str >> to_str) {
                 from.x = from_str[0] - 'a' + 1;
                 from.y = from_str[1] - '0';
@@ -37,13 +38,17 @@ int main() {
                 if (ss >> promo) {
                     nextMove.isPromotion = true;
                     nextMove.promotionType = promo;
-                    Move(from , to, promo);
+                    Move nextMove(from , to, promo);
+                    moveResult = chess->makeAMove(nextMove);
                 } else {
-                    Move(from, to);
+                    Move nextMove(from, to);
+                    moveResult = chess->makeAMove(nextMove);
                 }
             } else {
-                Move();
+                Move nextMove;
+                moveResult = chess->makeAMove(nextMove);
             }
+            std::cout << moveResult << std::endl;
            /* from.x = from_str[0] - 'a' + 1;
             from.y = from_str[1] - '0';
             to.x = to_str[0] - 'a' + 1;
@@ -68,30 +73,40 @@ int main() {
                 } else if (operation == "+") {
                     char p;
                     std::string pos_str;
-                    ss >> p >> pos_str;
-                    Position pos;
-                    pos.x = pos_str[0] - 'a' + 1;
-                    pos.y = pos_str[1] - '0';
-                    chess->addPiece(pos, p);
+                    if (ss >> p >> pos_str) {
+                        Position pos;
+                        pos.x = pos_str[0] - 'a' + 1;
+                        pos.y = pos_str[1] - '0';
+                        chess->addPiece(pos, p);
+                    } else {
+                        //
+                    }
                 } else if (operation == "-") {
                     Position pos;
                     std::string pos_str;
-                    ss >> pos_str;
-                    pos.x = pos_str[0] - 'a' + 1;
-                    pos.y = pos_str[1] - '0';
-                    chess->removePiece(pos);
+                    if (ss >> pos_str) {
+                        pos.x = pos_str[0] - 'a' + 1;
+                        pos.y = pos_str[1] - '0';
+                        chess->removePiece(pos);
+                    } else {
+                        //
+                    }
                 } else if (operation == "=") {
                     std::string colour;
-                    ss >> colour;
-                    if (colour == "black") {
-                        chess->nextTurn();
-                    } else if (colour == "white") {
-                        chess->nextTurn();
+                    if (ss >> colour) {
+                        if (colour == "black") {
+                            chess->nextTurn();
+                        } else if (colour == "white") {
+                            chess->nextTurn();
+                        } else {
+                            //invalid
+                        }
                     } else {
-                        //invalid
+                        //
                     }
+                } else {
+                    // else invalid
                 }
-                // else invalid
             }
         }
     }

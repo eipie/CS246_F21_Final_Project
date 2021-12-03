@@ -76,7 +76,7 @@ std::vector<PossibleMove> Pawn::getPossibleMoves(const Board & board) {
     addEnPassantIfPoss(candidates[2], enPassantCaptureLoc[1], possMoves,board);
     addEnPassantIfPoss(candidates[3], enPassantCaptureLoc[0], possMoves,board);
     addEnPassantIfPoss(candidates[3], enPassantCaptureLoc[1], possMoves,board);
-    
+    return possMoves;
 }
 
 

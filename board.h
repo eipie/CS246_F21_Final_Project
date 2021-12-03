@@ -8,14 +8,15 @@ class Player;
 class Move;
 class Position;
 class ChessPieces;
-
+class PossibleMove;
 class Board{
 
-    std::vector<std::shared_ptr<Player>> players;
+    
     const int white =1;
     const int black = 0;
-    void enPassantAvailabilityCorrect(std::shared_ptr<ChessPieces> pieceToBeMoved, Position from, Position to);
+    
     public:
+    std::vector<std::shared_ptr<Player>> players;
     // constructor
     Board(std::vector<std::shared_ptr<Player> > players);
     // copy constructor
@@ -36,6 +37,9 @@ class Board{
     std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> getPlayerPossibleMoves(int identifier);
     // check if a player is in check (incheck variable in Player class)
     bool ifInCheck(int identifier) const;
+    void disableAllEnPassant();
+    void makeAMoveWithoutCheck(Position from, Position to, int identifier);
+    // std::cout << "already reached here" << std::endl;
 };
 
 #endif
