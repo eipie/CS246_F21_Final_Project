@@ -25,8 +25,26 @@ int main() {
             std::string to_str;
             Position from;
             Position to;
-            ss >> from_str >> to_str;
-            from.x = from_str[0] - 'a' + 1;
+            Move nextMove;
+            if (ss >> from_str >> to_str) {
+                from.x = from_str[0] - 'a' + 1;
+                from.y = from_str[1] - '0';
+                to.x = to_str[0] - 'a' + 1;
+                to.y = to_str[1] - '0';
+                nextMove.from = from;
+                nextMove.to = to;
+                char promo;
+                if (ss >> promo) {
+                    nextMove.isPromotion = true;
+                    nextMove.promotionType = promo;
+                    Move(from , to, promo);
+                } else {
+                    Move(from, to);
+                }
+            } else {
+                Move();
+            }
+           /* from.x = from_str[0] - 'a' + 1;
             from.y = from_str[1] - '0';
             to.x = to_str[0] - 'a' + 1;
             to.y = to_str[1] - '0';
@@ -38,7 +56,7 @@ int main() {
                 nextMove.isPromotion = true;
                 nextMove.promotionType = promo;
             }
-            chess->makeAMove(nextMove);
+            chess->makeAMove(nextMove);*/
         } else if (command == "setup") { // check if the game has started, then allow setup;
             // while loop until the user type done, then call isboardvalid
             std::string operation;
