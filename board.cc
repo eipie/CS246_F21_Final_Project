@@ -11,7 +11,7 @@ Board::Board(std::vector<std::shared_ptr<Player>> players)
 Board::Board(const Board &board) {
     std::vector<std::shared_ptr<Player>> copyPlayers;
     for(auto player:board.players) {
-        std::shared_ptr<Player> copiedPlayer = player.get()->clone();;
+        std::shared_ptr<Player> copiedPlayer = player.get()->clone();
         copyPlayers.emplace_back(copiedPlayer);
     }
     players = copyPlayers;
@@ -24,12 +24,7 @@ Board::Board(const Board &board) {
 // 3 if stalemate
 int Board::makeAMove(Move m, int currentPlayer) {
     if (players[currentPlayer].get()->tryMakeMove(m,*this)) {
-        if(currentPlayer==1) {
-            removePiece(m.to, 0);
-        } else {
-            removePiece(m.to, 1);
-        }
-        enPassantAvailabilityCorrect(players[currentPlayer].get()->getPieceAt(m.to), m.from, m.to);
+        // enPassantAvailabilityCorrect(players[currentPlayer].get()->getPieceAt(m.to), m.from, m.to);
         // check if checked opponent
         int opponent;
         if(currentPlayer==white) {
@@ -74,14 +69,9 @@ int Board::makeAMove(Move m, int currentPlayer) {
     }
 }
 
-void Board::enPassantAvailabilityCorrect(std::shared_ptr<ChessPieces> pieceToBeMoved, Position from, Position to) {
+void Board::disableAllEnPassant() {
     for(auto player : players) {
-            player.get()->disableAllEnPassant();
-    }
-    if((pieceToBeMoved.get()->icon=='p' || pieceToBeMoved.get()->icon=='P') && (abs(from.y-to.y)==2)) {
-        if(abs(from.y-to.y)==2) {
-            pieceToBeMoved.get()->availableForEnPassant=true;
-        } 
+        player.get()->disableAllEnPassant();
     }
 }
 

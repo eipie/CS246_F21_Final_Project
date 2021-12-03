@@ -27,6 +27,7 @@ class Player {
     // computer always true
     bool moveWithSpecial(PossibleMove possMove);
     // return all possible ways current player can escape Check
+    void enPassantAvailabilityCorrect(std::shared_ptr<ChessPieces> pieceToBeMoved, Board & board, Position from, Position to);
     
     public:
     // use map for easier lookup
