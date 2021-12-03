@@ -8,7 +8,7 @@ class Player;
 class Move;
 class Position;
 class ChessPieces;
-
+class PossibleMove;
 class Board{
 
     std::vector<std::shared_ptr<Player>> players;

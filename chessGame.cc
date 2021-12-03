@@ -5,12 +5,14 @@
 #include "position.h"
 #include "observer.h"
 #include "text_display.h"
+#include "humanPlayer.h"
+#include "computerPlayer.h"
 #include <iostream>
 // #include  "boardSetup.h"
 
 ChessGame::ChessGame() : currentPlayer{white} {
-    std::shared_ptr<Player> playerOne = std::make_shared<Player>(1);
-    std::shared_ptr<Player> playerTwo = std::make_shared<Player>(0);
+    std::shared_ptr<Player> playerOne = std::make_shared<HumanPlayer>(1);
+    std::shared_ptr<Player> playerTwo = std::make_shared<HumanPlayer>(0);
     players.emplace_back(playerTwo);
     players.emplace_back(playerOne);
     board = std::make_shared<Board>(players);
@@ -103,7 +105,9 @@ std::string ChessGame::makeAMove(Move nextMove) {
         }
     } else {
         render();
+        outputString = "Invalid move!! Please enter again";
     }
+    return outputString;
 }
 
 void ChessGame::attachObserver(Observer *o) {

@@ -42,4 +42,5 @@ std::vector<PossibleMove> Knight::getPossibleMoves(const Board & board) {
     tryAddNextMoveCandidate(board, possMoves, candidate6);
     tryAddNextMoveCandidate(board, possMoves, candidate7);
     tryAddNextMoveCandidate(board, possMoves, candidate8);
+    return possMoves;
 }

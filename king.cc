@@ -89,7 +89,7 @@ std::vector<PossibleMove> King::getPossibleMoves(const Board & board) {
             possMoves.end()->rookTo=rookT;
         }
     }
-    
+    return possMoves;
 }
 
 

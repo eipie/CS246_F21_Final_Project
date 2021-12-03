@@ -1,3 +1,5 @@
+#ifndef POSSIBLEMOVE_H
+#define POSSIBLEMOVE_H
 #include "position.h"
 #include "chessPieces.h"
 #include <memory>
@@ -34,6 +36,7 @@ struct PossibleMove {
     }
 };
 
+#endif
 
 // white: pawn e1  ->  vector<possiblemove>
 // for loop Board cpyboard  -> Board cpyboard   g3

@@ -12,3 +12,6 @@ std::shared_ptr<Player> ComputerPlayer::clone() {
     std::cout << "copying Computer" << level << std::endl;
     return std::shared_ptr<Player>(new ComputerPlayer(*this));
 }
+bool ComputerPlayer::tryMakeMove(Move m, Board & board) {
+    return true;
+}
