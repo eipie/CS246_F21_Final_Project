@@ -22,22 +22,25 @@ bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
     std::cout << "try to make a move for computer" << std::endl;
     if (level == 1) {
         std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> choices = board.getPlayerPossibleMoves(identifier);
-        int random_index = std::rand() % choices.size();
+        int totalNumMoves = 0;
+        // not possible to be 0, since either stalemate/checkmate detected at last round
+        for(auto pieceSet:choices) {
+            for(auto move : *pieceSet.second.get()) {
+                totalNumMoves++;
+            }
+        }
+        int random_index = std::rand() % totalNumMoves;
         for (auto pieceSet : choices) {
-            if(random_index==0) {
-                std::shared_ptr<std::vector<PossibleMove>> possMoves = pieceSet.second;
-                int random_move_index = std::rand() % possMoves.get()->size();
+            std::shared_ptr<std::vector<PossibleMove>> possMoves = pieceSet.second;
                 for(auto move : *possMoves.get()) {
-                    if(random_move_index==0) {
+                    if(random_index==0) {
                         //这里
                         PossibleMove nextMove = move;
                         Position from = pieceSet.first.get()->pos;
                         // call你那个method 直接move
                     }
-                    random_move_index--;
+                    random_index--;
                 }
-            }
-            random_index--;
         }
     }
     else if (level == 2) {
@@ -56,5 +59,5 @@ bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
     }
 
     return true;
-} */
-
+}
+ */
