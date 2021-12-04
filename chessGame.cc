@@ -10,18 +10,18 @@
 #include <iostream>
 // #include  "boardSetup.h"
 
-ChessGame::ChessGame(bool isHuman1, bool isHuman2) : currentPlayer{white} {
+ChessGame::ChessGame(bool isHuman1, bool isHuman2,  std::vector<int> levels) : currentPlayer{white} {
     std::shared_ptr<Player> playerOne;
     std::shared_ptr<Player> playerTwo;
     if(isHuman1) {
         playerOne = std::make_shared<HumanPlayer>(1);
     } else if(!isHuman1) {
-        playerOne = std::make_shared<ComputerPlayer>(1);
+        playerOne = std::make_shared<ComputerPlayer>(1, levels[0]);
     }
     if(isHuman2) {
-        playerOne = std::make_shared<HumanPlayer>(0);
+        playerTwo = std::make_shared<HumanPlayer>(0);
     } else if(!isHuman2) {
-        playerOne = std::make_shared<ComputerPlayer>(0);
+        playerTwo = std::make_shared<ComputerPlayer>(0, levels[1]);
     }
     players.emplace_back(playerTwo);
     players.emplace_back(playerOne);

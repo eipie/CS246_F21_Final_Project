@@ -91,20 +91,6 @@ int ChessPieces::tryAddNextMoveCandidate(const Board & board, std::vector<Possib
             }
         }
     }
-/* 
-    // if((icon == 'p'||icon=='P') && (candidate.y == 8 || candidate.y == 1))
-    // check if Pawn is eligable for Promotion
-    if((returnKey==1 || returnKey == 0) && (icon == 'p'||icon=='P')) {
-        if(candidate.y == 8 || candidate.y == 1) {
-            possibleMove.end()->isPromotion=true;
-            // assign default promotionType [mainly for computerPlayer]
-            if(ownerIdentifier==1) {
-                possibleMove.end()->promotionType='Q';
-            } else{
-                possibleMove.end()->promotionType='q';
-            }
-        }
-    } */
     return returnKey;
 }
 
