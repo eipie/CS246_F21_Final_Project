@@ -33,11 +33,19 @@ int Board::makeAMove(Move m, int currentPlayer) {
         } else {
             opponent = white;
         }
-        auto allPossMove = getPlayerPossibleMoves(opponent);
-        bool noPossMove =true;
-        for(auto chessPiecePair: allPossMove) {
+        auto oppAllPossMove = getPlayerPossibleMoves(opponent);
+        bool oppNoPossMove =true;
+        for(auto chessPiecePair: oppAllPossMove) {
             if(chessPiecePair.second.get()->size()!=0) {
-                noPossMove=false;
+                oppNoPossMove=false;
+                break;
+            }
+        }
+        auto currAllPossMove = getPlayerPossibleMoves(currentPlayer);
+        bool currNoPossMove = true;
+        for(auto chessPiecePair: currAllPossMove) {
+            if(chessPiecePair.second.get()->size()!=0) {
+                currNoPossMove=false;
                 break;
             }
         }
@@ -50,13 +58,13 @@ int Board::makeAMove(Move m, int currentPlayer) {
                 // opponent checkmate; opponent loses
             } */
             // opponent in check
-            if(noPossMove) {
+            if(oppNoPossMove) {
                 // checkmate
                 return 2;
             }
             players[opponent].get()->isInCheck=true;
             return 1;
-        } else if(noPossMove) {
+        } else if(oppNoPossMove||currNoPossMove) {
             // stallmate
             return 3;
         }
