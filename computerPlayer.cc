@@ -9,7 +9,7 @@ ComputerPlayer::ComputerPlayer(const ComputerPlayer &computerPlayer,  bool needT
     level = computerPlayer.level;
 }
 std::shared_ptr<Player> ComputerPlayer::clone( bool needToCheckSelfCheck) {
-    std::cout << "copying Computer" << level << std::endl;
+    // std::cout << "copying Computer" << level << std::endl;
     return std::shared_ptr<Player>(new ComputerPlayer(*this));
 }
 

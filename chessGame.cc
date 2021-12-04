@@ -76,9 +76,12 @@ std::string ChessGame::makeAMove(Move nextMove) {
     if((players[currentPlayer].get()->isHuman && !nextMove.containsInput)||(!players[currentPlayer].get()->isHuman&&nextMove.containsInput)) {
         return "Input not match player type!! Please enter again";
     }
-    if(players[currentPlayer].get()->getPieceCharAt(nextMove.from)==' ') {
-        return "Only move your own piece! Try again";
+    if(nextMove.containsInput) {
+        if(players[currentPlayer].get()->getPieceCharAt(nextMove.from)==' ') {
+            return "Only move your own piece! Try again";
+        }
     }
+
     int moveResult = board.get()->makeAMove(nextMove, currentPlayer);
     std::string outputString="";
     if (moveResult!=-1) {
