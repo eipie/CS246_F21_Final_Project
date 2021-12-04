@@ -70,5 +70,6 @@
         "*.tcc": "cpp",
         "deque": "cpp",
         "fstream": "cpp"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Enabled"
 }
