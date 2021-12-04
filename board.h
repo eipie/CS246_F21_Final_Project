@@ -20,7 +20,7 @@ class Board{
     // constructor
     Board(std::vector<std::shared_ptr<Player> > players);
     // copy constructor
-    Board(const Board &board);
+    Board(const Board &board,  bool needToCheckSelfCheck=true);
     int makeAMove(Move m, int currentPlayer);
     void resetBoard();
     void removePiece(Position p, int currentPlayer);

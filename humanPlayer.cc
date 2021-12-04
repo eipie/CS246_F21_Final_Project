@@ -11,10 +11,10 @@
 #include <iostream>
 
 HumanPlayer::HumanPlayer(int identifier, int currentScore) : Player{identifier, currentScore}{}
-HumanPlayer::HumanPlayer(const HumanPlayer &humanPlayer) : Player(humanPlayer){}
-std::shared_ptr<Player> HumanPlayer::clone(){
+HumanPlayer::HumanPlayer(const HumanPlayer &humanPlayer,  bool needToCheckSelfCheck) : Player(humanPlayer, needToCheckSelfCheck){}
+std::shared_ptr<Player> HumanPlayer::clone( bool needToCheckSelfCheck){
     // std::cout << "copying Human" << std::endl;
-    return std::shared_ptr<Player>(new HumanPlayer(*this));
+    return std::shared_ptr<Player>(new HumanPlayer(*this, needToCheckSelfCheck));
 }
 
 bool HumanPlayer::tryMakeMove(Move m, Board & board) {
@@ -28,9 +28,9 @@ bool HumanPlayer::tryMakeMove(Move m, Board & board) {
     for(auto possMove : allPossibleMoves) {
         // std::cout << possMove.kingSideCastle << std::endl;
         if(possMove.to == to) {
-            std::cout << "piece move " << std::endl;
+            // std::cout << "piece move " << std::endl;
             if(possMove.kingSideCastle || possMove.queenSideCastle) {
-                std::cout << "queen castle" << std::endl;
+                // std::cout << "queen castle" << std::endl;
                 movePiece(possMove.rookFrom, possMove.rookTo, board);
             } 
             if(possMove.enPassant) { 

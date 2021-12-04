@@ -20,16 +20,17 @@ Player::Player(int identifier, int currentScore) :  identifier{identifier}, isIn
     resetAllPieces();
 };
 
-Player::Player(const Player &player) {
+Player::Player(const Player &player, bool needToCheckSelfCheck) {
     identifier = player.identifier;
     opponentIdentifier = player.opponentIdentifier;
     isInCheck = player.isInCheck;
     currentScore = player.currentScore;
     std::map<Position, std::shared_ptr<ChessPieces>> pieces;
     for(auto piecePair:player.playerPieces) {
-        std::shared_ptr<ChessPieces> newPiece = piecePair.second.get()->clone();;
+        std::shared_ptr<ChessPieces> newPiece = piecePair.second.get()->clone(needToCheckSelfCheck);
         pieces[piecePair.first] = newPiece;
     }
+    playerPieces = pieces;
     // copyPlayer(player);
 }
 
@@ -126,7 +127,7 @@ void Player::disableAllEnPassant() {
 //   1   2   3   4   ....
 void Player::resetAllPieces() {
     isInCheck=false;
-    currentScore=0;
+    // currentScore=0;
     playerPieces.clear();
     // initialize Pawn*8
     for(int i = 1; i<=8; i++) {
@@ -290,7 +291,7 @@ ChessPieces* Player::tryDoPawnPromotion(char promotion, ChessPieces * target) {
         if(promotion== 'p'||promotion=='P') {
 
         } else if(promotion== 'r'||promotion=='R') {
-            std::cout << "promoting...." << promotion << std::endl;
+            // std::cout << "promoting...." << promotion << std::endl;
             return new Rook(target->pos, identifier, false);
             
         } else if(promotion== 'n'||promotion=='N') {

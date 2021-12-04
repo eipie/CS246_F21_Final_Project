@@ -10,10 +10,10 @@ Rook::Rook(Position p, int identifier, bool isFirstMove) : ChessPieces(p, identi
     }
 }
 
-std::shared_ptr<ChessPieces> Rook::clone() {
-    return std::shared_ptr<ChessPieces>(new Rook(*this));
+std::shared_ptr<ChessPieces> Rook::clone( bool needToCheckSelfCheck) {
+    return std::shared_ptr<ChessPieces>(new Rook(*this, needToCheckSelfCheck));
 }
-Rook::Rook(const Rook &piece) : ChessPieces(piece){
+Rook::Rook(const Rook &piece,  bool needToCheckSelfCheck) : ChessPieces(piece, needToCheckSelfCheck){
     
 }
 

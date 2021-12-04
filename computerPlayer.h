@@ -7,8 +7,8 @@ class ComputerPlayer : public Player {
     public:
     // white/black AND level of player
         ComputerPlayer(int identifier, int level, int currentScore=0);
-        ComputerPlayer(const ComputerPlayer &computerPlayer);
-        std::shared_ptr<Player> clone() override;
+        ComputerPlayer(const ComputerPlayer &computerPlayer, bool needToCheckSelfCheck);
+        std::shared_ptr<Player> clone( bool needToCheckSelfCheck) override;
         bool tryMakeMove(Move m, Board & board) override;
 };
 #endif
