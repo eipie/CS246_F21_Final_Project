@@ -81,6 +81,7 @@ std::string ChessGame::makeAMove(Move nextMove) {
             return "Only move your own piece! Try again";
         }
     }
+
     int moveResult = board.get()->makeAMove(nextMove, currentPlayer);
     std::string outputString="";
     if (moveResult!=-1) {
