@@ -17,29 +17,29 @@ std::shared_ptr<Player> ComputerPlayer::clone( bool needToCheckSelfCheck) {
 bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
 
     std::cout << "try to make a move for computer" << std::endl;
+
+
     if (level == 1) {
         std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> choices = board.getPlayerPossibleMoves(identifier);
-        int random_index = std::rand() % choices.size();
-        for (auto pieceSet : choices) {
-            if(random_index==0) {
-                std::shared_ptr<std::vector<PossibleMove>> possMoves = pieceSet.second;
-                int random_move_index = std::rand() % possMoves.get()->size();
-                for(auto move : *possMoves.get()) {
-                    if(random_move_index==0) {
-                        //这里
-                        PossibleMove targetMove = move;
-                        Position startingPosition = pieceSet.first.get()->pos;
-                        std::cout << "secured move for level 1" << std::endl;
-                        std::cout << "starting position x " << startingPosition.x << std::endl;
-                        std::cout << "starting position y " << startingPosition.y << std::endl;
-                        std::cout << "target move x " << targetMove.to.x << std::endl;
-                        std::cout << "target move y " << targetMove.to.y << std::endl;
-                        // SimpleMakeMove(startingPosition, targetMove, board);
-                    }
-                    random_move_index--;
-                }
+        int totalNumMoves = 0;
+        // not possible to be 0, since either stalemate/checkmate detected at last round
+        for(auto pieceSet:choices) {
+            for(auto move : *pieceSet.second.get()) {
+                totalNumMoves++;
             }
-            random_index--;
+        }
+        int random_index = std::rand() % totalNumMoves;
+        for (auto pieceSet : choices) {
+            std::shared_ptr<std::vector<PossibleMove>> possMoves = pieceSet.second;
+            for(auto move : *possMoves.get()) {
+                if(random_index==0) {
+                    //这里
+                    PossibleMove nextMove = move;
+                    Position from = pieceSet.first.get()->pos;
+                    // call你那个method 直接move
+                }
+                random_index--;
+            }
         }
         return true;
     }
