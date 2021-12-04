@@ -31,13 +31,14 @@ class Player {
     void enPassantAvailabilityCorrect(std::shared_ptr<ChessPieces> pieceToBeMoved, Board & board, Position from, Position to);
     
     public:
+    bool isHuman;
     // use map for easier lookup
     bool isInCheck = false;
     int currentScore=0;
     std::map<Position, std::shared_ptr<ChessPieces>> playerPieces;
     
     // std::vector<PossibleMove> Player::kingEscapeTrap(Board & board);
-    Player(int identifier, int currentScore=0);
+    Player(int identifier, bool isHuman, int currentScore=0);
     Player(const Player &player,  bool needToCheckSelfCheck);
     virtual std::shared_ptr<Player> clone( bool needToCheckSelfCheck) =0;
 

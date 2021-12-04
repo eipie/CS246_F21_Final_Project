@@ -10,7 +10,7 @@
 #include <iostream>
 #include <algorithm>
 
-Player::Player(int identifier, int currentScore) :  identifier{identifier}, isInCheck{false}, currentScore{currentScore}{
+Player::Player(int identifier, bool isHuman, int currentScore) :  identifier{identifier}, isHuman{isHuman},isInCheck{false}, currentScore{currentScore}{
     // std::cout<< "calling constructor" << std::endl;
     if(identifier==1) {
         opponentIdentifier = 0;
@@ -31,6 +31,7 @@ Player::Player(const Player &player, bool needToCheckSelfCheck) {
         pieces[piecePair.first] = newPiece;
     }
     playerPieces = pieces;
+    isHuman = player.isHuman;
     // copyPlayer(player);
 }
 

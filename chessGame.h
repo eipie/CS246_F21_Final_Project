@@ -24,7 +24,7 @@ class ChessGame {
     std::shared_ptr<Observer> textObserver;
     // std::vector<Observer> observers;
     public:
-    ChessGame();
+    ChessGame(bool isHuman1, bool isHuman2);
     void nextTurn();
     void setCurrentPlayer(int playerId);
     // [to be implemented], dummy variable

@@ -10,9 +10,19 @@
 #include <iostream>
 // #include  "boardSetup.h"
 
-ChessGame::ChessGame() : currentPlayer{white} {
-    std::shared_ptr<Player> playerOne = std::make_shared<HumanPlayer>(1);
-    std::shared_ptr<Player> playerTwo = std::make_shared<HumanPlayer>(0);
+ChessGame::ChessGame(bool isHuman1, bool isHuman2) : currentPlayer{white} {
+    std::shared_ptr<Player> playerOne;
+    std::shared_ptr<Player> playerTwo;
+    if(isHuman1) {
+        playerOne = std::make_shared<HumanPlayer>(1);
+    } else if(!isHuman1) {
+        playerOne = std::make_shared<ComputerPlayer>(1);
+    }
+    if(isHuman2) {
+        playerOne = std::make_shared<HumanPlayer>(0);
+    } else if(!isHuman2) {
+        playerOne = std::make_shared<ComputerPlayer>(0);
+    }
     players.emplace_back(playerTwo);
     players.emplace_back(playerOne);
     board = std::make_shared<Board>(players);
@@ -63,6 +73,12 @@ int ChessGame::blackPlayerScore() {
 
 std::string ChessGame::makeAMove(Move nextMove) {
     // std::cout << nextMove.from.x << nextMove.from.y << "   " << nextMove.to.x <<nextMove.to.y  << std::endl;
+    if((players[currentPlayer].get()->isHuman && !nextMove.containsInput)||(!players[currentPlayer].get()->isHuman&&nextMove.containsInput)) {
+        return "Input not match player type!! Please enter again";
+    }
+    if(players[currentPlayer].get()->getPieceCharAt(nextMove.from)==' ') {
+        return "Only move your own piece! Try again";
+    }
     int moveResult = board.get()->makeAMove(nextMove, currentPlayer);
     std::string outputString="";
     if (moveResult!=-1) {

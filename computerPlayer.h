@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <iterator>
 #include <map>
-
 class ComputerPlayer : public Player {
     int level;
     public:
@@ -17,7 +16,7 @@ class ComputerPlayer : public Player {
         ComputerPlayer(const ComputerPlayer &computerPlayer,  bool needToCheckSelfCheck);
         std::shared_ptr<Player> clone( bool needToCheckSelfCheck) override;
         bool tryMakeMove(Move m, Board & board) override;
-        bool SimpleMakeMove(Position currentPosition, PossibleMove nextMove，Board& board);
+        bool SimpleMakeMove(Position currentPosition, PossibleMove nextMove, Board& board);
         bool MakeMoveAtLevel1(Position currentPosition, std::vector<PossibleMove> availableMoves);
         bool MakeMoveAtLevel2(const Board & board);
         bool OpponentCaptureAvailable(const Board &board);

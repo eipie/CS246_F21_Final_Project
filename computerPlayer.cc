@@ -3,7 +3,7 @@
 #include <iostream>
 
 ComputerPlayer::ComputerPlayer(int identifier, int level, int currentScore) 
-: Player{identifier, currentScore}, level{level} {}
+: Player{identifier, false, currentScore}, level{level} {}
 
 ComputerPlayer::ComputerPlayer(const ComputerPlayer &computerPlayer,  bool needToCheckSelfCheck) : Player(computerPlayer,  needToCheckSelfCheck){
     level = computerPlayer.level;
@@ -37,7 +37,7 @@ bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
     return true;
 }
 
-bool ComputerPlayer::SimpleMakeMove(Position currentPosition, PossibleMove nextMove，Board &board) {
+bool ComputerPlayer::SimpleMakeMove(Position currentPosition, PossibleMove nextMove, Board &board) {
 
     if (nextMove.kingSideCastle || nextMove.queenSideCastle) {
         movePiece(nextMove.rookFrom, nextMove.rookTo);
