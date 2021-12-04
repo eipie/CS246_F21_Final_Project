@@ -7,8 +7,8 @@ class King : public ChessPieces {
     bool Queensidecastle(const Board & board);
     public:
     King(Position p, int identifier, bool isFirstMove=true);
-    std::shared_ptr<ChessPieces> clone() override;
-    King(const King &piece);
+    std::shared_ptr<ChessPieces> clone( bool needToCheckSelfCheck) override;
+    King(const King &piece,  bool needToCheckSelfCheck);
     std::vector<PossibleMove> getPossibleMoves(const Board & board) override;
 };
 

@@ -10,10 +10,10 @@ Knight::Knight(Position p, int identifier, bool isFirstMove) : ChessPieces(p, id
     }
 }
 
-std::shared_ptr<ChessPieces> Knight::clone() {
-    return std::shared_ptr<ChessPieces>(new Knight(*this));
+std::shared_ptr<ChessPieces> Knight::clone( bool needToCheckSelfCheck) {
+    return std::shared_ptr<ChessPieces>(new Knight(*this,  needToCheckSelfCheck));
 }
-Knight::Knight(const Knight &piece) : ChessPieces(piece){
+Knight::Knight(const Knight &piece,  bool needToCheckSelfCheck) : ChessPieces(piece,  needToCheckSelfCheck){
     
 }
 

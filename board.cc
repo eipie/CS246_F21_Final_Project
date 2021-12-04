@@ -8,10 +8,10 @@
 Board::Board(std::vector<std::shared_ptr<Player>> players) 
     : players{players}{}
 
-Board::Board(const Board &board) {
+Board::Board(const Board &board, bool needToCheckSelfCheck) {
     std::vector<std::shared_ptr<Player>> copyPlayers;
     for(auto player:board.players) {
-        std::shared_ptr<Player> copiedPlayer = player.get()->clone();
+        std::shared_ptr<Player> copiedPlayer = player.get()->clone(needToCheckSelfCheck);
         copyPlayers.emplace_back(copiedPlayer);
     }
     players = copyPlayers;
@@ -33,6 +33,8 @@ int Board::makeAMove(Move m, int currentPlayer) {
         } else {
             opponent = white;
         }
+        // ***checkopponent
+        auto checkResult = putInCheck(opponent);
         auto oppAllPossMove = getPlayerPossibleMoves(opponent);
         bool oppNoPossMove =true;
         for(auto chessPiecePair: oppAllPossMove) {
@@ -42,21 +44,15 @@ int Board::makeAMove(Move m, int currentPlayer) {
             }
         }
         auto currAllPossMove = getPlayerPossibleMoves(currentPlayer);
-        bool currNoPossMove = true;
+        bool currNoPossMove =true;
         for(auto chessPiecePair: currAllPossMove) {
             if(chessPiecePair.second.get()->size()!=0) {
                 currNoPossMove=false;
                 break;
             }
         }
-        // ***checkopponent
-        auto checkResult = putInCheck(opponent);
+        
         if(checkResult.size() != 0) {
-            /* // ***see if surrounding square will also be in check
-            auto checkMateResult = players[opponent].get()->kingEscapeTrap(*this);
-            if(checkMateResult.size()==0) {
-                // opponent checkmate; opponent loses
-            } */
             // opponent in check
             if(oppNoPossMove) {
                 // checkmate
@@ -122,6 +118,8 @@ char Board::isOpponentPiece(Position target, int identifier) const{
         } else {
             if(isupper(result)) {
                 return result;
+            } else {
+                return ' ';
             }
         }
     }
@@ -169,6 +167,7 @@ std::vector<std::shared_ptr<ChessPieces>> Board::putInCheck(int identifier) {
     for(auto pieceSet: playerPieces) {
         auto currentPiece = pieceSet.second;
         if(currentPiece.get()->checkOpponent) {
+            // std::cout<< currentPiece.get()->icon << "can capture " << identifier << " king" << std::endl;
             opponentPieceThatCheck.emplace_back(currentPiece);
         }
     }

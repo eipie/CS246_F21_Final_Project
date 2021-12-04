@@ -38,8 +38,8 @@ class Player {
     
     // std::vector<PossibleMove> Player::kingEscapeTrap(Board & board);
     Player(int identifier, int currentScore=0);
-    Player(const Player &player);
-    virtual std::shared_ptr<Player> clone() =0;
+    Player(const Player &player,  bool needToCheckSelfCheck);
+    virtual std::shared_ptr<Player> clone( bool needToCheckSelfCheck) =0;
 
     void removePieces(Position p);
     // void addPieces(Position p, char c);

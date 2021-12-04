@@ -10,10 +10,10 @@ Bishop::Bishop(Position p, int identifier, bool isFirstMove) : ChessPieces(p, id
     }
 }
 
-std::shared_ptr<ChessPieces> Bishop::clone() {
-    return std::shared_ptr<ChessPieces>(new Bishop(*this));
+std::shared_ptr<ChessPieces> Bishop::clone( bool needToCheckSelfCheck) {
+    return std::shared_ptr<ChessPieces>(new Bishop(*this, needToCheckSelfCheck));
 }
-Bishop::Bishop(const Bishop &piece) : ChessPieces(piece){
+Bishop::Bishop(const Bishop &piece,  bool needToCheckSelfCheck) : ChessPieces(piece, needToCheckSelfCheck){
     
 }
 // Bishop (v|h|d *1)

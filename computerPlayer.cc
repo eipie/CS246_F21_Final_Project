@@ -5,16 +5,15 @@
 ComputerPlayer::ComputerPlayer(int identifier, int level, int currentScore) 
 : Player{identifier, currentScore}, level{level} {}
 
-ComputerPlayer::ComputerPlayer(const ComputerPlayer &computerPlayer) : Player(computerPlayer){
+ComputerPlayer::ComputerPlayer(const ComputerPlayer &computerPlayer,  bool needToCheckSelfCheck) : Player(computerPlayer,  needToCheckSelfCheck){
     level = computerPlayer.level;
 }
-
-std::shared_ptr<Player> ComputerPlayer::clone() {
+std::shared_ptr<Player> ComputerPlayer::clone( bool needToCheckSelfCheck) {
     std::cout << "copying Computer" << level << std::endl;
     return std::shared_ptr<Player>(new ComputerPlayer(*this));
 }
 
-bool ComputerPlayer::tryMakeMove(Move move, const Board & board) {
+bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
 
     if (level == 1) {
         // select a random piece from the all the chesspieces that the player has;
