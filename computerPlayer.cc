@@ -28,6 +28,7 @@ bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
                 totalNumMoves++;
             }
         }
+        std::srand(std::time(nullptr));
         int random_index = std::rand() % totalNumMoves;
         for (auto pieceSet : choices) {
             std::shared_ptr<std::vector<PossibleMove>> possMoves = pieceSet.second;
@@ -36,6 +37,11 @@ bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
                     //这里
                     PossibleMove nextMove = move;
                     Position from = pieceSet.first.get()->pos;
+                    std::cout << "current position x " << from.x << std::endl;
+                    std::cout << "current position y " << from.y << std::endl;
+
+                    std::cout << "target position x " << nextMove.to.x << std::endl;
+                    std::cout << "target position y " << nextMove.to.y << std::endl;
                     // call你那个method 直接move
                 }
                 random_index--;
