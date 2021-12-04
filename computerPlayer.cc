@@ -15,6 +15,7 @@ std::shared_ptr<Player> ComputerPlayer::clone( bool needToCheckSelfCheck) {
 
 bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
 
+    std::cout << "try to make a move for computer" << std::endl;
     if (level == 1) {
         // select a random piece from the all the chesspieces that the player has;
         auto it = playerPieces.begin();
@@ -136,7 +137,7 @@ bool ComputerPlayer::OpponentCaptureAvailable(Board &board) {
 
 Position ComputerPlayer::OpponentCapturePos(Board &board) {
 
-    std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> playerPossibleMoves = board.getPlayerPossibleMoves(opponentIdentifier);
+    std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove> > > playerPossibleMoves = board.getPlayerPossibleMoves(opponentIdentifier);
     for (auto i : playerPossibleMoves) {
         // for each entry in the map
         for (auto j: *i.second) {
