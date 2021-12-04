@@ -183,6 +183,9 @@ std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>
         std::shared_ptr<ChessPieces> currentPiece = pieceSet.second;
         // std::vector<PossibleMove> piecePossMoves = currentPiece.get()->getPossibleMoves(*this);
         auto piecePossMoves = std::make_shared<std::vector<PossibleMove>>(currentPiece.get()->getPossibleMoves(*this));
+        currentPiece.get()->pos.x = pieceSet.first.x;
+        currentPiece.get()->pos.y = pieceSet.first.y;
+        
         playerAllPossMoves[currentPiece]  = piecePossMoves;
     }
     return playerAllPossMoves;

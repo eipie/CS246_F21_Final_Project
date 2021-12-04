@@ -52,13 +52,10 @@ void Player::movePiece(Position from, Position to, Board & board) {
     auto fromFindResult = playerPieces.find(from);
     // auto toFindResult = playerPieces.find(to);
     if(fromFindResult != playerPieces.end()) {
-        // enPassantAvailabilityCorrect(fromFindResult->second, from, to);
         fromFindResult->second.get()->afterFirstMove();
-        // playerPieces.erase(to);
         board.removePiece(to, opponentIdentifier);
-        // fromFindResult->second.get()->isFirstMove=false;
-        fromFindResult->second.get()->pos = to;
-        // fromFindResult->second.get()->afterFirstMove();
+        fromFindResult->second.get()->pos.x = to.x;
+        fromFindResult->second.get()->pos.y = to.y;
         playerPieces[to] = fromFindResult->second;
         playerPieces.erase(from);
     } else {

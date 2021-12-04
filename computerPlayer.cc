@@ -28,15 +28,20 @@ bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
                 totalNumMoves++;
             }
         }
+        //加下面这行
+        std::srand(std::time(nullptr));
         int random_index = std::rand() % totalNumMoves;
         for (auto pieceSet : choices) {
             std::shared_ptr<std::vector<PossibleMove>> possMoves = pieceSet.second;
+            // std::cout << "at " << pieceSet.first.get()->icon << std::endl;
             for(auto move : *possMoves.get()) {
                 if(random_index==0) {
                     //这里
                     PossibleMove nextMove = move;
                     Position from = pieceSet.first.get()->pos;
                     // call你那个method 直接move
+                    std::cout << from.x << " | " << from.y << "   " << move.to.x << " | " << move.to.y << std::endl;
+                    movePiece(from, nextMove.to,board);
                 }
                 random_index--;
             }
