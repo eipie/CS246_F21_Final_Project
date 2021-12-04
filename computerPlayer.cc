@@ -9,29 +9,52 @@ ComputerPlayer::ComputerPlayer(const ComputerPlayer &computerPlayer,  bool needT
     level = computerPlayer.level;
 }
 std::shared_ptr<Player> ComputerPlayer::clone( bool needToCheckSelfCheck) {
-    std::cout << "copying Computer" << level << std::endl;
+    // std::cout << "copying Computer" << level << std::endl;
     return std::shared_ptr<Player>(new ComputerPlayer(*this));
 }
+
 
 bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
 
     std::cout << "try to make a move for computer" << std::endl;
     if (level == 1) {
-        // select a random piece from the all the chesspieces that the player has;
-        auto it = playerPieces.begin();
-        std::advance(it, rand() % playerPieces.size());
-        // a vector of all possible moves that the chesspiece may perform
-        std::vector<PossibleMove> allPossibleMoves = it->second->getPossibleMoves(board);
-        MakeMoveAtLevel1(it->second->pos, allPossibleMoves, board);
+        std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> choices = board.getPlayerPossibleMoves(identifier);
+        int random_index = std::rand() % choices.size();
+        for (auto pieceSet : choices) {
+            if(random_index==0) {
+                std::shared_ptr<std::vector<PossibleMove>> possMoves = pieceSet.second;
+                int random_move_index = std::rand() % possMoves.get()->size();
+                for(auto move : *possMoves.get()) {
+                    if(random_move_index==0) {
+                        //这里
+                        PossibleMove targetMove = move;
+                        Position startingPosition = pieceSet.first.get()->pos;
+                        std::cout << "secured move for level 1" << std::endl;
+                        std::cout << "starting position x " << startingPosition.x << std::endl;
+                        std::cout << "starting position y " << startingPosition.y << std::endl;
+                        std::cout << "target move x " << targetMove.to.x << std::endl;
+                        std::cout << "target move y " << targetMove.to.y << std::endl;
+                        // SimpleMakeMove(startingPosition, targetMove, board);
+                    }
+                    random_move_index--;
+                }
+            }
+            random_index--;
+        }
+        return true;
     }
     else if (level == 2) {
         // Call level 2 make move
+        std::cout << "computer make move at level 2" << std::endl;
         MakeMoveAtLevel2(board);
     }
     else if (level == 3) {
+        std::cout << "computer make move at level 3" << std::endl;
         MakeMoveAtLevel3(board);
     }
     else {
+        std::cout << "computer make move at level 4" << std::endl;
+
         // Call level 4 make move
     }
 
@@ -40,8 +63,16 @@ bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
 
 bool ComputerPlayer::SimpleMakeMove(Position currentPosition, PossibleMove nextMove, Board &board) {
 
-    std::shared_ptr<ChessPieces> targetPiece = getPieceAt(currentPosition);
+    std::cout << "current position x " << currentPosition.x << std::endl;
+    std::cout << "current position y " << currentPosition.y << std::endl;
+    
+    std::shared_ptr<ChessPieces> targetPiece = board.getPieceAt(currentPosition);
 
+    std::cout << "x " << targetPiece->pos.x << std::endl;
+    std::cout << "y " << targetPiece->pos.y << std::endl;
+    std::cout << "icon " << targetPiece->icon << std::endl;
+
+    std::cout << "target piece acquired" << std::endl;
     if (nextMove.kingSideCastle || nextMove.queenSideCastle) {
         movePiece(nextMove.rookFrom, nextMove.rookTo, board);
     }
@@ -54,7 +85,9 @@ bool ComputerPlayer::SimpleMakeMove(Position currentPosition, PossibleMove nextM
             return false;
         }
     }
-    enPassantAvailabilityCorrect(board.getPieceAt(currentPosition), board, currentPosition, nextMove.to);
+    std::cout << "checking enpassant" << std::endl;
+    enPassantAvailabilityCorrect(targetPiece, board, currentPosition, nextMove.to);
+    std::cout << "good to move now" << std::endl;
     movePiece(currentPosition, nextMove.to, board);
     return true;
  
@@ -63,10 +96,13 @@ bool ComputerPlayer::SimpleMakeMove(Position currentPosition, PossibleMove nextM
 
 bool ComputerPlayer::MakeMoveAtLevel1(Position currentPosition, std::vector<PossibleMove> availableMoves, Board & board) {
 
-    auto it = availableMoves.begin();
-    std::advance(it, rand() % availableMoves.size());
-    
-    SimpleMakeMove(currentPosition, *it, board);
+    // auto it = availableMoves.begin();
+    // std::advance(it, rand() % availableMoves.size());
+    std::cout << "number of available moves: " << availableMoves.size() << std::endl;
+
+    PossibleMove choseMove = availableMoves[rand() % availableMoves.size()];
+    std::cout << "success" << std::endl;
+    SimpleMakeMove(currentPosition, choseMove, board);
     return true;
 
 }

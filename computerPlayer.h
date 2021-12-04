@@ -3,11 +3,13 @@
 #include "player.h"
 #include "move.h"
 #include "possibleMove.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include "position.h"
 #include <algorithm>
 #include <iterator>
 #include <map>
+#include <ctime>
+
 class ComputerPlayer : public Player {
     int level;
     public:
