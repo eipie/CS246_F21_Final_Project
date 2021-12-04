@@ -4,8 +4,8 @@
 class Knight : public ChessPieces {
     public:
     Knight(Position p, int identifier, bool isFirstMove=true);
-    std::shared_ptr<ChessPieces> clone() override;
-    Knight(const Knight &piece);
+    std::shared_ptr<ChessPieces> clone( bool needToCheckSelfCheck) override;
+    Knight(const Knight &piece,  bool needToCheckSelfCheck);
     std::vector<PossibleMove> getPossibleMoves(const Board & board) override;
 };
 

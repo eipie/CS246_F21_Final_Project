@@ -5,13 +5,14 @@
 ChessPieces::ChessPieces(Position p, int identifier, bool isFirstMove) 
     : ownerIdentifier{identifier}, isFirstMove{isFirstMove}, pos{p}{}
 
-ChessPieces::ChessPieces(const ChessPieces &chessPieces) {
+ChessPieces::ChessPieces(const ChessPieces &chessPieces,  bool needToCheckSelfCheck) {
     pos = chessPieces.pos;
     icon = chessPieces.icon;
     isFirstMove = chessPieces.isFirstMove;
     checkOpponent  = chessPieces.checkOpponent;
     availableForEnPassant = chessPieces.availableForEnPassant;
     ownerIdentifier = chessPieces.ownerIdentifier;
+    this->needCheckSelfCheck = needToCheckSelfCheck;
 }
 
 void ChessPieces::afterFirstMove() {
@@ -36,7 +37,16 @@ int ChessPieces::tryAddNextMoveCandidate(const Board & board, std::vector<Possib
             PossibleMove newPossMove;
             newPossMove.capture = noCapture;
             newPossMove.to = candidate;
-            if(!isCurrentPlayerKingInCheckAfterMove(newPossMove,board)) {   
+            // break
+            if(pos.x==1 && pos.y==2 && candidate.x==1 && candidate.y == 4) {
+
+            }
+            bool checkResult = isCurrentPlayerKingInCheckAfterMove(newPossMove,board);
+            if(!checkResult) {   
+/*                 if(icon=='k' || icon=='K') {
+                    std::cout << "k can move " <<candidate.x << candidate.y << std::endl;
+                } */
+                // std::cout << icon << "  "<< pos.x <<","<<pos.y << " | " << candidate.x <<","<<candidate.y<< "  not current in check" << std::endl;
                 if((icon == 'p'||icon=='P') && (candidate.y == 8 || candidate.y == 1)) {
                     newPossMove.isPromotion=true;
                     if(ownerIdentifier==1) {
@@ -70,6 +80,7 @@ int ChessPieces::tryAddNextMoveCandidate(const Board & board, std::vector<Possib
                         }
                     }
                     if(pieceResult=='K'||pieceResult=='k') {
+                        // std::cout<< icon << "can capture " << pieceResult << std::endl;
                         checkOpponent = true;
                     }    
                     possibleMove.emplace_back(newPossMove);
@@ -98,40 +109,52 @@ int ChessPieces::tryAddNextMoveCandidate(const Board & board, std::vector<Possib
 }
 
 bool ChessPieces::isCurrentPlayerKingInCheckAfterMove(Move newMove, const Board & board) {
-    if(!(withinBound(newMove.from) && withinBound(newMove.to))) {
+    if(needCheckSelfCheck) {
+        if(!(withinBound(newMove.from) && withinBound(newMove.to))) {
         // error
         throw;
+        }
+        // **Make a copy of the board
+        Board newBoard(board, false);
+        newBoard.makeAMoveWithoutCheck(newMove.from, newMove.to, ownerIdentifier);
+        // newBoard.makeAMove(newMove, ownerIdentifier);
+        return (newBoard.putInCheck(ownerIdentifier).size()!=0);
     }
-    // **Make a copy of the board
-    Board newBoard(board);
-    newBoard.makeAMoveWithoutCheck(newMove.from, newMove.to, ownerIdentifier);
-    // newBoard.makeAMove(newMove, ownerIdentifier);
-    return (newBoard.putInCheck(ownerIdentifier).size()!=0);
+    return false;
 }
 
 bool ChessPieces::isCurrentPlayerKingInCheckAfterMove(PossibleMove possMove, const Board & board) {
-    int opponentIdentifier;
-    if(ownerIdentifier==1) {
-        opponentIdentifier=0;
-    } else {
-        opponentIdentifier=1;
-    }
-    if(!(withinBound(possMove.to))) {
-        // error
-        throw;
-    }
-    // **Make a copy of the board
-    Board newBoard(board);
-    if(possMove.kingSideCastle || possMove.queenSideCastle) {
-        // std::cout << "we are here!" << std::endl;
-        newBoard.makeAMoveWithoutCheck(possMove.rookFrom, possMove.rookTo, ownerIdentifier);
+    if(needCheckSelfCheck) {
+                int opponentIdentifier;
+        if(ownerIdentifier==1) {
+            opponentIdentifier=0;
+        } else {
+            opponentIdentifier=1;
+        }
+        if(!(withinBound(possMove.to))) {
+            // error
+            throw;
+            return false;
+        }
+        // **Make a copy of the board
+        Board newBoard(board, false);
+        if(possMove.kingSideCastle || possMove.queenSideCastle) {
+            // std::cout << "we are here!" << std::endl;
+            newBoard.makeAMoveWithoutCheck(possMove.rookFrom, possMove.rookTo, ownerIdentifier);
+        } 
+        if(possMove.enPassant) { 
+            // remove opponent pawn
+            newBoard.removePiece(possMove.enPassantLoc, opponentIdentifier);
+        } 
+        // Move m(pos, possMove.to);
+        newBoard.makeAMoveWithoutCheck(pos, possMove.to, ownerIdentifier);
+        // .(m, ownerIdentifier);
+    /*     if(icon=='k' || icon=='K') {
+            std::cout << "checking " << icon << " put itself in check";
+        } */
+        auto checkResult = newBoard.putInCheck(ownerIdentifier);
+        return (checkResult.size()!=0);
     } 
-    if(possMove.enPassant) { 
-        // remove opponent pawn
-        newBoard.removePiece(possMove.enPassantLoc, opponentIdentifier);
-    } 
-    // Move m(pos, possMove.to);
-    newBoard.makeAMoveWithoutCheck(pos, possMove.to, ownerIdentifier);
-    // .(m, ownerIdentifier);
-    return (newBoard.putInCheck(ownerIdentifier).size()!=0);
+    return false;
+
 }

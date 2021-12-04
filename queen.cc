@@ -11,10 +11,10 @@ Queen::Queen(Position p, int identifier, bool isFirstMove) : ChessPieces(p, iden
     }
 }
 
-std::shared_ptr<ChessPieces> Queen::clone() {
-    return std::shared_ptr<ChessPieces>(new Queen(*this));
+std::shared_ptr<ChessPieces> Queen::clone( bool needToCheckSelfCheck) {
+    return std::shared_ptr<ChessPieces>(new Queen(*this,  needToCheckSelfCheck));
 }
-Queen::Queen(const Queen &piece) : ChessPieces(piece){
+Queen::Queen(const Queen &piece,  bool needToCheckSelfCheck) : ChessPieces(piece, needToCheckSelfCheck){
     
 }
 

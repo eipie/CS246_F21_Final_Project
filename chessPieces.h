@@ -25,7 +25,7 @@ class ChessPieces {
     bool isFirstMove=true;
     bool checkOpponent;
     bool availableForEnPassant = false;
-    
+    bool needCheckSelfCheck = true;
     // void makingAMove(Position form, Position to);
     // if(isFirstMove==true);
             // all pieces except Pawn:
@@ -40,8 +40,8 @@ class ChessPieces {
     Position pos;
     char icon;
     ChessPieces(Position p, int identifier, bool isFirstMove=true);
-    ChessPieces(const ChessPieces &chessPieces);
-    virtual std::shared_ptr<ChessPieces> clone() =0;
+    ChessPieces(const ChessPieces &chessPieces,  bool needToCheckSelfCheck);
+    virtual std::shared_ptr<ChessPieces> clone( bool needToCheckSelfCheck) =0;
     virtual std::vector<PossibleMove> getPossibleMoves(const Board & board) = 0;
     
     // change isFirstMove to false if true; special case for Pawn

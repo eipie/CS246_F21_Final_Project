@@ -13,10 +13,10 @@ King::King(Position p, int identifier, bool isFirstMove)
     }
 }
 
-std::shared_ptr<ChessPieces> King::clone() {
-    return std::shared_ptr<ChessPieces>(new King(*this));
+std::shared_ptr<ChessPieces> King::clone( bool needToCheckSelfCheck) {
+    return std::shared_ptr<ChessPieces>(new King(*this, needToCheckSelfCheck));
 }
-King::King(const King &piece) : ChessPieces(piece){
+King::King(const King &piece,  bool needToCheckSelfCheck) : ChessPieces(piece, needToCheckSelfCheck){
     
 }
 
