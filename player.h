@@ -5,8 +5,8 @@
 #include <map>
 #include "move.h"
 
-class PossibleMove;
-class Position;
+struct PossibleMove;
+struct Position;
 class ChessPieces;
 class Board;
 class Player {
