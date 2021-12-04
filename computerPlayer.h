@@ -16,7 +16,7 @@ class ComputerPlayer : public Player {
         ComputerPlayer(const ComputerPlayer &computerPlayer,  bool needToCheckSelfCheck);
         std::shared_ptr<Player> clone( bool needToCheckSelfCheck) override;
         bool tryMakeMove(Move m, Board & board) override;
-        
+        bool tryMakeMove(Move move, Board & board);
 
 };
 #endif
