@@ -1,23 +1,64 @@
 #include "chessGame.h"
-#include "board.h"
 #include "move.h"
 #include "position.h"
-#include "player.h"
 #include <string>
 #include <iostream>
 #include <sstream>
 
 int main() {
-    std::vector<int> levels{0,1};
-    ChessGame *chess = new ChessGame(true, false, levels);
-
+    ChessGame *chess;
     std::string line;
     while (std::getline(std::cin, line)) {
         std::string command;
         std::stringstream ss(line);
         ss >> command;
         if (command == "game") {
-            //determine human-computer game
+            std::string game1;
+            std::string game2;
+            std::vector<int> levels{0,0};
+            bool isHuman1 = true;
+            bool isHuman2 = true;
+            if (ss >> game1) {
+                if (game1 == "human") {
+                } else if (game1 ==  "computer[1]") {
+                    isHuman1 = false;
+                    levels[0] = 1;
+                } else if (game1 == "computer[2]") {
+                    isHuman1 = false;
+                    levels[0] = 2;
+                } else if (game1 == "computer[3]") {
+                    isHuman1 = false;
+                    levels[0] = 3;
+                } else if (game1 == "computer[4]") {
+                    isHuman1 = false;
+                    levels[0] = 4;
+                } else {
+                    //invalid
+                }
+            } else {
+                //invalid
+            }
+            if (ss >> game2) {
+                if (game2 == "human") {
+                } else if (game2 ==  "computer[1]") {
+                    isHuman2 = false;
+                    levels[1] = 1;
+                } else if (game2 ==  "computer[2]") {
+                    isHuman2 = false;
+                    levels[1] = 2;
+                } else if (game2 ==  "computer[3]") {
+                    isHuman2 = false;
+                    levels[1] = 3;
+                } else if (game2 ==  "computer[4]") {
+                    isHuman2 = false;
+                    levels[1] = 4;
+                } else {
+                    //invalid
+                }
+            } else {
+                //invalid
+            }
+            chess = new ChessGame(isHuman1, isHuman2, levels);
         } else if (command == "resign") {
             std::cout << chess->resign() << std::endl;
             break;
@@ -50,27 +91,19 @@ int main() {
                 moveResult = chess->makeAMove(nextMove);
             }
             std::cout << moveResult << std::endl;
-           /* from.x = from_str[0] - 'a' + 1;
-            from.y = from_str[1] - '0';
-            to.x = to_str[0] - 'a' + 1;
-            to.y = to_str[1] - '0';
-            // Move nextMove(from, to);
-            Move nextMove;
-            nextMove.from = from;
-            nextMove.to = to;
-            char promo;
-            if (ss >> promo) {
-                nextMove.isPromotion = true;
-                nextMove.promotionType = promo;
-            }
-            chess->makeAMove(nextMove);*/
-        } else if (command == "setup") { // check if the game has started, then allow setup;
+        } else if (command == "setup") { 
+            // check if the game has started, then allow setup;
             // while loop until the user type done, then call isboardvalid
             std::string operation;
             ss >> operation;
             while (true) {
-                if (operation != "done") {
-                    break;
+                if (operation == "done") {
+                    if (chess->isBoardSetupValid()) {
+                        break;
+                    } else {
+                        // cout << "Cannot leave set up mode yet" << endl;
+                        continue;
+                    }
                 } else if (operation == "+") {
                     char p;
                     std::string pos_str;
@@ -116,3 +149,19 @@ int main() {
     std::cout << "Black: " << chess->blackPlayerScore() << std::endl;
     delete chess;
 }
+
+
+           /* from.x = from_str[0] - 'a' + 1;
+            from.y = from_str[1] - '0';
+            to.x = to_str[0] - 'a' + 1;
+            to.y = to_str[1] - '0';
+            // Move nextMove(from, to);
+            Move nextMove;
+            nextMove.from = from;
+            nextMove.to = to;
+            char promo;
+            if (ss >> promo) {
+                nextMove.isPromotion = true;
+                nextMove.promotionType = promo;
+            }
+            chess->makeAMove(nextMove);*/

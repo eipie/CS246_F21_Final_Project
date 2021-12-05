@@ -39,6 +39,7 @@ class Board{
     bool ifInCheck(int identifier) const;
     void disableAllEnPassant();
     void makeAMoveWithoutCheck(Position from, Position to, int identifier);
+    bool noPawnFirstLastRow(); // added
     // std::cout << "already reached here" << std::endl;
 };
 
