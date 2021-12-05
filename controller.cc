@@ -8,7 +8,7 @@
 #include <sstream>
 
 int main() {
-    std::vector<int> levels{0,1};
+    std::vector<int> levels{0,2};
     ChessGame *chess = new ChessGame(true, false, levels);
 
     std::string line;

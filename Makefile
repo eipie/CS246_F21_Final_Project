@@ -4,11 +4,11 @@
 
 # Compiler settings - Can be customized.
 CC = g++
-CXXFLAGS = -std=c++11 -Wall
+CXXFLAGS = -std=c++14 -Wall
 LDFLAGS = 
 
 # Makefile settings - Can be customized.
-APPNAME = myapp
+APPNAME = chess
 EXT = .cc
 SRCDIR = .
 OBJDIR = .

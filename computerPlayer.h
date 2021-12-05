@@ -18,12 +18,12 @@ class ComputerPlayer : public Player {
         ComputerPlayer(const ComputerPlayer &computerPlayer,  bool needToCheckSelfCheck);
         std::shared_ptr<Player> clone( bool needToCheckSelfCheck) override;
         bool tryMakeMove(Move m, Board & board) override;
+        bool randomLegalMove(Board &board);
         bool SimpleMakeMove(Position currentPosition, PossibleMove nextMove, Board & board);
-        bool MakeMoveAtLevel1(Position currentPosition, std::vector<PossibleMove> availableMoves, Board & board);
-        bool MakeMoveAtLevel2(Board & board);
         bool OpponentCaptureAvailable(Board & board);
         Position OpponentCapturePos(Board & board);
-        bool MakeMoveAtLevel3(Board & board);
+        bool captureCheckPriorityMove(Board & board);
+        bool avoidCapturePriorityMove(Board & board);
 
 };
 #endif
