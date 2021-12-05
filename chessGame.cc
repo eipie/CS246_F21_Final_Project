@@ -63,11 +63,11 @@ std::string ChessGame::resign() {
 }
 
 
-int ChessGame::whitePlayerScore() {
+double ChessGame::whitePlayerScore() {
     return players[white].get()->currentScore;
 }
 
-int ChessGame::blackPlayerScore() {
+double ChessGame::blackPlayerScore() {
     return players[black].get()->currentScore;
 }
 
@@ -110,6 +110,7 @@ std::string ChessGame::makeAMove(Move nextMove) {
             break;
         case 3:
             for(auto player:players) {
+                // ++ works but +=0.5 don't!
                 player.get()->currentScore+=0.5;
                 outputString = "Stalemate!";
             }

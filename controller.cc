@@ -8,8 +8,8 @@
 #include <sstream>
 
 int main() {
-    std::vector<int> levels{0,1};
-    ChessGame *chess = new ChessGame(true, false, levels);
+    std::vector<int> levels{0,0};
+    ChessGame *chess = new ChessGame(true, true, levels);
 
     std::string line;
     while (std::getline(std::cin, line)) {
