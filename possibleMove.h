@@ -17,6 +17,10 @@ struct PossibleMove {
     Position enPassantLoc;
     bool isPromotion=false;
     char promotionType;
+
+
+
+    
     PossibleMove(){}
     PossibleMove(const PossibleMove& pm) {
         to = pm.to;

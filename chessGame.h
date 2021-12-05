@@ -5,10 +5,10 @@
 #include <vector>
 class Board;
 class Player;
-class Move;
+struct Move;
 class Observer;
 
-class Position;
+struct Position;
 // class BoardSetup;
 // class Position;
 
