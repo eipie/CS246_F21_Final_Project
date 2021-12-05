@@ -37,7 +37,7 @@ int Board::makeAMove(Move m, int currentPlayer) {
         auto oppAllPossMove = getPlayerPossibleMoves(opponent);
         bool oppNoPossMove =true;
         for(auto chessPiecePair: oppAllPossMove) {
-            if(chessPiecePair.second.get()->size()!=0) {
+            if(chessPiecePair.second.get() != nullptr&&chessPiecePair.second.get()->size()!=0) {
                 oppNoPossMove=false;
                 break;
             }
@@ -45,7 +45,7 @@ int Board::makeAMove(Move m, int currentPlayer) {
         auto currAllPossMove = getPlayerPossibleMoves(currentPlayer);
         bool currNoPossMove =true;
         for(auto chessPiecePair: currAllPossMove) {
-            if(chessPiecePair.second.get()->size()!=0) {
+            if(chessPiecePair.second.get()->size()!=0|| chessPiecePair.second.get() != nullptr) {
                 currNoPossMove=false;
                 break;
             }

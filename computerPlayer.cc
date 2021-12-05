@@ -2,7 +2,7 @@
 #include "board.h"
 #include <iostream>
 
-ComputerPlayer::ComputerPlayer(int identifier, int level, int currentScore) 
+ComputerPlayer::ComputerPlayer(int identifier, int level, double currentScore) 
 : Player{identifier, false, currentScore}, level{level} {}
 
 ComputerPlayer::ComputerPlayer(const ComputerPlayer &computerPlayer,  bool needToCheckSelfCheck) : Player(computerPlayer,  needToCheckSelfCheck){

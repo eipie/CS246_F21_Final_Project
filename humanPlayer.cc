@@ -10,7 +10,7 @@
 #include "bishop.h"
 #include <iostream>
 
-HumanPlayer::HumanPlayer(int identifier, int currentScore) : Player{identifier,true, currentScore}{}
+HumanPlayer::HumanPlayer(int identifier, double currentScore) : Player{identifier,true, currentScore}{}
 HumanPlayer::HumanPlayer(const HumanPlayer &humanPlayer,  bool needToCheckSelfCheck) : Player(humanPlayer, needToCheckSelfCheck){}
 std::shared_ptr<Player> HumanPlayer::clone( bool needToCheckSelfCheck){
     // std::cout << "copying Human" << std::endl;
