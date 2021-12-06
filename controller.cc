@@ -8,10 +8,14 @@
 int main() {
     ChessGame *chess;
     std::string line;
+    bool gameHasStarted = false;
+    bool isFirstTime = true;
+    bool inSetUp = false;
     while (std::getline(std::cin, line)) {
         std::string command;
         std::stringstream ss(line);
         ss >> command;
+        std::string moveResult;
         if (command == "game") {
             std::string game1;
             std::string game2;
@@ -33,10 +37,10 @@ int main() {
                     isHuman1 = false;
                     levels[0] = 4;
                 } else {
-                    //invalid
+                    std::cout << "The input for white player is not valid" << std::endl;
                 }
             } else {
-                //invalid
+                std::cout << "No white player is given" << std::endl;
             }
             if (ss >> game2) {
                 if (game2 == "human") {
@@ -53,12 +57,13 @@ int main() {
                     isHuman2 = false;
                     levels[1] = 4;
                 } else {
-                    //invalid
+                    std::cout << "The input for black player is not valid" << std::endl;
                 }
             } else {
-                //invalid
+                std::cout << "No black player is given" << std::endl;
             }
             chess = new ChessGame(isHuman1, isHuman2, levels);
+            gameHasStarted = true;
         } else if (command == "resign") {
             std::cout << chess->resign() << std::endl;
             break;
@@ -68,7 +73,6 @@ int main() {
             Position from;
             Position to;
             Move nextMove;
-            std::string moveResult;
             if (ss >> from_str >> to_str) {
                 from.x = from_str[0] - 'a' + 1;
                 from.y = from_str[1] - '0';
@@ -91,58 +95,69 @@ int main() {
                 moveResult = chess->makeAMove(nextMove);
             }
             std::cout << moveResult << std::endl;
-        } else if (command == "setup") { 
-            // check if the game has started, then allow setup;
-            // while loop until the user type done, then call isboardvalid
-            std::string operation;
-            ss >> operation;
-            while (true) {
-                if (operation == "done") {
-                    if (chess->isBoardSetupValid()) {
-                        break;
-                    } else {
-                        // cout << "Cannot leave set up mode yet" << endl;
-                        continue;
+        } else if (command == "setup") {
+            if (gameHasStarted) {
+                inSetUp = true;
+                if (isFirstTime) {
+                    std::vector<int> change = {1, 2, 3, 4, 5, 6, 7, 8};
+                    for(int x:change) {
+                        for(int y:change) {
+                            Position p;
+                            p.x=x;
+                            p.y=y;
+                            chess->removePiece(p);
+                        }  
                     }
-                } else if (operation == "+") {
-                    char p;
-                    std::string pos_str;
-                    if (ss >> p >> pos_str) {
-                        Position pos;
-                        pos.x = pos_str[0] - 'a' + 1;
-                        pos.y = pos_str[1] - '0';
-                        chess->addPiece(pos, p);
-                    } else {
-                        //
-                    }
-                } else if (operation == "-") {
+                }
+            } else {
+                std::cout << "Game has not started yet" << std::endl;
+            }
+        }
+        if (inSetUp) {
+            if (command == "done") {
+                //if (chess->isBoardSetupValid()) {
+                inSetUp = false;
+                //} else {
+                // cout << "Cannot leave set up mode yet" << endl;
+                //}
+            } else if (command == "+") {
+                char p;
+                std::string pos_str;
+                if (ss >> p >> pos_str) {
+                Position pos;
+                pos.x = pos_str[0] - 'a' + 1;
+                pos.y = pos_str[1] - '0';
+                chess->addPiece(pos, p);
+                chess->render();
+                } else {
+                    std::cout << "Error, the command should be in the form '+ k e1'" << std::endl;
+                }  
+            } else if (command == "-") {
+                std::string pos_str;
+                if (ss >> pos_str) {
                     Position pos;
-                    std::string pos_str;
-                    if (ss >> pos_str) {
-                        pos.x = pos_str[0] - 'a' + 1;
-                        pos.y = pos_str[1] - '0';
-                        chess->removePiece(pos);
+                    pos.x = pos_str[0] - 'a' + 1;
+                    pos.y = pos_str[1] - '0';
+                    chess->removePiece(pos);
+                    chess->render();
                     } else {
-                        //
+                        std::cout << "Error, the command should be in the form '- e1'" << std::endl;
                     }
-                } else if (operation == "=") {
-                    std::string colour;
-                    if (ss >> colour) {
-                        if (colour == "black") {
-                            chess->nextTurn();
-                        } else if (colour == "white") {
-                            chess->nextTurn();
+            } else if (command == "=") { //??
+                std::string colour;
+                if (ss >> colour) {
+                    if (colour == "black" || colour == "white") {
+                        chess->nextTurn();
                         } else {
                             //invalid
                         }
-                    } else {
-                        //
-                    }
                 } else {
-                    // else invalid
+                    //invalid
                 }
+            } else {
+                //invalid
             }
-        }
+        } 
     }
     std::cout << "Final Score:" << std::endl;
     std::cout << "White: " << chess->whitePlayerScore() << std::endl;
@@ -165,3 +180,79 @@ int main() {
                 nextMove.promotionType = promo;
             }
             chess->makeAMove(nextMove);*/
+
+
+
+
+
+
+
+            /*} else if (command == "setup") { 
+            if (isFirstTime) {
+                std::vector<int> change = {1, 2, 3, 4, 5, 6, 7, 8};
+                for(int x:change) {
+                    for(int y:change) {
+                        Position p;
+                        p.x=x;
+                        p.y=y;
+                        chess->removePiece(p);
+                    }
+                }
+            }
+            if (!gameHasStarted) {  // check if the game has started, then allow setup;
+                std::cout << "Game has not started yet" << std::endl;
+            } else {
+                std::cout << "Game started" << std::endl;
+            // while loop until the user type done, then call isboardvalid
+                std::string operation;
+                std::string moveResult;
+                while (ss >> operation) {
+                    std::cout << "operation ready" << operation << std::endl;
+                        if (operation == "done") {
+                            //if (chess->isBoardSetupValid()) {
+                                break;
+                            //} else {
+                                // cout << "Cannot leave set up mode yet" << endl;
+                            //    continue;
+                        //}
+                        } else if (operation == "+") {
+                            char p;
+                            std::string pos_str;
+                            if (ss >> p >> pos_str) {
+                                Position pos;
+                                pos.x = pos_str[0] - 'a' + 1;
+                                pos.y = pos_str[1] - '0';
+                                chess->addPiece(pos, p);
+                                chess->render();
+                            } else {
+                                //
+                            }
+                        } else if (operation == "-") {
+                            std::string pos_str;
+                            if (ss >> pos_str) {
+                                Position pos;
+                                pos.x = pos_str[0] - 'a' + 1;
+                                pos.y = pos_str[1] - '0';
+                                chess->removePiece(pos);
+                                chess->render();
+                            } else {
+                                //
+                            }
+                        } else if (operation == "=") {
+                            std::string colour;
+                            if (ss >> colour) {
+                                if (colour == "black" || colour == "white") {
+                                    chess->nextTurn();
+                                } else {
+                                    //invalid
+                                }
+                            } else {
+                                //
+                            }
+                        } else {
+                            //invalid
+                        }
+                }
+                isFirstTime = false;
+            }
+        }*/
