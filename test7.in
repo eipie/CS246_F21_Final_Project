@@ -1,3 +1,4 @@
+game human human
 move e2 e4
 move e7 e6
 move d2 d4
@@ -325,4 +326,3 @@ move h7 g8
 move h4 h3
 move g8 f8
 move h3 h8
-move a2 a4

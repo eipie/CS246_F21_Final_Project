@@ -54,8 +54,7 @@ std::vector<PossibleMove> Pawn::getPossibleMoves(const Board & board) {
         candidates.emplace_back(x-1, y-1);
         candidates.emplace_back(x+1, y-1);
     }
-
-    if (isFirstMove && board.isEmpty(candidates[0])) {
+    if (isFirstMove && board.isEmpty(candidates[0])&&board.isEmpty(candidates[1])) {
         tryAddNextMoveCandidate(board, possMoves, candidates[0]);
     }
     if (board.isEmpty(candidates[1])) {

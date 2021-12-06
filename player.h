@@ -24,7 +24,6 @@ class Player {
     std::shared_ptr<ChessPieces> getKing();
     // computer always true
     bool tryDoPawnPromotion(char promotion, Position promoteLoc, int identifier, Board & board);
-    ChessPieces * tryDoPawnPromotion(char promotion, ChessPieces * target);
     // computer always true
     bool moveWithSpecial(PossibleMove possMove);
     // return all possible ways current player can escape Check
@@ -34,11 +33,11 @@ class Player {
     bool isHuman;
     // use map for easier lookup
     bool isInCheck = false;
-    int currentScore=0;
+    double currentScore=0;
     std::map<Position, std::shared_ptr<ChessPieces>> playerPieces;
     
     // std::vector<PossibleMove> Player::kingEscapeTrap(Board & board);
-    Player(int identifier, bool isHuman, int currentScore=0);
+    Player(int identifier, bool isHuman, double currentScore=0);
     Player(const Player &player,  bool needToCheckSelfCheck);
     virtual std::shared_ptr<Player> clone( bool needToCheckSelfCheck) =0;
 
@@ -51,6 +50,7 @@ class Player {
     std::shared_ptr<ChessPieces> getPieceAt(Position p) const;
     virtual bool tryMakeMove(Move m, Board & board) = 0;
     void disableAllEnPassant();
+    int countKing(); // should seperate black and white
     // std::map<std::shared_ptr<ChessPieces>, std::vector<PossibleMove>> getPlayerPossibleMoves();
 
 };

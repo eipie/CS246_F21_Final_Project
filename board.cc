@@ -1,6 +1,5 @@
 #include "board.h"
 #include "move.h"
-// #include "boardSetup.h"
 #include "player.h"
 #include "chessPieces.h"
 #include <iostream>
@@ -38,7 +37,7 @@ int Board::makeAMove(Move m, int currentPlayer) {
         auto oppAllPossMove = getPlayerPossibleMoves(opponent);
         bool oppNoPossMove =true;
         for(auto chessPiecePair: oppAllPossMove) {
-            if(chessPiecePair.second.get()->size()!=0) {
+            if(chessPiecePair.second.get() != nullptr&&chessPiecePair.second.get()->size()!=0) {
                 oppNoPossMove=false;
                 break;
             }
@@ -46,7 +45,7 @@ int Board::makeAMove(Move m, int currentPlayer) {
         auto currAllPossMove = getPlayerPossibleMoves(currentPlayer);
         bool currNoPossMove =true;
         for(auto chessPiecePair: currAllPossMove) {
-            if(chessPiecePair.second.get()->size()!=0) {
+            if(chessPiecePair.second.get()->size()!=0|| chessPiecePair.second.get() != nullptr) {
                 currNoPossMove=false;
                 break;
             }
@@ -60,8 +59,9 @@ int Board::makeAMove(Move m, int currentPlayer) {
             }
             players[opponent].get()->isInCheck=true;
             return 1;
-        } else if(oppNoPossMove||currNoPossMove) {
-            // stallmate
+        } else if((oppNoPossMove||currNoPossMove) && 
+        !(players[opponent].get()->isInCheck) && !(players[currentPlayer].get()->isInCheck)) { // also they are not in check
+            // stalemate
             return 3;
         }
         for(auto player:players) {
@@ -183,13 +183,48 @@ std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>
         std::shared_ptr<ChessPieces> currentPiece = pieceSet.second;
         // std::vector<PossibleMove> piecePossMoves = currentPiece.get()->getPossibleMoves(*this);
         auto piecePossMoves = std::make_shared<std::vector<PossibleMove>>(currentPiece.get()->getPossibleMoves(*this));
+        currentPiece.get()->pos.x = pieceSet.first.x;
+        currentPiece.get()->pos.y = pieceSet.first.y;
+        
         playerAllPossMoves[currentPiece]  = piecePossMoves;
     }
     return playerAllPossMoves;
 }
 
-// dummy return value
-bool Board::isBoardSetupValid() const{
+bool Board::noPawnFirstLastRow() {
+    Position p{1, 1};
+    for (int i = 1; i <= 8; ++i) {
+        std::vector<int> row = {1, 8};
+        for(int j:row) {
+            p.x = i;
+            p.y = j;
+            if (getPieceCharAt(p) == 'p' || getPieceCharAt(p) == 'P') {
+               return true;
+            }
+        }
+    }
+    return false;
+}
+
+// One black kings, one white king
+// No pawns in first or last row
+// Neither king is in check
+bool Board::isBoardSetupValid() const {
+    std::shared_ptr<ChessPieces> c = nullptr;
+    for(auto player: players) {
+       if (player.get()->countKing() != 2) {
+           return false;
+       }
+    }
+    //if (noPawnFirstLastRow()) {
+    //   return false;
+    //}
+    if (players[0].get()->isInCheck) { //check for black
+        return false;
+    }
+    if (players[1].get()->isInCheck) { //check for white
+        return false;
+    }
     return true;
 }
 

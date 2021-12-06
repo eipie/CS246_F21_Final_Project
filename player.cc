@@ -10,7 +10,7 @@
 #include <iostream>
 #include <algorithm>
 
-Player::Player(int identifier, bool isHuman, int currentScore) :  identifier{identifier}, isHuman{isHuman},isInCheck{false}, currentScore{currentScore}{
+Player::Player(int identifier, bool isHuman, double currentScore) :  identifier{identifier}, isHuman{isHuman},isInCheck{false}, currentScore{currentScore}{
     // std::cout<< "calling constructor" << std::endl;
     if(identifier==1) {
         opponentIdentifier = 0;
@@ -52,13 +52,10 @@ void Player::movePiece(Position from, Position to, Board & board) {
     auto fromFindResult = playerPieces.find(from);
     // auto toFindResult = playerPieces.find(to);
     if(fromFindResult != playerPieces.end()) {
-        // enPassantAvailabilityCorrect(fromFindResult->second, from, to);
         fromFindResult->second.get()->afterFirstMove();
-        // playerPieces.erase(to);
         board.removePiece(to, opponentIdentifier);
-        // fromFindResult->second.get()->isFirstMove=false;
-        fromFindResult->second.get()->pos = to;
-        // fromFindResult->second.get()->afterFirstMove();
+        fromFindResult->second.get()->pos.x = to.x;
+        fromFindResult->second.get()->pos.y = to.y;
         playerPieces[to] = fromFindResult->second;
         playerPieces.erase(from);
     } else {
@@ -102,6 +99,18 @@ std::shared_ptr<ChessPieces> Player::getKing() {
         }
     }
     return nullptr;
+}
+
+
+int Player::countKing() {
+    int count = 0;
+    for(auto pieceSet: playerPieces) {
+        auto pieceCandidate = pieceSet.second;
+        if (pieceCandidate.get()->icon == 'k' || 'K') {
+            ++count;
+        }
+    }
+    return count;
 }
 
 std::shared_ptr<ChessPieces> Player::getPieceAt(Position p) const {
@@ -285,26 +294,7 @@ bool Player::tryDoPawnPromotion(char promotion, Position promoteLoc, int identif
     return false;
 }
 
-ChessPieces* Player::tryDoPawnPromotion(char promotion, ChessPieces * target) {
-    if((identifier==0 && (promotion == 'p'|| promotion == 'r'|| promotion == 'n'|| promotion == 'b'|| promotion == 'q'))
-        || (identifier==1 && (promotion == 'P'|| promotion == 'R'|| promotion == 'N'|| promotion == 'B'|| promotion == 'Q'))) {
-        
-        if(promotion== 'p'||promotion=='P') {
 
-        } else if(promotion== 'r'||promotion=='R') {
-            // std::cout << "promoting...." << promotion << std::endl;
-            return new Rook(target->pos, identifier, false);
-            
-        } else if(promotion== 'n'||promotion=='N') {
-            return new Knight(target->pos, identifier, false);
-        } else if(promotion== 'b'||promotion=='B') {
-            return new Bishop(target->pos, identifier, false);
-        } else if(promotion== 'q'||promotion=='Q') {
-            return new Queen(target->pos, identifier, false);
-        }
-    } 
-    return nullptr;
-}
 
 
 /* void Player::moveWithSpecial(std::shared_ptr<ChessPieces> targetPiece, PossibleMove possMove, Board & board) {

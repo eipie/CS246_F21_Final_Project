@@ -14,7 +14,7 @@ class ComputerPlayer : public Player {
     int level;
     public:
     // white/black AND level of player
-        ComputerPlayer(int identifier, int level, int currentScore=0);
+        ComputerPlayer(int identifier, int level, double currentScore=0);
         ComputerPlayer(const ComputerPlayer &computerPlayer,  bool needToCheckSelfCheck);
         std::shared_ptr<Player> clone( bool needToCheckSelfCheck) override;
         bool tryMakeMove(Move m, Board & board) override;
