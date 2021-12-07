@@ -191,7 +191,7 @@ std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>
     return playerAllPossMoves;
 }
 
-bool Board::noPawnFirstLastRow() {
+bool Board::noPawnFirstLastRow() const {
     Position p{1, 1};
     for (int i = 1; i <= 8; ++i) {
         std::vector<int> row = {1, 8};
@@ -210,20 +210,26 @@ bool Board::noPawnFirstLastRow() {
 // No pawns in first or last row
 // Neither king is in check
 bool Board::isBoardSetupValid() const {
-    std::shared_ptr<ChessPieces> c = nullptr;
     for(auto player: players) {
-       if (player.get()->countWhiteKing() != 1 || 
-       player.get()->countBlackKing() != 1) {
+       if (player.get()->countWhiteKing() != 1) {
+           std::cout << "w check" << std::endl;
+           return false;
+       }
+       if (player.get()->countBlackKing() != 1) {
+           std::cout << "b check" << std::endl;
            return false;
        }
     }
-    //if (noPawnFirstLastRow()) {
-    //   return false;
-    //}
+    if (noPawnFirstLastRow()) {
+        std::cout << "pawn" << std::endl;
+       return false;
+    }
     if (players[0].get()->isInCheck) { //check for black
+    std::cout << "b check" << std::endl;
         return false;
     }
     if (players[1].get()->isInCheck) { //check for white
+    std::cout << "w check" << std::endl;
         return false;
     }
     return true;

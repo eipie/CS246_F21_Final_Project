@@ -4,9 +4,10 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <memory>
 
 int main() {
-    ChessGame *chess;
+    std::unique_ptr<ChessGame>chess;
     std::string line;
     bool gameHasStarted = false;
     bool isFirstTime = true;
@@ -16,110 +17,105 @@ int main() {
         std::stringstream ss(line);
         ss >> command;
         std::string moveResult;
-        if (command == "game") {
-            std::string game1;
-            std::string game2;
-            std::vector<int> levels{0,0};
-            bool isHuman1 = true;
-            bool isHuman2 = true;
-            if (ss >> game1) {
-                if (game1 == "human") {
-                } else if (game1 ==  "computer[1]") {
-                    isHuman1 = false;
-                    levels[0] = 1;
-                } else if (game1 == "computer[2]") {
-                    isHuman1 = false;
-                    levels[0] = 2;
-                } else if (game1 == "computer[3]") {
-                    isHuman1 = false;
-                    levels[0] = 3;
-                } else if (game1 == "computer[4]") {
-                    isHuman1 = false;
-                    levels[0] = 4;
-                } else {
-                    std::cout << "The input for white player is not valid" << std::endl;
-                }
-            } else {
-                std::cout << "No white player is given" << std::endl;
-            }
-            if (ss >> game2) {
-                if (game2 == "human") {
-                } else if (game2 ==  "computer[1]") {
-                    isHuman2 = false;
-                    levels[1] = 1;
-                } else if (game2 ==  "computer[2]") {
-                    isHuman2 = false;
-                    levels[1] = 2;
-                } else if (game2 ==  "computer[3]") {
-                    isHuman2 = false;
-                    levels[1] = 3;
-                } else if (game2 ==  "computer[4]") {
-                    isHuman2 = false;
-                    levels[1] = 4;
-                } else {
-                    std::cout << "The input for black player is not valid" << std::endl;
-                }
-            } else {
-                std::cout << "No black player is given" << std::endl;
-            }
-            chess = new ChessGame(isHuman1, isHuman2, levels);
-            gameHasStarted = true;
-        } else if (command == "resign") {
-            std::cout << chess->resign() << std::endl;
-            break;
-        } else if (command == "move") {
-            std::string from_str;
-            std::string to_str;
-            Position from;
-            Position to;
-            Move nextMove;
-            if (ss >> from_str >> to_str) {
-                from.x = from_str[0] - 'a' + 1;
-                from.y = from_str[1] - '0';
-                to.x = to_str[0] - 'a' + 1;
-                to.y = to_str[1] - '0';
-                nextMove.from = from;
-                nextMove.to = to;
-                char promo;
-                if (ss >> promo) {
-                    nextMove.isPromotion = true;
-                    nextMove.promotionType = promo;
-                    Move nextMove(from , to, promo);
-                    moveResult = chess->makeAMove(nextMove);
-                } else {
-                    Move nextMove(from, to);
-                    moveResult = chess->makeAMove(nextMove);
-                }
-            } else {
-                Move nextMove;
-                moveResult = chess->makeAMove(nextMove);
-            }
-            std::cout << moveResult << std::endl;
-        } else if (command == "setup") {
-            if (gameHasStarted) {
-                inSetUp = true;
-                if (isFirstTime) {
-                    std::vector<int> change = {1, 2, 3, 4, 5, 6, 7, 8};
-                    for(int x:change) {
-                        for(int y:change) {
-                            Position p;
-                            p.x=x;
-                            p.y=y;
-                            chess->removePiece(p);
-                        }  
+        if (!inSetUp) {
+            if (command == "game") {
+                std::string game1;
+                std::string game2;
+                std::vector<int> levels{0,0};
+                bool isHuman1 = true;
+                bool isHuman2 = true;
+                if (ss >> game1) {
+                    if (game1 == "human") {
+                    } else if (game1 ==  "computer[1]") {
+                        isHuman1 = false;
+                        levels[0] = 1;
+                    } else if (game1 == "computer[2]") {
+                        isHuman1 = false;
+                        levels[0] = 2;
+                    } else if (game1 == "computer[3]") {
+                        isHuman1 = false;
+                        levels[0] = 3;
+                    } else if (game1 == "computer[4]") {
+                        isHuman1 = false;
+                        levels[0] = 4;
+                    } else {
+                        std::cout << "The input for white player is not valid" << std::endl;
                     }
+                } else {
+                    std::cout << "No white player is given" << std::endl;
                 }
-            } else {
-                std::cout << "Game has not started yet" << std::endl;
+                if (ss >> game2) {
+                    if (game2 == "human") {
+                    } else if (game2 ==  "computer[1]") {
+                        isHuman2 = false;
+                        levels[1] = 1;
+                    } else if (game2 ==  "computer[2]") {
+                        isHuman2 = false;
+                        levels[1] = 2;
+                    } else if (game2 ==  "computer[3]") {
+                        isHuman2 = false;
+                        levels[1] = 3;
+                    } else if (game2 ==  "computer[4]") {
+                        isHuman2 = false;
+                        levels[1] = 4;
+                    } else {
+                        std::cout << "The input for black player is not valid" << std::endl;
+                    }
+                } else {
+                    std::cout << "No black player is given" << std::endl;
+                }
+                chess = std::make_unique<ChessGame>(isHuman1, isHuman2, levels);
+                gameHasStarted = true;
+            } else if (command == "resign") {
+                std::cout << chess->resign() << std::endl;
+                break;
+            } else if (command == "move") {
+                std::string from_str;
+                std::string to_str;
+                Position from;
+                Position to;
+                Move nextMove;
+                if (ss >> from_str >> to_str) {
+                    from.x = from_str[0] - 'a' + 1;
+                    from.y = from_str[1] - '0';
+                    to.x = to_str[0] - 'a' + 1;
+                    to.y = to_str[1] - '0';
+                    nextMove.from = from;
+                    nextMove.to = to;
+                    char promo;
+                    if (ss >> promo) {
+                        nextMove.isPromotion = true;
+                        nextMove.promotionType = promo;
+                        Move nextMove(from , to, promo);
+                        moveResult = chess->makeAMove(nextMove);
+                    } else {
+                        Move nextMove(from, to);
+                        moveResult = chess->makeAMove(nextMove);
+                    }
+                } else {
+                    Move nextMove;
+                    moveResult = chess->makeAMove(nextMove);
+                }
+                std::cout << moveResult << std::endl;
+            } else if (command == "setup") {
+                if (gameHasStarted) {
+                    inSetUp = true;
+                    if (isFirstTime) {
+                        chess->makeBlankBoard();
+                    }
+                    chess->render();
+                    continue;
+                } else {
+                    std::cout << "Game has not started yet" << std::endl;
+                }
             }
-        }
-        if (inSetUp) {
+        } else {
             if (command == "done") {
-                //if (chess->isBoardSetupValid()) {
-                inSetUp = false;
-                //} else {
-                // cout << "Cannot leave set up mode yet" << endl;
-                //}
+                if (chess->isBoardSetupValid()) {
+                    inSetUp = false;
+                } else {
+                    std::cout << "Cannot leave set up mode yet" << std::endl;
+                }
             } else if (command == "+") {
                 char p;
                 std::string pos_str;
@@ -143,7 +139,7 @@ int main() {
                     } else {
                         std::cout << "Error, the command should be in the form '- e1'" << std::endl;
                     }
-            } else if (command == "=") { //??
+            } else if (command == "=") {
                 std::string colour;
                 if (ss >> colour) {
                     if (colour == "black") {
@@ -164,7 +160,6 @@ int main() {
     std::cout << "Final Score:" << std::endl;
     std::cout << "White: " << chess->whitePlayerScore() << std::endl;
     std::cout << "Black: " << chess->blackPlayerScore() << std::endl;
-    delete chess;
 }
 
 
