@@ -212,7 +212,8 @@ bool Board::noPawnFirstLastRow() {
 bool Board::isBoardSetupValid() const {
     std::shared_ptr<ChessPieces> c = nullptr;
     for(auto player: players) {
-       if (player.get()->countKing() != 2) {
+       if (player.get()->countWhiteKing() != 1 || 
+       player.get()->countBlackKing() != 1) {
            return false;
        }
     }
