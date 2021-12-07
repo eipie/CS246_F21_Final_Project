@@ -134,6 +134,18 @@ void ChessGame::attachObserver(Observer *o) {
     observers.emplace_back(o);
 }
 
+void ChessGame::makeBlankBoard() {
+    std::vector<int> change = {1, 2, 3, 4, 5, 6, 7, 8};
+        for(int x:change) {
+            for(int y:change) {
+                Position p;
+                p.x=x;
+                p.y=y;
+                removePiece(p);
+            }  
+        }
+}
+
 void ChessGame::detachObserver(Observer *o) {
     for (auto it = observers.begin(); it != observers.end();) {
         if (*it == o) {

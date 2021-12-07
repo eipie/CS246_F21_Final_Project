@@ -32,6 +32,7 @@ class ChessGame {
     bool isMoveValid(Move nextMove);
     // attempt to makeAMove; return true success, return false, failure
     std::string makeAMove(Move nextMove);
+    void makeBlankBoard();
     void newRound();
     void removePiece(Position p);
     void addPiece(Position p, char c);
