@@ -101,12 +101,22 @@ std::shared_ptr<ChessPieces> Player::getKing() {
     return nullptr;
 }
 
-
-int Player::countKing() {
+int Player::countBlackKing() {
     int count = 0;
     for(auto pieceSet: playerPieces) {
         auto pieceCandidate = pieceSet.second;
-        if (pieceCandidate.get()->icon == 'k' || 'K') {
+        if (pieceCandidate.get()->icon == 'k') {
+            ++count;
+        }
+    }
+    return count;
+}
+
+int Player::countWhiteKing() {
+    int count = 0;
+    for(auto pieceSet: playerPieces) {
+        auto pieceCandidate = pieceSet.second;
+        if (pieceCandidate.get()->icon == 'K') {
             ++count;
         }
     }
