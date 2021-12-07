@@ -146,16 +146,18 @@ int main() {
             } else if (command == "=") { //??
                 std::string colour;
                 if (ss >> colour) {
-                    if (colour == "black" || colour == "white") {
-                        chess->nextTurn();
-                        } else {
-                            //invalid
-                        }
+                    if (colour == "black") {
+                        chess->setCurrentPlayer(1);
+                    } else if (colour == "white") {
+                        chess->setCurrentPlayer(0);
+                    } else {
+                        std::cout << "Next player should be black or white" << std::endl;
+                    }
                 } else {
-                    //invalid
+                    std::cout << "Error, the command should be in the form '= colour'" << std::endl;
                 }
             } else {
-                //invalid
+                std::cout << "Error, the given input is not valid" << std::endl;
             }
         } 
     }
