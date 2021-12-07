@@ -97,8 +97,10 @@ void Board::resetBoard() {
 void Board::addPiece(Position p, char c) {
     if(isupper(c)) {
         players[1].get()->addPiece( p,  c);
+        removePiece(p,0);
     } else {
         players[0].get()->addPiece( p,  c);
+        removePiece(p,1);
     }
 }
 
@@ -152,7 +154,7 @@ std::shared_ptr<ChessPieces> Board::getPieceAt(Position p) const {
 }
 
 // return a list of pieces in opponent that can put identifier's pieces in check
-std::vector<std::shared_ptr<ChessPieces>> Board::putInCheck(int identifier) {
+std::vector<std::shared_ptr<ChessPieces>> Board::putInCheck(int identifier) const{
     std::vector<std::shared_ptr<ChessPieces>> opponentPieceThatCheck;
     std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> playerPossibleMoves;
     std::map<Position, std::shared_ptr<ChessPieces>> playerPieces;
@@ -176,7 +178,7 @@ std::vector<std::shared_ptr<ChessPieces>> Board::putInCheck(int identifier) {
 }
 
 
-std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> Board::getPlayerPossibleMoves(int idenfitier) {
+std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> Board::getPlayerPossibleMoves (int idenfitier) const {
     std::map<Position, std::shared_ptr<ChessPieces>> playerPieces = players[idenfitier].get()->playerPieces;
     std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> playerAllPossMoves;
     for(auto pieceSet: playerPieces) {
@@ -211,7 +213,7 @@ bool Board::noPawnFirstLastRow() const {
 bool Board::isBoardSetupValid() const {
     for(auto player: players) {
        if (player.get()->countKing() != 1) {
-           std::cout << "w check" << std::endl;
+           std::cout << "king" << std::endl;
            return false;
        }
     }
@@ -219,11 +221,11 @@ bool Board::isBoardSetupValid() const {
         std::cout << "pawn" << std::endl;
        return false;
     }
-    if (players[0].get()->isInCheck) { //check for black
+    if (putInCheck(0).size()!=0) { //check for black
     std::cout << "b check" << std::endl;
         return false;
     }
-    if (players[1].get()->isInCheck) { //check for white
+    if (putInCheck(1).size()!=0) { //check for white
     std::cout << "w check" << std::endl;
         return false;
     }

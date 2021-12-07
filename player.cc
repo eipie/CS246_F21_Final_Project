@@ -110,6 +110,10 @@ int Player::countKing() {
                     ++count;
                 }
             }
+            // for testing only...
+            if(count==0) {
+                std::cout << "white" << std::endl;
+            }
             return count;
     } else {
             for(auto pieceSet: playerPieces) {
@@ -117,6 +121,9 @@ int Player::countKing() {
                 if (pieceCandidate.get()->icon == 'k') {
                     ++count;
                 }
+            }
+            if(count==0) {
+                std::cout << "black" << std::endl;
             }
             return count;
     }
@@ -202,26 +209,32 @@ void Player::addPiece(Position p, char c) {
     {
     case 'b':
     case 'B':
+        removePieces(p);
         newPiece = std::make_shared<Bishop>(p,identifier);
         break;
     case 'k':
     case 'K':
+        removePieces(p);
         newPiece = std::make_shared<King>(p,identifier);
         break;
     case 'p':
     case 'P':
+        removePieces(p);
         newPiece = std::make_shared<Pawn>(p,identifier);
         break;
     case 'q':
     case 'Q':
+        removePieces(p);
         newPiece = std::make_shared<Queen>(p,identifier);
         break;
     case 'r':
     case 'R':
+        removePieces(p);
         newPiece = std::make_shared<Rook>(p,identifier);
         break;
     case 'n':
     case 'N':
+        removePieces(p);
         newPiece = std::make_shared<Knight>(p,identifier);
         break;
     default:

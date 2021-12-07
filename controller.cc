@@ -111,6 +111,7 @@ int main() {
                     inSetUp = true;
                     if (isFirstTime) {
                         chess->makeBlankBoard();
+                        isFirstTime=false;
                     }
                     chess->render();
                     continue;
@@ -119,6 +120,8 @@ int main() {
                 } else {
                     std::cout << "Game is still running, can't enter setup!" << std::endl;
                 }
+            } else {
+                std::cout<<"Error, the given input is not valid"<<std::endl;
             }
         } else {
             if (command == "done") {
