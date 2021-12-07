@@ -101,6 +101,18 @@ std::shared_ptr<ChessPieces> Player::getKing() {
     return nullptr;
 }
 
+
+int Player::countKing() {
+    int count = 0;
+    for(auto pieceSet: playerPieces) {
+        auto pieceCandidate = pieceSet.second;
+        if (pieceCandidate.get()->icon == 'k' || 'K') {
+            ++count;
+        }
+    }
+    return count;
+}
+
 std::shared_ptr<ChessPieces> Player::getPieceAt(Position p) const {
     auto findResult = playerPieces.find(p);
     if(findResult != playerPieces.end()) {

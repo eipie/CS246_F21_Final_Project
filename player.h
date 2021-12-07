@@ -50,6 +50,7 @@ class Player {
     std::shared_ptr<ChessPieces> getPieceAt(Position p) const;
     virtual bool tryMakeMove(Move m, Board & board) = 0;
     void disableAllEnPassant();
+    int countKing(); // should seperate black and white
     // std::map<std::shared_ptr<ChessPieces>, std::vector<PossibleMove>> getPlayerPossibleMoves();
 
 };
