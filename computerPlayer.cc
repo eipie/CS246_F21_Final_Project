@@ -31,6 +31,7 @@ bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
         //加下面这行
         std::srand(std::time(nullptr));
         int random_index = std::rand() % totalNumMoves;
+        std::cout << random_index <<std::endl;
         for (auto pieceSet : choices) {
             std::shared_ptr<std::vector<PossibleMove>> possMoves = pieceSet.second;
             // std::cout << "at " << pieceSet.first.get()->icon << std::endl;
