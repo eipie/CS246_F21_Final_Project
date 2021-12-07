@@ -210,12 +210,8 @@ bool Board::noPawnFirstLastRow() const {
 // Neither king is in check
 bool Board::isBoardSetupValid() const {
     for(auto player: players) {
-       if (player.get()->countWhiteKing() != 1) {
+       if (player.get()->countKing() != 1) {
            std::cout << "w check" << std::endl;
-           return false;
-       }
-       if (player.get()->countBlackKing() != 1) {
-           std::cout << "b check" << std::endl;
            return false;
        }
     }

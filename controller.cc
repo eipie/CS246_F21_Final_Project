@@ -12,6 +12,7 @@ int main() {
     bool gameHasStarted = false;
     bool isFirstTime = true;
     bool inSetUp = false;
+    bool isSetUpAllowed=true;
     while (std::getline(std::cin, line)) {
         std::string command;
         std::stringstream ss(line);
@@ -40,9 +41,11 @@ int main() {
                         levels[0] = 4;
                     } else {
                         std::cout << "The input for white player is not valid" << std::endl;
+                        continue;
                     }
                 } else {
                     std::cout << "No white player is given" << std::endl;
+                    continue;
                 }
                 if (ss >> game2) {
                     if (game2 == "human") {
@@ -60,9 +63,11 @@ int main() {
                         levels[1] = 4;
                     } else {
                         std::cout << "The input for black player is not valid" << std::endl;
+                        continue;
                     }
                 } else {
                     std::cout << "No black player is given" << std::endl;
+                    continue;
                 }
                 chess = std::make_unique<ChessGame>(isHuman1, isHuman2, levels);
                 gameHasStarted = true;
@@ -70,6 +75,7 @@ int main() {
                 std::cout << chess->resign() << std::endl;
                 break;
             } else if (command == "move") {
+                isSetUpAllowed=false;
                 std::string from_str;
                 std::string to_str;
                 Position from;
@@ -96,23 +102,29 @@ int main() {
                     Move nextMove;
                     moveResult = chess->makeAMove(nextMove);
                 }
+                if(chess.get()->roundEnds) {
+                    isSetUpAllowed=true;
+                }
                 std::cout << moveResult << std::endl;
             } else if (command == "setup") {
-                if (gameHasStarted) {
+                if (gameHasStarted&&isSetUpAllowed) {
                     inSetUp = true;
                     if (isFirstTime) {
                         chess->makeBlankBoard();
                     }
                     chess->render();
                     continue;
+                } else if (!gameHasStarted){
+                    std::cout << "Game has not started yet, can't enter setup!" << std::endl;
                 } else {
-                    std::cout << "Game has not started yet" << std::endl;
+                    std::cout << "Game is still running, can't enter setup!" << std::endl;
                 }
             }
         } else {
             if (command == "done") {
                 if (chess->isBoardSetupValid()) {
                     inSetUp = false;
+                    std::cout<<"Successfully exited setup mode!"<<std::endl;
                 } else {
                     std::cout << "Cannot leave set up mode yet" << std::endl;
                 }

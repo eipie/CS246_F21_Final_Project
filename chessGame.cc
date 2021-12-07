@@ -72,6 +72,7 @@ double ChessGame::blackPlayerScore() {
 }
 
 std::string ChessGame::makeAMove(Move nextMove) {
+    roundEnds=false;
     // std::cout << nextMove.from.x << nextMove.from.y << "   " << nextMove.to.x <<nextMove.to.y  << std::endl;
     if((players[currentPlayer].get()->isHuman && !nextMove.containsInput)||(!players[currentPlayer].get()->isHuman&&nextMove.containsInput)) {
         return "Input not match player type!! Please enter again";
@@ -122,6 +123,8 @@ std::string ChessGame::makeAMove(Move nextMove) {
         render();
         if(moveResult==2 || moveResult==3) {
             newRound();
+            //alert controller
+            roundEnds=true;
         }
     } else {
         render();

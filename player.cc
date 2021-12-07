@@ -101,27 +101,28 @@ std::shared_ptr<ChessPieces> Player::getKing() {
     return nullptr;
 }
 
-int Player::countBlackKing() {
+int Player::countKing() {
     int count = 0;
-    for(auto pieceSet: playerPieces) {
-        auto pieceCandidate = pieceSet.second;
-        if (pieceCandidate.get()->icon == 'k') {
-            ++count;
-        }
+    if(identifier==1) {
+            for(auto pieceSet: playerPieces) {
+                auto pieceCandidate = pieceSet.second;
+                if (pieceCandidate.get()->icon == 'K') {
+                    ++count;
+                }
+            }
+            return count;
+    } else {
+            for(auto pieceSet: playerPieces) {
+                auto pieceCandidate = pieceSet.second;
+                if (pieceCandidate.get()->icon == 'k') {
+                    ++count;
+                }
+            }
+            return count;
     }
     return count;
 }
 
-int Player::countWhiteKing() {
-    int count = 0;
-    for(auto pieceSet: playerPieces) {
-        auto pieceCandidate = pieceSet.second;
-        if (pieceCandidate.get()->icon == 'K') {
-            ++count;
-        }
-    }
-    return count;
-}
 
 std::shared_ptr<ChessPieces> Player::getPieceAt(Position p) const {
     auto findResult = playerPieces.find(p);
