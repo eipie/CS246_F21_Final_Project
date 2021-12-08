@@ -63,6 +63,11 @@ void Player::movePiece(Position from, Position to, Board & board) {
     }
 }
 
+int Player::getAllPieceScore() {
+
+}
+
+
 /* std::vector<PossibleMove> Player::kingEscapeTrap(Board & board) {
     std::vector<PossibleMove> allKingMove = getKing().get()->getPossibleMoves(board);
     auto allOpponentsNextMove = board.getPlayerPossibleMoves(opponentIdentifier);

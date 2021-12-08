@@ -4,8 +4,8 @@
 
 # Compiler settings - Can be customized.
 CC = g++
-CXXFLAGS = -std=c++14 -Wall
-LDFLAGS = 
+CXXFLAGS = -std=c++14 -Wall -MMD -Werror=vla
+LDFLAGS = -lX11
 
 # Makefile settings - Can be customized.
 APPNAME = chess

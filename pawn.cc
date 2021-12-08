@@ -3,6 +3,7 @@
 #include "board.h"
 
 Pawn::Pawn(Position p, int identifier, bool isFirstMove) : ChessPieces(p, identifier, isFirstMove){
+    weight = 1;
     if(identifier==1) {
         icon='P';
     } else {

@@ -39,6 +39,7 @@ class ChessPieces {
     //      do nothing
     Position pos;
     char icon;
+    int weight = -1;
     ChessPieces(Position p, int identifier, bool isFirstMove=true);
     ChessPieces(const ChessPieces &chessPieces,  bool needToCheckSelfCheck);
     virtual std::shared_ptr<ChessPieces> clone( bool needToCheckSelfCheck) =0;
