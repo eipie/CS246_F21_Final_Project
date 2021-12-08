@@ -89,7 +89,7 @@ int main() {
                 Position from;
                 Position to;
                 Move nextMove;
-                if (ss >> from_str >> to_str) {
+                if (ss >> from_str && ss >> to_str) {
                     from.x = from_str[0] - 'a' + 1;
                     from.y = from_str[1] - '0';
                     to.x = to_str[0] - 'a' + 1;
