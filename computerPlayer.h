@@ -20,8 +20,8 @@ class ComputerPlayer : public Player {
         bool tryMakeMove(Move m, Board & board) override;
         bool randomLegalMove(Board &board);
         bool SimpleMakeMove(Position currentPosition, PossibleMove nextMove, Board & board);
-        bool OpponentCaptureAvailable(Board & board);
-        Position OpponentCapturePos(Board & board);
+        bool OpponentCaptureAvailable(Board &board, Position p);
+        Position escapeCapture(Board &board, Position piecePosition);
         bool captureCheckPriorityMove(Board & board);
         bool avoidCapturePriorityMove(Board & board);
 
