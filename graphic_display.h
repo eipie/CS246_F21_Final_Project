@@ -11,18 +11,14 @@ class GraphicDisplay: public Observer {
     const char BLACK = '_';
     const char WHITE = ' ';
     ChessGame *subject;
-    int t;
-    int b;
-    int l;
-    int r;
-    int cols;
-    int rows;
-    int unitSize = 10;
+    const int cols=10;
+    const int rows=10;
+    int unitSize = 35;
     void drawBackground();
     void drawSquare(int i, int j, char filling);
     std::unique_ptr<Xwindow> w;
     public:
-    GraphicDisplay( ChessGame *chessGame, int t, int b, int l, int r);
+    GraphicDisplay( ChessGame *chessGame);
     void update() override;
 };
 

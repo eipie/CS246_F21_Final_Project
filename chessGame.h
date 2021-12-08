@@ -22,7 +22,6 @@ class ChessGame {
     std::shared_ptr<Board> board;
     std::vector<Observer *> observers;
     std::shared_ptr<Observer> textObserver;
-    std::shared_ptr<Observer> graphicObserver;
     // std::vector<Observer> observers;
     public:
     bool roundEnds=true;
