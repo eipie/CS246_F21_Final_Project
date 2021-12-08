@@ -111,7 +111,7 @@ bool ComputerPlayer::captureCheckPriorityMove(Board & board) {
         for(auto move : *possMoves.get()) {
             Board tempBoard{board};
             // std::cout << "temporary copy created" << std::endl;
-            const Position starting_position = pieceSet.first->pos;
+            const Position starting_position = pieceSet.first.get()->pos;
             const Position target_position = move.to;
             std::cout << "current position: " << starting_position.x << ", " << starting_position.y << std::endl;
             std::cout << "target position: " << target_position.x << ", " << target_position.y  << std::endl;
@@ -126,7 +126,7 @@ bool ComputerPlayer::captureCheckPriorityMove(Board & board) {
             }
             if (move.capture != ' ') {
                 std::cout << "found capture move  " << pieceSet.first.get()->icon << std::endl;
-                std::cout << pieceSet.first->pos.x << " | " << pieceSet.first->pos.y  << std::endl;
+                std::cout << pieceSet.first.get()->pos.x << " | " << pieceSet.first.get()->pos.y  << std::endl;
                 std::cout << starting_position.x << " | " << starting_position.y  << std::endl;
                  std::cout << move.to.x << " | " << move.to.y  << std::endl;
                 SimpleMakeMove(starting_position, move, board);
