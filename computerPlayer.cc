@@ -45,22 +45,22 @@ bool ComputerPlayer::randomLegalMove(Board &board) {
 
 bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
 
-    std::cout << "try to make a move for computer" << std::endl;
+    // std::cout << "try to make a move for computer" << std::endl;
 
     if (level == 1) {
         randomLegalMove(board);
     }
     else if (level == 2) {
         // Call level 2 make move
-        std::cout << "computer make move at level 2" << std::endl;
+        // std::cout << "computer make move at level 2" << std::endl;
         captureCheckPriorityMove(board);
     }
     else if (level == 3) {
-        std::cout << "computer make move at level 3" << std::endl;
+        // std::cout << "computer make move at level 3" << std::endl;
         avoidCapturePriorityMove(board);
     }
     else {
-        std::cout << "computer make move at level 4" << std::endl;
+        // std::cout << "computer make move at level 4" << std::endl;
 
         // Call level 4 make move
     }
@@ -101,25 +101,25 @@ bool ComputerPlayer::captureCheckPriorityMove(Board & board) {
     std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> choices = board.getPlayerPossibleMoves(identifier);
     for (auto pieceSet : choices) {
         std::shared_ptr<std::vector<PossibleMove>> possMoves = pieceSet.second;
-        std::cout << "at " << pieceSet.first.get()->icon << std::endl;
+        // std::cout << "at " << pieceSet.first.get()->icon << std::endl;
         for(auto move : *possMoves.get()) {
-            Board tempBoard{board, false};
-            std::cout << "temporary copy created" << std::endl;
+            Board tempBoard{board};
+            // std::cout << "temporary copy created" << std::endl;
             Position starting_position = pieceSet.first->pos;
             Position target_position = move.to;
             std::cout << "current position: " << starting_position.x << ", " << starting_position.y << std::endl;
             std::cout << "target position: " << target_position.x << ", " << target_position.y  << std::endl;
-            Move currentMove = Move(starting_position, target_position);
+            Move currentMove{starting_position, target_position};
 
-            int result = tempBoard.makeAMove(currentMove, identifier);
-
-            if (result == 1) {
-                std::cout << "found check move" << std::endl;
+            // int result = tempBoard.makeAMove(currentMove, identifier);
+            tempBoard.makeAMoveWithoutCheck(starting_position, target_position, identifier);
+            if (tempBoard.ifInCheck(opponentIdentifier)) {
+                // std::cout << "found check move" << std::endl;
                 SimpleMakeMove(starting_position, move, board);
                 return true;
-            } 
+            }
             if (move.capture != ' ') {
-                std::cout << "found capture move" << std::endl;
+                // std::cout << "found capture move" << std::endl;
                 SimpleMakeMove(starting_position, move, board);
                 return true;
             }
