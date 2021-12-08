@@ -71,7 +71,7 @@ bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
 bool ComputerPlayer::SimpleMakeMove(Position currentPosition, PossibleMove nextMove, Board &board) {
 
     std::shared_ptr<ChessPieces> targetPiece = getPieceAt(currentPosition);
-
+    std::cout << "we are here" << std::endl;
     if (nextMove.kingSideCastle || nextMove.queenSideCastle) {
         movePiece(nextMove.rookFrom, nextMove.rookTo, board);
     }
@@ -113,19 +113,19 @@ bool ComputerPlayer::captureCheckPriorityMove(Board & board) {
 
             // int result = tempBoard.makeAMove(currentMove, identifier);
             tempBoard.makeAMoveWithoutCheck(starting_position, target_position, identifier);
-            if (tempBoard.ifInCheck(opponentIdentifier)) {
-                // std::cout << "found check move" << std::endl;
+            if (tempBoard.putInCheck(opponentIdentifier).size()!=0) {
+                std::cout << "found check move" << std::endl;
                 SimpleMakeMove(starting_position, move, board);
                 return true;
             }
             if (move.capture != ' ') {
-                // std::cout << "found capture move" << std::endl;
+                std::cout << "found capture move" << std::endl;
                 SimpleMakeMove(starting_position, move, board);
                 return true;
             }
         }
     }
-
+    std::cout<<"performing randomeLegal" <<std::endl;
     // since there's no capture or check move available for the player, the player will make a random legal move from its current piece
     randomLegalMove(board);
 
