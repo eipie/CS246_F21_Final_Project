@@ -94,6 +94,10 @@ void Board::resetBoard() {
     }
 }
 
+int Board::getPlayerAllPiecesWeight(int identifier) const {
+    return players[identifier].get()->getAllPieceScore();
+}
+
 void Board::addPiece(Position p, char c) {
     if(isupper(c)) {
         players[1].get()->addPiece( p,  c);

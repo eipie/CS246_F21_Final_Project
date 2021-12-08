@@ -40,7 +40,7 @@ class Player {
     Player(int identifier, bool isHuman, double currentScore=0);
     Player(const Player &player,  bool needToCheckSelfCheck);
     virtual std::shared_ptr<Player> clone( bool needToCheckSelfCheck) =0;
-    int getAllPieceScore();
+    int getAllPieceScore() const;
     void removePieces(Position p);
     // void addPieces(Position p, char c);
     void resetAllPieces();

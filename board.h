@@ -31,6 +31,7 @@ class Board{
     std::shared_ptr<ChessPieces> getPieceAt(Position p) const;
     char isOpponentPiece(Position target, int identifier) const;
     bool isEmpty(Position target) const;
+    int getPlayerAllPiecesWeight(int identifier) const;
     // return all pieces that currently puts identifier's king in check
     std::vector<std::shared_ptr<ChessPieces>> putInCheck(int identifier) const;
     // all possible moves of all the pieces player identifier has

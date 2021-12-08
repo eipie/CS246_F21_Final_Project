@@ -63,8 +63,12 @@ void Player::movePiece(Position from, Position to, Board & board) {
     }
 }
 
-int Player::getAllPieceScore() {
-
+int Player::getAllPieceScore() const {
+    int totalScore;
+    for(auto piece:playerPieces) {
+        totalScore+=piece.second->weight;
+    }
+    return totalScore;
 }
 
 

@@ -24,6 +24,6 @@ class ComputerPlayer : public Player {
         Position escapeCapture(Board &board, Position piecePosition);
         bool captureCheckPriorityMove(Board & board);
         bool avoidCapturePriorityMove(Board & board);
-
+        bool smartMove(Board & board);
 };
 #endif

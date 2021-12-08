@@ -61,7 +61,7 @@ bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
     }
     else {
         // std::cout << "computer make move at level 4" << std::endl;
-
+        smartMove(board);
         // Call level 4 make move
     }
 
@@ -193,4 +193,31 @@ bool ComputerPlayer::avoidCapturePriorityMove(Board &board) {
 
 }
 
+bool ComputerPlayer::smartMove(Board &board) {
 
+    std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> allPossibleMoves = board.getPlayerPossibleMoves(identifier);
+    int playerValue = board.getPlayerAllPiecesWeight(identifier);
+    int opponentValue = board.getPlayerAllPiecesWeight(opponentIdentifier);
+
+    int bestValue = 0;
+    int currentValue;
+    for (auto i: allPossibleMoves) {
+        for (auto j: *i.second) {
+            Board tempBoard{board};
+            Position starting_position = i.first->pos;
+            Position target_position = j.to;
+            tempBoard.makeAMoveWithoutCheck(starting_position, target_position, identifier);
+            playerValue = tempBoard.getPlayerAllPiecesWeight(identifier);
+            opponentValue = tempBoard.getPlayerAllPiecesWeight(opponentIdentifier);
+            std::cout << "player value: " << playerValue << std::endl;
+            std::cout << "opponent value: " << opponentValue << std::endl;
+            currentValue = playerValue - opponentValue;
+            if (currentValue > bestValue) {
+                bestValue = currentValue;
+            }
+        }
+    }
+
+    std::cout << "best value possible is: " << bestValue << std::endl;
+    
+}

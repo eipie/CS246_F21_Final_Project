@@ -8,7 +8,7 @@
 #include "humanPlayer.h"
 #include "computerPlayer.h"
 #include <iostream>
-#include "graphic_display.h"
+// #include "graphic_display.h"
 // #include "graphic_display.h"
 // #include  "boardSetup.h"
 
@@ -32,7 +32,7 @@ ChessGame::ChessGame(bool isHuman1, bool isHuman2,  std::vector<int> levels) : c
     // board.get()->resetBoard();
     textObserver = std::make_shared<Text_Display>(this);
     observers.emplace_back(textObserver.get());
-    observers.emplace_back(new GraphicDisplay(this));
+    // observers.emplace_back(new GraphicDisplay(this));
     render();
 }
 
