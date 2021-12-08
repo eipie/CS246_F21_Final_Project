@@ -63,6 +63,20 @@ void Player::movePiece(Position from, Position to, Board & board) {
     }
 }
 
+void getAllPossMoves(std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> & possMoves, Board & board) {
+    std::map<Position, std::shared_ptr<ChessPieces>> playerPieces = playerPieces;
+    std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> playerAllPossMoves;
+    for(auto pieceSet: playerPieces) {
+        std::shared_ptr<ChessPieces> currentPiece = pieceSet.second;
+        // std::vector<PossibleMove> piecePossMoves = currentPiece.get()->getPossibleMoves(*this);
+        auto piecePossMoves = std::make_shared<std::vector<PossibleMove>>(currentPiece.get()->getPossibleMoves(board));
+        currentPiece.get()->pos.x = pieceSet.first.x;
+        currentPiece.get()->pos.y = pieceSet.first.y;
+        // std::cout << "storing... " << currentPiece.get()->pos.x << "|" << currentPiece.get()->pos.y << std::endl;
+        playerAllPossMoves[currentPiece]  = piecePossMoves;
+    }
+}
+
 /* std::vector<PossibleMove> Player::kingEscapeTrap(Board & board) {
     std::vector<PossibleMove> allKingMove = getKing().get()->getPossibleMoves(board);
     auto allOpponentsNextMove = board.getPlayerPossibleMoves(opponentIdentifier);
@@ -246,32 +260,6 @@ void Player::addPiece(Position p, char c) {
     playerPieces.insert({p,newPiece}); */
 }
 
-
-/* bool Player::tryDoPawnPromotion(char promotion, std::shared_ptr<ChessPieces> & target) {
-    if((identifier==0 && (promotion == 'p'|| promotion == 'r'|| promotion == 'n'|| promotion == 'b'|| promotion == 'q'))
-        || (identifier==1 && (promotion == 'P'|| promotion == 'R'|| promotion == 'N'|| promotion == 'B'|| promotion == 'Q'))) {
-        
-        if(promotion== 'p'||promotion=='P') {
-
-        } else if(promotion== 'r'||promotion=='R') {
-            std::cout << "promoting...." << promotion << std::endl;
-            std::shared_ptr<ChessPieces> newPiece = std::make_shared<Rook>(target.get()->pos, identifier, false);
-            target.swap(newPiece);
-            
-        } else if(promotion== 'n'||promotion=='N') {
-            std::shared_ptr<ChessPieces> newPiece = std::make_shared<Knight>(target.get()->pos, identifier, false);
-            target.swap(newPiece);
-        } else if(promotion== 'b'||promotion=='B') {
-            std::shared_ptr<ChessPieces> newPiece = std::make_shared<Bishop>(target.get()->pos, identifier, false);
-            target.swap(newPiece);
-        } else if(promotion== 'q'||promotion=='Q') {
-            std::shared_ptr<ChessPieces> newPiece = std::make_shared<Queen>(target.get()->pos, identifier, false);
-            target.swap(newPiece);
-        }
-        return true;
-    } 
-    return false;
-} */
 
 bool Player::tryDoPawnPromotion(char promotion, Position promoteLoc, int identifier, Board & board) {
     if((identifier==0 && (promotion == 'p'|| promotion == 'r'|| promotion == 'n'|| promotion == 'b'|| promotion == 'q'))

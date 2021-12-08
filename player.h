@@ -51,6 +51,7 @@ class Player {
     virtual bool tryMakeMove(Move m, Board & board) = 0;
     void disableAllEnPassant();
     int countKing();
+    void getAllPossMoves(std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> & possMoves, Board & board);
     // std::map<std::shared_ptr<ChessPieces>, std::vector<PossibleMove>> getPlayerPossibleMoves();
 
 };
