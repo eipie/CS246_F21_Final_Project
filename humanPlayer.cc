@@ -53,7 +53,10 @@ bool HumanPlayer::tryMakeMove(Move m, Board & board) {
                 }
                 this->getPieceAt(from).reset(newPtr);
             }  */
+
             enPassantAvailabilityCorrect(board.getPieceAt(from), board, from, to);
+            Position testPosition1{1,4};
+            Position testPosition2{4,6};
             movePiece(from, to, board);
             return true;
         }

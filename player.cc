@@ -36,10 +36,18 @@ Player::Player(const Player &player, bool needToCheckSelfCheck) {
 }
 
 void Player::enPassantAvailabilityCorrect(std::shared_ptr<ChessPieces> pieceToBeMoved, Board & board, Position from, Position to) {
+    if(pieceToBeMoved==nullptr) {
+        std::cout <<"nullptr..." <<std::endl;
+    }
+    std::cout <<"seg fault here?" <<std::endl;
     board.disableAllEnPassant();
+    std::cout <<"seg fault here?2" <<std::endl;
     if((pieceToBeMoved.get()->icon=='p' || pieceToBeMoved.get()->icon=='P') && (abs(from.y-to.y)==2)) {
+        std::cout <<"seg fault here?3" <<std::endl;
         if(abs(from.y-to.y)==2) {
+            std::cout <<"seg fault here?4" <<std::endl;
             pieceToBeMoved.get()->availableForEnPassant=true;
+            std::cout <<"seg fault here?5" <<std::endl;
         } 
     }
 }
@@ -54,8 +62,7 @@ void Player::movePiece(Position from, Position to, Board & board) {
     if(fromFindResult != playerPieces.end()) {
         fromFindResult->second.get()->afterFirstMove();
         board.removePiece(to, opponentIdentifier);
-        fromFindResult->second.get()->pos.x = to.x;
-        fromFindResult->second.get()->pos.y = to.y;
+        fromFindResult->second.get()->setPos(to);
         playerPieces[to] = fromFindResult->second;
         playerPieces.erase(from);
     } else {
@@ -63,15 +70,12 @@ void Player::movePiece(Position from, Position to, Board & board) {
     }
 }
 
-void getAllPossMoves(std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> & possMoves, Board & board) {
-    std::map<Position, std::shared_ptr<ChessPieces>> playerPieces = playerPieces;
-    std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> playerAllPossMoves;
+void Player::getAllPossMoves(std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> & playerAllPossMoves, const Board & board) const{
     for(auto pieceSet: playerPieces) {
         std::shared_ptr<ChessPieces> currentPiece = pieceSet.second;
         // std::vector<PossibleMove> piecePossMoves = currentPiece.get()->getPossibleMoves(*this);
         auto piecePossMoves = std::make_shared<std::vector<PossibleMove>>(currentPiece.get()->getPossibleMoves(board));
-        currentPiece.get()->pos.x = pieceSet.first.x;
-        currentPiece.get()->pos.y = pieceSet.first.y;
+        
         // std::cout << "storing... " << currentPiece.get()->pos.x << "|" << currentPiece.get()->pos.y << std::endl;
         playerAllPossMoves[currentPiece]  = piecePossMoves;
     }
@@ -268,6 +272,7 @@ bool Player::tryDoPawnPromotion(char promotion, Position promoteLoc, int identif
         if(promotion== 'p'||promotion=='P') {
 
         } else if(promotion== 'r'||promotion=='R') {
+            std::cout << "rook promotion detected" << std::endl;
             if(identifier==1) {
                 removePieces(promoteLoc);
                 addPiece(promoteLoc, 'R');

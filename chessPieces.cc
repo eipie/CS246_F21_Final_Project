@@ -24,7 +24,9 @@ void ChessPieces::afterFirstMove() {
 bool ChessPieces::withinBound(Position candidate) {
     return candidate.x <= 8 && candidate.y <= 8 && candidate.x >=1 && candidate.y >=1;
 }
-
+void ChessPieces::setPos(const Position newPos) {
+    this->pos=newPos;
+}
 // -1 if could not add candidate as possmove because current player's piece is at location
 // -2 if
 int ChessPieces::tryAddNextMoveCandidate(const Board & board, std::vector<PossibleMove> & possibleMove, Position candidate) {
