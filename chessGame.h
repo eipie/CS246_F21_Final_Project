@@ -24,6 +24,7 @@ class ChessGame {
     std::shared_ptr<Observer> textObserver;
     // std::vector<Observer> observers;
     public:
+    bool roundEnds=true;
     // level of 1-3 is for computer; level 0 means human
     ChessGame(bool isHuman1, bool isHuman2, std::vector<int> levels);
     void nextTurn();
@@ -32,6 +33,7 @@ class ChessGame {
     bool isMoveValid(Move nextMove);
     // attempt to makeAMove; return true success, return false, failure
     std::string makeAMove(Move nextMove);
+    void makeBlankBoard();
     void newRound();
     void removePiece(Position p);
     void addPiece(Position p, char c);
