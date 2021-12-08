@@ -71,10 +71,18 @@ int main() {
                 }
                 chess = std::make_unique<ChessGame>(isHuman1, isHuman2, levels);
                 gameHasStarted = true;
-            } else if (command == "resign") {
+            } else if (command == "resign"&&gameHasStarted) {
                 std::cout << chess->resign() << std::endl;
                 break;
-            } else if (command == "move") {
+            } else if (command == "hint" &&gameHasStarted){
+                std::string from_str;
+                Position from;
+                if(ss>>from_str) {
+                    from.x = from_str[0] - 'a' + 1;
+                    from.y = from_str[1] - '0';
+                    chess->giveHintAt(from);
+                }
+            } else if (command == "move"&&gameHasStarted) {
                 isSetUpAllowed=false;
                 std::string from_str;
                 std::string to_str;
@@ -89,17 +97,21 @@ int main() {
                     nextMove.from = from;
                     nextMove.to = to;
                     char promo;
+                    //std::cout << "line91" << std::endl;
                     if (ss >> promo) {
                         nextMove.isPromotion = true;
                         nextMove.promotionType = promo;
                         Move nextMove(from , to, promo);
+                        //std::cout << "receiving promotion" << std::endl;
                         moveResult = chess->makeAMove(nextMove);
                     } else {
                         Move nextMove(from, to);
+                        //std::cout << "received input" << std::endl;
                         moveResult = chess->makeAMove(nextMove);
                     }
                 } else {
                     Move nextMove;
+                    //std::cout << "line106" << std::endl;
                     moveResult = chess->makeAMove(nextMove);
                 }
                 if(chess.get()->roundEnds) {
@@ -172,9 +184,12 @@ int main() {
             }
         } 
     }
-    std::cout << "Final Score:" << std::endl;
-    std::cout << "White: " << chess->whitePlayerScore() << std::endl;
-    std::cout << "Black: " << chess->blackPlayerScore() << std::endl;
+    if(gameHasStarted) {
+        std::cout << "Final Score:" << std::endl;
+        std::cout << "White: " << chess->whitePlayerScore() << std::endl;
+        std::cout << "Black: " << chess->blackPlayerScore() << std::endl;
+    }
+
 }
 
 

@@ -44,7 +44,7 @@ class ChessPieces {
     ChessPieces(const ChessPieces &chessPieces,  bool needToCheckSelfCheck);
     virtual std::shared_ptr<ChessPieces> clone( bool needToCheckSelfCheck) =0;
     virtual std::vector<PossibleMove> getPossibleMoves(const Board & board) = 0;
-    
+    void setPos(const Position newPos);
     // change isFirstMove to false if true; special case for Pawn
     void afterFirstMove();
 

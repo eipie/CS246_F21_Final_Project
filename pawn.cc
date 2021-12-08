@@ -14,9 +14,7 @@ Pawn::Pawn(Position p, int identifier, bool isFirstMove) : ChessPieces(p, identi
 std::shared_ptr<ChessPieces> Pawn::clone( bool needToCheckSelfCheck) {
     return std::shared_ptr<ChessPieces>(new Pawn(*this,  needToCheckSelfCheck));
 }
-Pawn::Pawn(const Pawn &piece,  bool needToCheckSelfCheck) : ChessPieces(piece,  needToCheckSelfCheck){
-    
-}
+Pawn::Pawn(const Pawn &piece,  bool needToCheckSelfCheck) : ChessPieces(piece,  needToCheckSelfCheck){ }
 
 /* void Pawn::afterFirstMove() {
     if(isFirstMove) { 

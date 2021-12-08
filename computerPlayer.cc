@@ -71,22 +71,28 @@ bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
 bool ComputerPlayer::SimpleMakeMove(Position currentPosition, PossibleMove nextMove, Board &board) {
 
     std::shared_ptr<ChessPieces> targetPiece = getPieceAt(currentPosition);
+    if(targetPiece==nullptr) {
+        std::cout <<"nullptr outer..." <<std::endl;
+    }
     std::cout << "we are here" << std::endl;
     if (nextMove.kingSideCastle || nextMove.queenSideCastle) {
         movePiece(nextMove.rookFrom, nextMove.rookTo, board);
     }
+    std::cout << "we are here 2" << std::endl;
     if (nextMove.enPassant) {
         board.removePiece(nextMove.enPassantLoc, opponentIdentifier);
     }
+    std::cout << "we are here 3" << std::endl;
     if (nextMove.isPromotion) {
         bool checkPromotionResult = tryDoPawnPromotion(nextMove.promotionType,targetPiece.get()->pos, targetPiece.get()->ownerIdentifier, board);
         if(!checkPromotionResult) {
             return false;
         }
     }
-
+    std::cout << "we are here 4" << std::endl;
     enPassantAvailabilityCorrect(targetPiece, board, currentPosition, nextMove.to);
     // all check complete, move the piece
+    std::cout << "we are here 5" << std::endl;
     movePiece(currentPosition, nextMove.to, board);
     return true;
 
@@ -105,8 +111,8 @@ bool ComputerPlayer::captureCheckPriorityMove(Board & board) {
         for(auto move : *possMoves.get()) {
             Board tempBoard{board};
             // std::cout << "temporary copy created" << std::endl;
-            Position starting_position = pieceSet.first->pos;
-            Position target_position = move.to;
+            const Position starting_position = pieceSet.first->pos;
+            const Position target_position = move.to;
             std::cout << "current position: " << starting_position.x << ", " << starting_position.y << std::endl;
             std::cout << "target position: " << target_position.x << ", " << target_position.y  << std::endl;
             Move currentMove{starting_position, target_position};
@@ -119,8 +125,12 @@ bool ComputerPlayer::captureCheckPriorityMove(Board & board) {
                 return true;
             }
             if (move.capture != ' ') {
-                std::cout << "found capture move" << std::endl;
+                std::cout << "found capture move  " << pieceSet.first.get()->icon << std::endl;
+                std::cout << pieceSet.first->pos.x << " | " << pieceSet.first->pos.y  << std::endl;
+                std::cout << starting_position.x << " | " << starting_position.y  << std::endl;
+                 std::cout << move.to.x << " | " << move.to.y  << std::endl;
                 SimpleMakeMove(starting_position, move, board);
+                //SimpleMakeMove(starting_position, move, board);
                 return true;
             }
         }

@@ -81,7 +81,8 @@ std::string ChessGame::makeAMove(Move nextMove) {
         return "Input not match player type!! Please enter again";
     }
     if(nextMove.containsInput) {
-        if(players[currentPlayer].get()->getPieceCharAt(nextMove.from)==' ') {
+        char c = players[currentPlayer].get()->getPieceCharAt(nextMove.from);
+        if(c==' ') {
             return "Only move your own piece! Try again";
         }
     }
@@ -168,6 +169,26 @@ void ChessGame::notifyObservers() {
     }
 }
 
+
+void ChessGame::giveHintAt(Position focus) {
+    std::shared_ptr<ChessPieces> piece;
+    for(auto player:players) {
+        piece = player.get()->getPieceAt(focus);
+        if(piece!=nullptr) {
+            break;
+        }
+    }
+    if(piece==nullptr) {
+        std::cout << "no piece exist at input location!"<<std::endl;
+    } else {
+        auto possMoves = piece.get()->getPossibleMoves(*board.get());
+        for(auto move : possMoves) {
+            std::cout << "You can move: "  << piece.get()->icon<< std::endl;
+            std::cout << piece.get()->pos.x << " | " << piece.get()->pos.y  << std::endl;
+            std::cout << move.to.x << " | " << move.to.y  << std::endl;
+        }
+    }
+}
 void ChessGame::removePiece(Position p) {
     board.get()->removePiece(p, white);
     board.get()->removePiece(p, black);
