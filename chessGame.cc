@@ -60,9 +60,11 @@ void ChessGame::newRound() {
 std::string ChessGame::resign() {
     if(currentPlayer==white) {
         players[black].get()->currentScore++;
+        newRound();
         return "Black Wins!";
     } else {
         players[white].get()->currentScore++;
+        newRound();
         return "White Wins!";
     }
 }
@@ -197,8 +199,8 @@ void ChessGame::removePiece(Position p) {
     board.get()->removePiece(p, white);
     board.get()->removePiece(p, black);
 }
-void ChessGame::addPiece(Position p, char c) {
-    board.get()->addPiece(p, c);
+bool ChessGame::addPiece(Position p, char c) {
+    return board.get()->addPiece(p, c);
 }
 bool ChessGame::isBoardSetupValid() {
     return board.get()->isBoardSetupValid();

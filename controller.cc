@@ -73,7 +73,7 @@ int main() {
                 gameHasStarted = true;
             } else if (command == "resign"&&gameHasStarted) {
                 std::cout << chess->resign() << std::endl;
-                break;
+                //break;
             } else if (command == "hint" &&gameHasStarted){
                 std::string from_str;
                 Position from;
@@ -150,8 +150,12 @@ int main() {
                 Position pos;
                 pos.x = pos_str[0] - 'a' + 1;
                 pos.y = pos_str[1] - '0';
-                chess->addPiece(pos, p);
-                chess->render();
+                if(chess->addPiece(pos, p)) {
+                    chess->render();
+                } else {
+                    std::cout << "Error, chess piece not valid" << std::endl;
+                }
+                
                 } else {
                     std::cout << "Error, the command should be in the form '+ k e1'" << std::endl;
                 }  
@@ -170,11 +174,13 @@ int main() {
                 std::string colour;
                 if (ss >> colour) {
                     if (colour == "black") {
-                        chess->setCurrentPlayer(1);
-                    } else if (colour == "white") {
                         chess->setCurrentPlayer(0);
+                        std::cout << "set to black success" << std::endl;
+                    } else if (colour == "white") {
+                        chess->setCurrentPlayer(1);
+                        std::cout << "set to white success" << std::endl;
                     } else {
-                        std::cout << "Next player should be black or white" << std::endl;
+                        std::cout << "Next player should be black or white?" << std::endl;
                     }
                 } else {
                     std::cout << "Error, the command should be in the form '= colour'" << std::endl;

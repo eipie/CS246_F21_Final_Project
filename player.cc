@@ -217,7 +217,7 @@ void Player::resetAllPieces() {
 }
 
 
-void Player::addPiece(Position p, char c) {
+bool Player::addPiece(Position p, char c) {
     std::shared_ptr<ChessPieces> newPiece;
     switch (c)
     {
@@ -253,9 +253,11 @@ void Player::addPiece(Position p, char c) {
         break;
     default:
         // error
+        return false;
         break;
     }
     playerPieces[p] = newPiece;
+    return true;
     /* playerPieces.find(p)->second = newPiece;
     playerPieces.insert({p,newPiece}); */
 }

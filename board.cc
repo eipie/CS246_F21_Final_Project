@@ -95,13 +95,19 @@ void Board::resetBoard() {
     }
 }
 
-void Board::addPiece(Position p, char c) {
+bool Board::addPiece(Position p, char c) {
     if(isupper(c)) {
-        players[1].get()->addPiece( p,  c);
-        removePiece(p,0);
+        bool result = players[1].get()->addPiece( p,  c);
+        if(result) {
+            removePiece(p,0);
+        }
+        return result;
     } else {
-        players[0].get()->addPiece( p,  c);
-        removePiece(p,1);
+        bool result=players[0].get()->addPiece( p,  c);
+        if(result) {
+            removePiece(p,1);
+        }
+        return result;
     }
 }
 

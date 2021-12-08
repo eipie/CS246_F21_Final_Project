@@ -45,7 +45,7 @@ class Player {
     // void addPieces(Position p, char c);
     void resetAllPieces();
     void movePiece(Position from, Position to, Board & board);
-    void addPiece(Position p, char c);
+    bool addPiece(Position p, char c);
     char getPieceCharAt(Position p);
     std::shared_ptr<ChessPieces> getPieceAt(Position p) const;
     virtual bool tryMakeMove(Move m, Board & board) = 0;

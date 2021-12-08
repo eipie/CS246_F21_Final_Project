@@ -36,7 +36,7 @@ class ChessGame {
     void makeBlankBoard();
     void newRound();
     void removePiece(Position p);
-    void addPiece(Position p, char c);
+    bool addPiece(Position p, char c);
     bool isBoardSetupValid();
     char getPieceCharAt(Position p);
     // void changePieceAt(Position ini_p, Position target_p);
