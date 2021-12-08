@@ -100,8 +100,7 @@ bool ComputerPlayer::captureCheckPriorityMove(Board & board) {
     // put in check(opponent_identifier): check the current layout of the board and return a vector containing all pieces that I can move to cause a check
     
     // start by checking if there's any available moves that can put the opponent in check
-
-
+    
     // if there's no checking move available, the player will check if there's any capture move available
 
     // since neither option is available, the player will choose a random legal move
@@ -122,24 +121,30 @@ bool ComputerPlayer::captureCheckPriorityMove(Board & board) {
     // }
 
     std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> choices = board.getPlayerPossibleMoves(identifier);
-    int totalNumMoves = 0;
-    // not possible to be 0, since either stalemate/checkmate detected at last round
-    for(auto pieceSet:choices) {
-        for(auto move : *pieceSet.second.get()) {
-            totalNumMoves++;
-        }
-    }
     for (auto pieceSet : choices) {
         std::shared_ptr<std::vector<PossibleMove>> possMoves = pieceSet.second;
         std::cout << "at " << pieceSet.first.get()->icon << std::endl;
         for(auto move : *possMoves.get()) {
+            Board tempBoard = Board(board);
+            std::cout << "temporary copy created" << std::endl;
             Position starting_position = pieceSet.first->pos;
             Position target_position = move.to;
             std::cout << "current position: " << starting_position.x << ", " << starting_position.y << std::endl;
             std::cout << "target position: " << target_position.x << ", " << target_position.y  << std::endl;
+            // Move currentMove = Move(starting_position, target_position);
+            // int result = tempBoard.makeAMove(currentMove, identifier);
+            // std::cout << "result: " << result << std::endl;
+            // if (result == 1) {
+            //     std::cout << "found check move" << std::endl;
+            //     break;
+            // } 
+            // if (move.capture != ' ') {
+            //     std::cout << "found capture move" << std::endl;
+            //     break;
+            // }
         }
     }
-
+    std::cout << "end" << std::endl;
 
     // for (auto i: playerPieces) {
     //     std::vector<PossibleMove> allPossibleMoves = i.second->getPossibleMoves(board);
