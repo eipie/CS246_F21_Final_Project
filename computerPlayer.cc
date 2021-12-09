@@ -231,6 +231,8 @@ bool ComputerPlayer::smartMove(Board &board) {
     int opponentValue = board.getPlayerAllPiecesWeight(opponentIdentifier);
     int bestValue = playerValue - opponentValue;
     int currentValue;
+    PossibleMove moveTo;
+    Position moveFrom;
     for (auto i: allPossibleMoves) {
         for (auto j: *i.second) {
             Board tempBoard{board};
@@ -244,10 +246,14 @@ bool ComputerPlayer::smartMove(Board &board) {
             currentValue = playerValue - opponentValue;
             if (currentValue > bestValue) {
                 bestValue = currentValue;
+                moveTo = j;
+                moveFrom = i.first.get()->pos;
             }
         }
     }
 
     std::cout << "best value possible is: " << bestValue << std::endl;
-    
+    std::cout << "moving to " << moveTo.to.x << "|" << moveTo.to.y << std::endl;
+    std::cout << "from " <<  moveFrom.x << "|" << moveFrom.y << std::endl;
+    SimpleMakeMove(moveFrom, moveTo, board);
 }
