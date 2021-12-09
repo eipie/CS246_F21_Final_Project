@@ -26,7 +26,7 @@ std::vector<PossibleMove> Rook::getPossibleMoves(const Board & board) {
     int x =pos.x;
     int y =pos.y;
     // check right
-    for(int i=x+1; i<=8; i++) {
+    for(int i=x+1; i<=HIGHER_BOUND; i++) {
         Position candidate{i,y};
         int tryAddResult = tryAddNextMoveCandidate(board, possMoves, candidate);
         if(tryAddResult==-1||tryAddResult==1) {
@@ -51,7 +51,7 @@ std::vector<PossibleMove> Rook::getPossibleMoves(const Board & board) {
         }
     }
     // check forward
-    for(int i=y+1; i<=8; i++) {
+    for(int i=y+1; i<=HIGHER_BOUND; i++) {
         Position candidate{x,i};
         int tryAddResult = tryAddNextMoveCandidate(board, possMoves, candidate);
         if(tryAddResult==-1||tryAddResult==1) {

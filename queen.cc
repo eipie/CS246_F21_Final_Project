@@ -28,7 +28,7 @@ std::vector<PossibleMove> Queen::getPossibleMoves(const Board & board) {
     int y =pos.y;
     // Rook moves:
     // check right
-    for(int i=x+1; i<=8; i++) {
+    for(int i=x+1; i<=HIGHER_BOUND; i++) {
         Position candidate{i,y};
         int tryAddResult = tryAddNextMoveCandidate(board, possMoves, candidate);
         if(tryAddResult==-1||tryAddResult==1) {
@@ -53,7 +53,7 @@ std::vector<PossibleMove> Queen::getPossibleMoves(const Board & board) {
         }
     }
     // check forward
-    for(int i=y+1; i<=8; i++) {
+    for(int i=y+1; i<=HIGHER_BOUND; i++) {
         Position candidate{x,i};
         int tryAddResult = tryAddNextMoveCandidate(board, possMoves, candidate);
         if(tryAddResult==-1||tryAddResult==1) {
@@ -63,10 +63,10 @@ std::vector<PossibleMove> Queen::getPossibleMoves(const Board & board) {
     //Queen moves:
     // check up right
     int j = y + 1;
-    for(int i=x+1; i<=8; i++) {
+    for(int i=x+1; i<=HIGHER_BOUND; i++) {
         Position candidate{i,j};
         int tryAddResult = tryAddNextMoveCandidate(board, possMoves, candidate);
-        if (j > 8) {break;}
+        if (j > HIGHER_BOUND) {break;}
         if(tryAddResult==-1||tryAddResult==1) {
             break;
         }
@@ -75,7 +75,7 @@ std::vector<PossibleMove> Queen::getPossibleMoves(const Board & board) {
     // check up left
     int k = y + 1;
     for(int i=x-1; i>=1; i--) {
-        if (k > 8) {break;}
+        if (k > HIGHER_BOUND) {break;}
         Position candidate{i,k};
         int tryAddResult = tryAddNextMoveCandidate(board, possMoves, candidate);
         if(tryAddResult==-1||tryAddResult==1) {
@@ -96,7 +96,7 @@ std::vector<PossibleMove> Queen::getPossibleMoves(const Board & board) {
     }
     // check down right
     int q = y - 1;
-    for(int i=x+1; i<=8; i++) {
+    for(int i=x+1; i<=HIGHER_BOUND; i++) {
         if (q < 1) {break;}
         Position candidate{i,q};
         int tryAddResult = tryAddNextMoveCandidate(board, possMoves, candidate);

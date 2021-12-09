@@ -172,7 +172,7 @@ void Player::resetAllPieces() {
     // currentScore=0;
     playerPieces.clear();
     // initialize Pawn*8
-    for(int i = 1; i<=8; i++) {
+    for(int i = 1; i<=HIGHER_BOUND; i++) {
         // std::cout<< "creating pawn" << std::endl;
         Position newPos;
         if(identifier==1) {
@@ -180,7 +180,7 @@ void Player::resetAllPieces() {
             newPos.y=2;
         } else {
             newPos.x=i;
-            newPos.y=7;
+            newPos.y=HIGHER_BOUND - 1;
         }
         playerPieces.emplace(newPos,std::make_shared<Pawn>(newPos,identifier));
     }
@@ -188,24 +188,24 @@ void Player::resetAllPieces() {
     Position newPos1;
     Position newPos2;
     newPos1.x=2;
-    newPos2.x=7;
+    newPos2.x=HIGHER_BOUND - 1;
     if(identifier==1) {
         newPos1.y=1;
         newPos2.y=1;
     } else {
-        newPos1.y=8;
-        newPos2.y=8;
+        newPos1.y=HIGHER_BOUND;
+        newPos2.y=HIGHER_BOUND;
     }
     playerPieces.emplace(newPos1,std::make_shared<Knight>(newPos1,identifier));
     playerPieces.emplace(newPos2,std::make_shared<Knight>(newPos2,identifier));
     // initialize Rook*2
     newPos1.x=1;
-    newPos2.x=8;
+    newPos2.x=HIGHER_BOUND;
     playerPieces.emplace(newPos1,std::make_shared<Rook>(newPos1,identifier));
     playerPieces.emplace(newPos2,std::make_shared<Rook>(newPos2,identifier));
     // initialize Bishop*2
     newPos1.x=3;
-    newPos2.x=6;
+    newPos2.x=HIGHER_BOUND - 2;
     playerPieces.emplace(newPos1,std::make_shared<Bishop>(newPos1,identifier));
     playerPieces.emplace(newPos2,std::make_shared<Bishop>(newPos2,identifier));
     // initialize King*1
@@ -308,23 +308,3 @@ bool Player::tryDoPawnPromotion(char promotion, Position promoteLoc, int identif
     } 
     return false;
 }
-
-
-
-
-/* void Player::moveWithSpecial(std::shared_ptr<ChessPieces> targetPiece, PossibleMove possMove, Board & board) {
-    if(possMove.kingSideCastle || possMove.queenSideCastle) {
-        movePiece(possMove.rookFrom, possMove.rookTo);
-    } 
-    if(possMove.enPassant) { 
-        // remove opponent pawn
-        board.removePiece(possMove.enPassantLoc, opponentIdentifier);
-    } 
-    if(m.isPromotion) {
-        if(!tryDoPawnPromotion(m.promotionType,targetPiece)) {
-            return false;
-        }
-    } 
-    movePiece(from, to);
-    return true;
-} */

@@ -2,6 +2,8 @@
 #include "position.h"
 #include "move.h"
 #include <iostream>
+int HIGHER_BOUND = 8;
+
 ChessPieces::ChessPieces(Position p, int identifier, bool isFirstMove) 
     : ownerIdentifier{identifier}, isFirstMove{isFirstMove}, pos{p}{}
 
@@ -22,7 +24,7 @@ void ChessPieces::afterFirstMove() {
 }
 
 bool ChessPieces::withinBound(Position candidate) {
-    return candidate.x <= 8 && candidate.y <= 8 && candidate.x >=1 && candidate.y >=1;
+    return candidate.x <= HIGHER_BOUND && candidate.y <= HIGHER_BOUND && candidate.x >=1 && candidate.y >=1;
 }
 void ChessPieces::setPos(const Position newPos) {
     this->pos=newPos;
@@ -49,7 +51,7 @@ int ChessPieces::tryAddNextMoveCandidate(const Board & board, std::vector<Possib
                     std::cout << "k can move " <<candidate.x << candidate.y << std::endl;
                 } */
                 // std::cout << icon << "  "<< pos.x <<","<<pos.y << " | " << candidate.x <<","<<candidate.y<< "  not current in check" << std::endl;
-                if((icon == 'p'||icon=='P') && (candidate.y == 8 || candidate.y == 1)) {
+                if((icon == 'p'||icon=='P') && (candidate.y == HIGHER_BOUND || candidate.y == 1)) {
                     newPossMove.isPromotion=true;
                     if(ownerIdentifier==1) {
                         newPossMove.promotionType='Q';
@@ -73,7 +75,7 @@ int ChessPieces::tryAddNextMoveCandidate(const Board & board, std::vector<Possib
                 newPossMove.capture = pieceResult;
                 newPossMove.to = candidate;
                 if(!isCurrentPlayerKingInCheckAfterMove(newPossMove,board)) {
-                    if((icon == 'p'||icon=='P') && (candidate.y == 8 || candidate.y == 1)) {
+                    if((icon == 'p'||icon=='P') && (candidate.y == HIGHER_BOUND || candidate.y == 1)) {
                         newPossMove.isPromotion=true;
                         if(ownerIdentifier==1) {
                             newPossMove.promotionType='Q';

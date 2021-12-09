@@ -202,8 +202,8 @@ std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>
 
 bool Board::noPawnFirstLastRow() const {
     Position p{1, 1};
-    for (int i = 1; i <= 8; ++i) {
-        std::vector<int> row = {1, 8};
+    for (int i = 1; i <= HIGHER_BOUND; ++i) {
+        std::vector<int> row = {1, HIGHER_BOUND};
         for(int j:row) {
             p.x = i;
             p.y = j;
