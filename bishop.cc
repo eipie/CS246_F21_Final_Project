@@ -3,6 +3,7 @@
 #include "board.h"
 
 Bishop::Bishop(Position p, int identifier, bool isFirstMove) : ChessPieces(p, identifier, isFirstMove){
+    weight = 3;
     if(identifier==1) {
         icon='B';
     } else {

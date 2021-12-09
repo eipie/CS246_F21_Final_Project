@@ -6,6 +6,7 @@
 
 King::King(Position p, int identifier, bool isFirstMove) 
     : ChessPieces(p, identifier, isFirstMove){
+    weight = 0;
     if(identifier==1) {
         icon='K';
     } else {

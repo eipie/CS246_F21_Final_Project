@@ -77,6 +77,16 @@ void Player::getAllPossMoves(std::map<std::shared_ptr<ChessPieces>, std::shared_
     }
 }
 
+int Player::getAllPieceScore() const {
+
+    int score = 0;
+    for (auto i: playerPieces) {   
+        score += i.second.get()->weight;
+    }
+    return score;
+
+}
+
 /* std::vector<PossibleMove> Player::kingEscapeTrap(Board & board) {
     std::vector<PossibleMove> allKingMove = getKing().get()->getPossibleMoves(board);
     auto allOpponentsNextMove = board.getPlayerPossibleMoves(opponentIdentifier);

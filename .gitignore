@@ -39,10 +39,6 @@
 
 # makefile
 C:\Users\saman\Downloads\course notes_ materials\CS 246\final project\project\CS246_F21_Final_Project\Makefile
-<<<<<<< HEAD
 .vscode/c_cpp_properties.json
 *.pdf
-=======
-*.pdf
-.vscode/c_cpp_properties.json
->>>>>>> origin/henry_branch
+*chess

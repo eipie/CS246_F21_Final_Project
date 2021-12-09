@@ -15,6 +15,7 @@ ChessPieces::ChessPieces(const ChessPieces &chessPieces,  bool needToCheckSelfCh
     availableForEnPassant = chessPieces.availableForEnPassant;
     ownerIdentifier = chessPieces.ownerIdentifier;
     this->needCheckSelfCheck = needToCheckSelfCheck;
+    this->weight = chessPieces.weight;
 }
 
 void ChessPieces::afterFirstMove() {
