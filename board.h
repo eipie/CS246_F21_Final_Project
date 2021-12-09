@@ -24,7 +24,7 @@ class Board{
     int makeAMove(Move m, int currentPlayer);
     void resetBoard();
     void removePiece(Position p, int currentPlayer);
-    void addPiece(Position p, char c);
+    bool addPiece(Position p, char c);
     // to be implemented, dummy variable
     bool isBoardSetupValid() const;
     char getPieceCharAt(Position p) const;

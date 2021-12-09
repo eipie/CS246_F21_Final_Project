@@ -18,11 +18,13 @@ ChessGame::ChessGame(bool isHuman1, bool isHuman2,  std::vector<int> levels) : c
     if(isHuman1) {
         playerOne = std::make_shared<HumanPlayer>(1);
     } else if(!isHuman1) {
+        std::cout<<"white computer"<<std::endl;
         playerOne = std::make_shared<ComputerPlayer>(1, levels[0]);
     }
     if(isHuman2) {
         playerTwo = std::make_shared<HumanPlayer>(0);
     } else if(!isHuman2) {
+        std::cout<<"black computer"<<std::endl;
         playerTwo = std::make_shared<ComputerPlayer>(0, levels[1]);
     }
     players.emplace_back(playerTwo);
@@ -58,9 +60,11 @@ void ChessGame::newRound() {
 std::string ChessGame::resign() {
     if(currentPlayer==white) {
         players[black].get()->currentScore++;
+        newRound();
         return "Black Wins!";
     } else {
         players[white].get()->currentScore++;
+        newRound();
         return "White Wins!";
     }
 }
@@ -86,8 +90,8 @@ std::string ChessGame::makeAMove(Move nextMove) {
             return "Only move your own piece! Try again";
         }
     }
-
     int moveResult = board.get()->makeAMove(nextMove, currentPlayer);
+    
     std::string outputString="";
     if (moveResult!=-1) {
         // pass to next player; 
@@ -178,9 +182,11 @@ void ChessGame::giveHintAt(Position focus) {
             break;
         }
     }
+    
     if(piece==nullptr) {
         std::cout << "no piece exist at input location!"<<std::endl;
     } else {
+        std::cout << piece.get()->icon <<std::endl;
         auto possMoves = piece.get()->getPossibleMoves(*board.get());
         for(auto move : possMoves) {
             std::cout << "You can move: "  << piece.get()->icon<< std::endl;
@@ -193,8 +199,8 @@ void ChessGame::removePiece(Position p) {
     board.get()->removePiece(p, white);
     board.get()->removePiece(p, black);
 }
-void ChessGame::addPiece(Position p, char c) {
-    board.get()->addPiece(p, c);
+bool ChessGame::addPiece(Position p, char c) {
+    return board.get()->addPiece(p, c);
 }
 bool ChessGame::isBoardSetupValid() {
     return board.get()->isBoardSetupValid();
