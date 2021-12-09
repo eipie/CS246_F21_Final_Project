@@ -21,7 +21,7 @@ class ComputerPlayer : public Player {
         bool randomLegalMove(Board &board);
         bool SimpleMakeMove(Position currentPosition, PossibleMove nextMove, Board & board);
         bool OpponentCaptureAvailable(Board &board, Position p);
-        Position escapeCapture(Board &board, Position piecePosition);
+        PossibleMove escapeCapture(Board &board, Position piecePosition);
         bool captureCheckPriorityMove(Board & board);
         bool avoidCapturePriorityMove(Board & board);
         bool smartMove(Board & board);

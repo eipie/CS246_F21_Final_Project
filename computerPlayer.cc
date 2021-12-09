@@ -177,18 +177,19 @@ bool ComputerPlayer::OpponentCaptureAvailable(Board &board, Position targetPosit
 
 }
 
-Position ComputerPlayer::escapeCapture(Board &board, Position p) {
+PossibleMove ComputerPlayer::escapeCapture(Board &board, Position p) {
 
     std::shared_ptr<ChessPieces> piece = board.getPieceAt(p);
     std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> allPossibleMoves = board.getPlayerPossibleMoves(identifier);
     std::shared_ptr<std::vector<PossibleMove>> escapeChoices = allPossibleMoves[piece];
     if (escapeChoices->size() == 0) {
         // can't avoid the capture, returning a null position
-        return Position{-1, -1};
+        // return Position{-1, -1}; 
+        PossibleMove escape{escapeChoices->at(0)};
+        escape.to = Position{-1, -1};
     } else {
         // could be a random move here
-        PossibleMove escapeTo = escapeChoices->at(0);
-        return escapeTo.to;
+        return escapeChoices->at(0);
     }
 
 }
@@ -200,22 +201,22 @@ bool ComputerPlayer::avoidCapturePriorityMove(Board &board) {
         Position piecePosition = i.first;
         bool opponentCanCapture = OpponentCaptureAvailable(board, piecePosition);
         if (opponentCanCapture) {
-            Position escapePosition = escapeCapture(board, piecePosition);
+            PossibleMove escapeMove = escapeCapture(board, piecePosition);
             Position nullPosition{-1, -1};
-            if (escapePosition == nullPosition) {
+            if (escapeMove.to == nullPosition) {
                 // can't escape
             } else {
-                // escape by calling simpleMakeMove
+                SimpleMakeMove(piecePosition, escapeMove, board);
+                return true;
             }
-        } else {
-            // we can move on checking on the next piece
         }
+        // we can move on checking on the next piece
     }
 
     // at this point, the player finished avoiding capture since either:
         // the player detected capture and avoided it,
         // the player detected capture and can't avoid it
-        // the player's pieces won't be captured for this round
+        // the player's pieces won't be captured for the moment
 
     captureCheckPriorityMove(board);
 
