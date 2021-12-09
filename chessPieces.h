@@ -5,8 +5,10 @@
 #include "position.h"
 #include "board.h"
 #include "possibleMove.h"
+
+extern int HIGHER_BOUND;
+
 class ChessPieces {
-    
     // 0:black; 1:white;
     protected:
    
@@ -47,7 +49,5 @@ class ChessPieces {
     void setPos(const Position newPos);
     // change isFirstMove to false if true; special case for Pawn
     void afterFirstMove();
-
-    
 };
 #endif
