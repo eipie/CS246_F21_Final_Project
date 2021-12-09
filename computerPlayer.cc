@@ -229,11 +229,8 @@ bool ComputerPlayer::smartMove(Board &board) {
     std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> allPossibleMoves = board.getPlayerPossibleMoves(identifier);
     int playerValue = board.getPlayerAllPiecesWeight(identifier);
     int opponentValue = board.getPlayerAllPiecesWeight(opponentIdentifier);
-
-    int bestValue = 0;
+    int bestValue = playerValue - opponentValue;
     int currentValue;
-    Position bestStart{-1, -1};
-    // Position bestTarget{-1, -1};
     for (auto i: allPossibleMoves) {
         for (auto j: *i.second) {
             Board tempBoard{board};
