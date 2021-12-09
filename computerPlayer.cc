@@ -232,6 +232,8 @@ bool ComputerPlayer::smartMove(Board &board) {
 
     int bestValue = 0;
     int currentValue;
+    Position bestStart{-1, -1};
+    // Position bestTarget{-1, -1};
     for (auto i: allPossibleMoves) {
         for (auto j: *i.second) {
             Board tempBoard{board};
