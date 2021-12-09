@@ -14,6 +14,7 @@ class ComputerPlayer : public Player {
     
     int level;
     bool randomLegalMove(Board &board);
+    PossibleMove randomLegalMove(Board &board, Position &from_position);
     bool SimpleMakeMove(Position currentPosition, PossibleMove nextMove, Board & board);
     bool OpponentCaptureAvailable(Board &board, Position p);
     PossibleMove escapeCapture(Board &board, Position piecePosition);

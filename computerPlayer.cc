@@ -14,7 +14,7 @@ std::shared_ptr<Player> ComputerPlayer::clone( bool needToCheckSelfCheck) {
 }
 
 
-bool ComputerPlayer::randomLegalMove(Board &board) {
+PossibleMove ComputerPlayer::randomLegalMove(Board &board, Position &from_position) {
 
     std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> choices = board.getPlayerPossibleMoves(identifier);
     int totalNumMoves = 0;
@@ -34,13 +34,14 @@ bool ComputerPlayer::randomLegalMove(Board &board) {
             if(random_index==0) {
                 //这里
                 PossibleMove nextMove = move;
-                Position from = pieceSet.first.get()->pos;
-                SimpleMakeMove(from, nextMove, board);
+                // Position from = pieceSet.first.get()->pos;
+                from_position = pieceSet.first.get()->pos;
+                return nextMove;
             }
             random_index--;
         }
     }
-    return true;
+
 }
 
 bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
@@ -48,7 +49,9 @@ bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
     // std::cout << "try to make a move for computer" << std::endl;
 
     if (level == 1) {
-        randomLegalMove(board);
+        Position from{-1, -1};
+        PossibleMove nextMove = randomLegalMove(board, from);
+        SimpleMakeMove(from, nextMove, board);
     }
     else if (level == 2) {
         // Call level 2 make move
@@ -121,46 +124,13 @@ bool ComputerPlayer::captureCheckPriorityMove(Board & board) {
         }
     }
     // since there's no capture or check move available for the player, the player will make a random legal move from its current piece
-    randomLegalMove(board);
-
+    Position from;
+    PossibleMove nextMove = randomLegalMove(board, from);
+    SimpleMakeMove(from, nextMove, board);
     return true;
+
 }
 
-/* bool ComputerPlayer::captureCheckPriorityMove(Board & board) {
-
-    // copy the board: 
-    // start by checking if there's any available moves that can put the opponent in check
-    // if there's no checking move available, the player will check if there's any capture move available
-    // since neither option is available, the player will choose a random legal move
-    std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> choices = board.getPlayerPossibleMoves(identifier);
-    for (auto const pieceSet : choices) {
-        std::shared_ptr<std::vector<PossibleMove>> possMoves = pieceSet.second;
-        // std::cout << "at " << pieceSet.first.get()->icon << std::endl;
-        for(auto move : *possMoves.get()) {
-            Board tempBoard{board};
-            Position starting_position = pieceSet.first.get()->pos;
-            Position target_position = move.to;
-            Move currentMove{starting_position, target_position};
-
-            tempBoard.makeAMoveWithoutCheck(starting_position, target_position, identifier);
-            if (tempBoard.putInCheck(opponentIdentifier).size()!=0) {
-                std::cout << "found check move" << std::endl;
-                SimpleMakeMove(starting_position, move, board);
-                return true;
-            }
-            if (move.capture != ' ') {
-                SimpleMakeMove(starting_position, move, board);
-                //SimpleMakeMove(starting_position, move, board);
-                return true;
-            }
-        }
-    }
-    std::cout<<"performing randomeLegal" <<std::endl;
-    // since there's no capture or check move available for the player, the player will make a random legal move from its current piece
-    randomLegalMove(board);
-
-    return true;
-} */
 
 // returns true if the opponent can capture the piece at Position targetPosition
 bool ComputerPlayer::OpponentCaptureAvailable(Board &board, Position targetPosition) {
@@ -231,8 +201,8 @@ bool ComputerPlayer::smartMove(Board &board) {
     int opponentValue = board.getPlayerAllPiecesWeight(opponentIdentifier);
     int bestValue = playerValue - opponentValue;
     int currentValue;
-    PossibleMove moveTo;
-    Position moveFrom;
+    Position moveFrom{-1, -1};
+    PossibleMove moveTo = randomLegalMove(board, moveFrom);
     for (auto i: allPossibleMoves) {
         for (auto j: *i.second) {
             Board tempBoard{board};
