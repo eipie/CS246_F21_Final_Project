@@ -160,6 +160,7 @@ std::shared_ptr<ChessPieces> Board::getPieceAt(Position p) const {
     return c;
 }
 
+
 // return a list of pieces in opponent that can put identifier's pieces in check
 std::vector<std::shared_ptr<ChessPieces>> Board::putInCheck(int identifier) const{
     std::vector<std::shared_ptr<ChessPieces>> opponentPieceThatCheck;
@@ -198,6 +199,12 @@ std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>
         playerAllPossMoves[currentPiece]  = piecePossMoves;
     }
     return playerAllPossMoves;
+}
+
+int Board::getPlayerAllPiecesWeight(int identifier) const {
+
+    return players[identifier]->getAllPieceScore();
+
 }
 
 bool Board::noPawnFirstLastRow() const {

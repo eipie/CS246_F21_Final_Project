@@ -3,7 +3,8 @@
 #include "board.h"
 
 
-Queen::Queen(Position p, int identifier, bool isFirstMove) : ChessPieces(p, identifier, isFirstMove){
+Queen::Queen(Position p, int identifier, bool isFirstMove) : ChessPieces(p, identifier, isFirstMove) {
+    weight = 9;
     if(identifier==1) {
         icon='Q';
     } else {

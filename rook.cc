@@ -3,6 +3,7 @@
 // #include "possibleMove.h"
 
 Rook::Rook(Position p, int identifier, bool isFirstMove) : ChessPieces(p, identifier, isFirstMove){
+    weight = 5;
     if(identifier==1) {
         icon='R';
     } else {
