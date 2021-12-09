@@ -251,9 +251,9 @@ bool ComputerPlayer::smartMove(Board &board) {
             }
         }
     }
-
     std::cout << "best value possible is: " << bestValue << std::endl;
     std::cout << "moving to " << moveTo.to.x << "|" << moveTo.to.y << std::endl;
     std::cout << "from " <<  moveFrom.x << "|" << moveFrom.y << std::endl;
     SimpleMakeMove(moveFrom, moveTo, board);
+    return true;
 }
