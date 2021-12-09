@@ -38,16 +38,12 @@ Player::Player(const Player &player, bool needToCheckSelfCheck) {
 void Player::enPassantAvailabilityCorrect(std::shared_ptr<ChessPieces> pieceToBeMoved, Board & board, Position from, Position to) {
     if(pieceToBeMoved==nullptr) {
         std::cout <<"nullptr..." <<std::endl;
+        return;
     }
-    std::cout <<"seg fault here?" <<std::endl;
     board.disableAllEnPassant();
-    std::cout <<"seg fault here?2" <<std::endl;
     if((pieceToBeMoved.get()->icon=='p' || pieceToBeMoved.get()->icon=='P') && (abs(from.y-to.y)==2)) {
-        std::cout <<"seg fault here?3" <<std::endl;
         if(abs(from.y-to.y)==2) {
-            std::cout <<"seg fault here?4" <<std::endl;
             pieceToBeMoved.get()->availableForEnPassant=true;
-            std::cout <<"seg fault here?5" <<std::endl;
         } 
     }
 }
@@ -221,7 +217,7 @@ void Player::resetAllPieces() {
 }
 
 
-void Player::addPiece(Position p, char c) {
+bool Player::addPiece(Position p, char c) {
     std::shared_ptr<ChessPieces> newPiece;
     switch (c)
     {
@@ -257,9 +253,11 @@ void Player::addPiece(Position p, char c) {
         break;
     default:
         // error
+        return false;
         break;
     }
     playerPieces[p] = newPiece;
+    return true;
     /* playerPieces.find(p)->second = newPiece;
     playerPieces.insert({p,newPiece}); */
 }

@@ -2,12 +2,6 @@
 #include "possibleMove.h"
 #include "board.h"
 #include "chessPieces.h"
-#include "pawn.h"
-#include "knight.h"
-#include "king.h"
-#include "queen.h"
-#include "rook.h"
-#include "bishop.h"
 #include <iostream>
 
 HumanPlayer::HumanPlayer(int identifier, double currentScore) : Player{identifier,true, currentScore}{}

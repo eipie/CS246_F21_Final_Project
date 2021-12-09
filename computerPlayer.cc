@@ -10,7 +10,7 @@ ComputerPlayer::ComputerPlayer(const ComputerPlayer &computerPlayer,  bool needT
 }
 std::shared_ptr<Player> ComputerPlayer::clone( bool needToCheckSelfCheck) {
     // std::cout << "copying Computer" << level << std::endl;
-    return std::shared_ptr<Player>(new ComputerPlayer(*this));
+    return std::shared_ptr<Player>(new ComputerPlayer(*this, needToCheckSelfCheck));
 }
 
 
@@ -74,50 +74,74 @@ bool ComputerPlayer::SimpleMakeMove(Position currentPosition, PossibleMove nextM
     if(targetPiece==nullptr) {
         std::cout <<"nullptr outer..." <<std::endl;
     }
-    std::cout << "we are here" << std::endl;
     if (nextMove.kingSideCastle || nextMove.queenSideCastle) {
         movePiece(nextMove.rookFrom, nextMove.rookTo, board);
     }
-    std::cout << "we are here 2" << std::endl;
     if (nextMove.enPassant) {
         board.removePiece(nextMove.enPassantLoc, opponentIdentifier);
     }
-    std::cout << "we are here 3" << std::endl;
     if (nextMove.isPromotion) {
         bool checkPromotionResult = tryDoPawnPromotion(nextMove.promotionType,targetPiece.get()->pos, targetPiece.get()->ownerIdentifier, board);
         if(!checkPromotionResult) {
             return false;
         }
     }
-    std::cout << "we are here 4" << std::endl;
     enPassantAvailabilityCorrect(targetPiece, board, currentPosition, nextMove.to);
     // all check complete, move the piece
-    std::cout << "we are here 5" << std::endl;
     movePiece(currentPosition, nextMove.to, board);
     return true;
 
 }
 
+
 bool ComputerPlayer::captureCheckPriorityMove(Board & board) {
+ 
+    // copy the board: 
+    // start by checking if there's any available moves that can put the opponent in check
+    // if there's no checking move available, the player will check if there's any capture move available
+    // since neither option is available, the player will choose a random legal move
+    std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> choices = board.getPlayerPossibleMoves(identifier);
+    for (auto const pieceSet : choices) {
+        std::shared_ptr<std::vector<PossibleMove>> possMoves = pieceSet.second;
+        Position starting_position = pieceSet.first.get()->pos;
+        std::shared_ptr<ChessPieces> currentPiece = pieceSet.first;
+        for(auto move : *possMoves.get()) {
+            // std::cout << "temporary copy created" << std::endl;
+            Position target_position = move.to;
+            Board tempBoard{board};
+            tempBoard.makeAMoveWithoutCheck(starting_position, target_position, identifier);
+            if (tempBoard.putInCheck(opponentIdentifier).size()!=0) {
+                SimpleMakeMove(starting_position, move, board);
+                return true;
+            }
+            if (move.capture != ' ') {
+                SimpleMakeMove(starting_position, move, board);
+                return true;
+            }
+        }
+    }
+    // since there's no capture or check move available for the player, the player will make a random legal move from its current piece
+    randomLegalMove(board);
+
+    return true;
+}
+
+/* bool ComputerPlayer::captureCheckPriorityMove(Board & board) {
 
     // copy the board: 
     // start by checking if there's any available moves that can put the opponent in check
     // if there's no checking move available, the player will check if there's any capture move available
     // since neither option is available, the player will choose a random legal move
     std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> choices = board.getPlayerPossibleMoves(identifier);
-    for (auto pieceSet : choices) {
+    for (auto const pieceSet : choices) {
         std::shared_ptr<std::vector<PossibleMove>> possMoves = pieceSet.second;
         // std::cout << "at " << pieceSet.first.get()->icon << std::endl;
         for(auto move : *possMoves.get()) {
             Board tempBoard{board};
-            // std::cout << "temporary copy created" << std::endl;
-            const Position starting_position = pieceSet.first->pos;
-            const Position target_position = move.to;
-            std::cout << "current position: " << starting_position.x << ", " << starting_position.y << std::endl;
-            std::cout << "target position: " << target_position.x << ", " << target_position.y  << std::endl;
+            Position starting_position = pieceSet.first.get()->pos;
+            Position target_position = move.to;
             Move currentMove{starting_position, target_position};
 
-            // int result = tempBoard.makeAMove(currentMove, identifier);
             tempBoard.makeAMoveWithoutCheck(starting_position, target_position, identifier);
             if (tempBoard.putInCheck(opponentIdentifier).size()!=0) {
                 std::cout << "found check move" << std::endl;
@@ -125,10 +149,6 @@ bool ComputerPlayer::captureCheckPriorityMove(Board & board) {
                 return true;
             }
             if (move.capture != ' ') {
-                std::cout << "found capture move  " << pieceSet.first.get()->icon << std::endl;
-                std::cout << pieceSet.first->pos.x << " | " << pieceSet.first->pos.y  << std::endl;
-                std::cout << starting_position.x << " | " << starting_position.y  << std::endl;
-                 std::cout << move.to.x << " | " << move.to.y  << std::endl;
                 SimpleMakeMove(starting_position, move, board);
                 //SimpleMakeMove(starting_position, move, board);
                 return true;
@@ -140,7 +160,7 @@ bool ComputerPlayer::captureCheckPriorityMove(Board & board) {
     randomLegalMove(board);
 
     return true;
-}
+} */
 
 // returns true if the opponent can capture the piece at Position targetPosition
 bool ComputerPlayer::OpponentCaptureAvailable(Board &board, Position targetPosition) {

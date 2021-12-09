@@ -22,8 +22,9 @@ Board::Board(const Board &board, bool needToCheckSelfCheck) {
 // 2 if checkmate
 // 3 if stalemate
 int Board::makeAMove(Move m, int currentPlayer) {
-    
+   
     if (players[currentPlayer].get()->tryMakeMove(m,*this)) {
+        
         // enPassantAvailabilityCorrect(players[currentPlayer].get()->getPieceAt(m.to), m.from, m.to);
         // check if checked opponent
         int opponent;
@@ -94,13 +95,19 @@ void Board::resetBoard() {
     }
 }
 
-void Board::addPiece(Position p, char c) {
+bool Board::addPiece(Position p, char c) {
     if(isupper(c)) {
-        players[1].get()->addPiece( p,  c);
-        removePiece(p,0);
+        bool result = players[1].get()->addPiece( p,  c);
+        if(result) {
+            removePiece(p,0);
+        }
+        return result;
     } else {
-        players[0].get()->addPiece( p,  c);
-        removePiece(p,1);
+        bool result=players[0].get()->addPiece( p,  c);
+        if(result) {
+            removePiece(p,1);
+        }
+        return result;
     }
 }
 
