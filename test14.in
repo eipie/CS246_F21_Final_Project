@@ -1,0 +1,16 @@
+game human human
+setup
++ K e1
++ k e8
++ Q d4
++ p h1
++ P a4
+- h1
++ p h2
+= black
+move e1 f1
+move e8 e9
+move e8 d8
+move e8 d8
+done
+move e8 e7

@@ -1,0 +1,11 @@
+game human computer[3]
+setup
++ K e1
++ k e8
++ N g5
++ N a6
++ B b3
++ q c4
+done
+move g5 e4
+move
