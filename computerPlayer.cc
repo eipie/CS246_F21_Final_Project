@@ -9,7 +9,6 @@ ComputerPlayer::ComputerPlayer(const ComputerPlayer &computerPlayer,  bool needT
     level = computerPlayer.level;
 }
 std::shared_ptr<Player> ComputerPlayer::clone( bool needToCheckSelfCheck) {
-    // std::cout << "copying Computer" << level << std::endl;
     return std::shared_ptr<Player>(new ComputerPlayer(*this, needToCheckSelfCheck));
 }
 
@@ -28,11 +27,9 @@ PossibleMove ComputerPlayer::randomLegalMove(Board &board, Position &from_positi
     int random_index = std::rand() % totalNumMoves;
     for (auto pieceSet : choices) {
         std::shared_ptr<std::vector<PossibleMove>> possMoves = pieceSet.second;
-        // std::cout << "at " << pieceSet.first.get()->icon << std::endl;
         for(auto move : *possMoves.get()) {
             if(random_index==0) {
                 PossibleMove nextMove = move;
-                // Position from = pieceSet.first.get()->pos;
                 from_position = pieceSet.first.get()->pos;
                 return nextMove;
             }
@@ -44,9 +41,6 @@ PossibleMove ComputerPlayer::randomLegalMove(Board &board, Position &from_positi
 }
 
 bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
-
-    // std::cout << "try to make a move for computer" << std::endl;
-
     if (level == 1) {
         Position from;
         PossibleMove nextMove = randomLegalMove(board, from);
@@ -87,7 +81,6 @@ bool ComputerPlayer::SimpleMakeMove(Position currentPosition, PossibleMove nextM
         }
     }
     enPassantAvailabilityCorrect(targetPiece, board, currentPosition, nextMove.to);
-    // all check complete, move the piece
     movePiece(currentPosition, nextMove.to, board);
     return true;
 
@@ -106,7 +99,6 @@ bool ComputerPlayer::captureCheckPriorityMove(Board & board) {
         Position starting_position = pieceSet.first.get()->pos;
         std::shared_ptr<ChessPieces> currentPiece = pieceSet.first;
         for(auto move : *possMoves.get()) {
-            // std::cout << "temporary copy created" << std::endl;
             Position target_position = move.to;
             Board tempBoard{board};
             tempBoard.makeAMoveWithoutCheck(starting_position, target_position, identifier);

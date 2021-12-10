@@ -8,7 +8,6 @@ class HumanPlayer : public Player {
         HumanPlayer(int identifier, double currentScore=0);
         HumanPlayer(const HumanPlayer &humanPlayer,  bool needToCheckSelfCheck);
         std::shared_ptr<Player> clone( bool needToCheckSelfCheck) override;
-        // void copyPlayer(const Player &player) override;
         bool tryMakeMove(Move m, Board & board) override;
 };
 #endif

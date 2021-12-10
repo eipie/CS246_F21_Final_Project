@@ -30,28 +30,21 @@ bool ChessPieces::withinBound(Position candidate) {
 void ChessPieces::setPos(const Position newPos) {
     this->pos=newPos;
 }
-// -1 if could not add candidate as possmove because current player's piece is at location
-// -2 if
+
 int ChessPieces::tryAddNextMoveCandidate(const Board & board, std::vector<PossibleMove> & possibleMove, Position candidate) {
     char returnKey = -1;
     if(withinBound(candidate)) {
         const char noCapture = ' ';
         const char currentPlayerPiece = ' ';
         if(board.isEmpty(candidate)) {
-            // Move possPossMove{pos, candidate};
             PossibleMove newPossMove;
             newPossMove.capture = noCapture;
             newPossMove.to = candidate;
-            // break
             if(pos.x==1 && pos.y==2 && candidate.x==1 && candidate.y == 4) {
 
             }
             bool checkResult = isCurrentPlayerKingInCheckAfterMove(newPossMove,board);
-            if(!checkResult) {   
-/*                 if(icon=='k' || icon=='K') {
-                    std::cout << "k can move " <<candidate.x << candidate.y << std::endl;
-                } */
-                // std::cout << icon << "  "<< pos.x <<","<<pos.y << " | " << candidate.x <<","<<candidate.y<< "  not current in check" << std::endl;
+            if(!checkResult) {
                 if((icon == 'p'||icon=='P') && (candidate.y == HIGHER_BOUND || candidate.y == 1)) {
                     newPossMove.isPromotion=true;
                     if(ownerIdentifier==1) {
@@ -71,7 +64,6 @@ int ChessPieces::tryAddNextMoveCandidate(const Board & board, std::vector<Possib
             if(pieceResult == currentPlayerPiece) {
                 return returnKey;
             } else {
-                // Move possPossMove{pos, candidate};
                 PossibleMove newPossMove;
                 newPossMove.capture = pieceResult;
                 newPossMove.to = candidate;
@@ -85,7 +77,6 @@ int ChessPieces::tryAddNextMoveCandidate(const Board & board, std::vector<Possib
                         }
                     }
                     if(pieceResult=='K'||pieceResult=='k') {
-                        // std::cout<< icon << "can capture " << pieceResult << std::endl;
                         checkOpponent = true;
                     }    
                     possibleMove.emplace_back(newPossMove);
@@ -102,13 +93,11 @@ int ChessPieces::tryAddNextMoveCandidate(const Board & board, std::vector<Possib
 bool ChessPieces::isCurrentPlayerKingInCheckAfterMove(Move newMove, const Board & board) {
     if(needCheckSelfCheck) {
         if(!(withinBound(newMove.from) && withinBound(newMove.to))) {
-        // error
         throw;
         }
         // **Make a copy of the board
         Board newBoard(board, false);
         newBoard.makeAMoveWithoutCheck(newMove.from, newMove.to, ownerIdentifier);
-        // newBoard.makeAMove(newMove, ownerIdentifier);
         return (newBoard.putInCheck(ownerIdentifier).size()!=0);
     }
     return false;
@@ -123,29 +112,21 @@ bool ChessPieces::isCurrentPlayerKingInCheckAfterMove(PossibleMove possMove, con
             opponentIdentifier=1;
         }
         if(!(withinBound(possMove.to))) {
-            // error
             throw;
             return false;
         }
         // **Make a copy of the board
         Board newBoard(board, false);
         if(possMove.kingSideCastle || possMove.queenSideCastle) {
-            // std::cout << "we are here!" << std::endl;
             newBoard.makeAMoveWithoutCheck(possMove.rookFrom, possMove.rookTo, ownerIdentifier);
         } 
         if(possMove.enPassant) { 
             // remove opponent pawn
             newBoard.removePiece(possMove.enPassantLoc, opponentIdentifier);
-        } 
-        // Move m(pos, possMove.to);
+        }
         newBoard.makeAMoveWithoutCheck(pos, possMove.to, ownerIdentifier);
-        // .(m, ownerIdentifier);
-    /*     if(icon=='k' || icon=='K') {
-            std::cout << "checking " << icon << " put itself in check";
-        } */
         auto checkResult = newBoard.putInCheck(ownerIdentifier);
         return (checkResult.size()!=0);
     } 
     return false;
-
 }

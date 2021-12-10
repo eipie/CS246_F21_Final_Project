@@ -11,7 +11,6 @@
 #include <algorithm>
 
 Player::Player(int identifier, bool isHuman, double currentScore) :  identifier{identifier}, isHuman{isHuman},isInCheck{false}, currentScore{currentScore}{
-    // std::cout<< "calling constructor" << std::endl;
     if(identifier==1) {
         opponentIdentifier = 0;
     } else {
@@ -32,7 +31,6 @@ Player::Player(const Player &player, bool needToCheckSelfCheck) {
     }
     playerPieces = pieces;
     isHuman = player.isHuman;
-    // copyPlayer(player);
 }
 
 void Player::enPassantAvailabilityCorrect(std::shared_ptr<ChessPieces> pieceToBeMoved, Board & board, Position from, Position to) {
@@ -52,9 +50,7 @@ void Player::enPassantAvailabilityCorrect(std::shared_ptr<ChessPieces> pieceToBe
 // tryMakeMove in child handle legal/illegal detection
 // strong expection
 void Player::movePiece(Position from, Position to, Board & board) {
-    // std::cout << "moving pieces..." << from.x << ", " << from.y << "  " << to.x << to.y << std::endl;
     auto fromFindResult = playerPieces.find(from);
-    // auto toFindResult = playerPieces.find(to);
     if(fromFindResult != playerPieces.end()) {
         fromFindResult->second.get()->afterFirstMove();
         board.removePiece(to, opponentIdentifier);
@@ -69,10 +65,7 @@ void Player::movePiece(Position from, Position to, Board & board) {
 void Player::getAllPossMoves(std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> & playerAllPossMoves, const Board & board) const{
     for(auto pieceSet: playerPieces) {
         std::shared_ptr<ChessPieces> currentPiece = pieceSet.second;
-        // std::vector<PossibleMove> piecePossMoves = currentPiece.get()->getPossibleMoves(*this);
         auto piecePossMoves = std::make_shared<std::vector<PossibleMove>>(currentPiece.get()->getPossibleMoves(board));
-        
-        // std::cout << "storing... " << currentPiece.get()->pos.x << "|" << currentPiece.get()->pos.y << std::endl;
         playerAllPossMoves[currentPiece]  = piecePossMoves;
     }
 }
@@ -87,20 +80,6 @@ int Player::getAllPieceScore() const {
 
 }
 
-/* std::vector<PossibleMove> Player::kingEscapeTrap(Board & board) {
-    std::vector<PossibleMove> allKingMove = getKing().get()->getPossibleMoves(board);
-    auto allOpponentsNextMove = board.getPlayerPossibleMoves(opponentIdentifier);
-    for(auto kingMove : allKingMove) {
-        
-    }
-     for(auto oppMoveSet : allOpponentsNextMove) {
-        for(auto oppPossMove : *oppMoveSet.second.get()) {
-            allKingMove.erase(std::find(allKingMove.begin(), allKingMove.end(), oppPossMove));
-        }  
-    } 
-    return allKingMove;
-}    */
-
 bool Player::removePieces(Position p) {
     if(playerPieces.erase(p)==0) {
         return false;
@@ -109,7 +88,6 @@ bool Player::removePieces(Position p) {
 }
 
 char Player::getPieceCharAt(Position p) const {
-    // std::cout<< "searching location: " << p.x << ", "<< p.y << std::endl;
     auto findResult = playerPieces.find(p);
     if(findResult != playerPieces.end()) {
         return findResult->second.get()->icon;
@@ -137,7 +115,6 @@ int Player::countKing() const{
                     ++count;
                 }
             }
-            // for testing only...
             if(count==0) {
                 std::cout << "white" << std::endl;
             }
@@ -179,14 +156,13 @@ void Player::disableAllEnPassant() {
 // ...
 // 2
 // 1    
-//   1   2   3   4   ....
+//   1   2 ...
 void Player::resetAllPieces() {
     isInCheck=false;
     // currentScore=0;
     playerPieces.clear();
     // initialize Pawn*8
     for(int i = 1; i<=HIGHER_BOUND; i++) {
-        // std::cout<< "creating pawn" << std::endl;
         Position newPos;
         if(identifier==1) {
             newPos.x=i;
@@ -271,8 +247,6 @@ bool Player::addPiece(Position p, char c) {
     }
     playerPieces[p] = newPiece;
     return true;
-    /* playerPieces.find(p)->second = newPiece;
-    playerPieces.insert({p,newPiece}); */
 }
 
 

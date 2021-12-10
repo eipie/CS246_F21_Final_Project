@@ -19,9 +19,6 @@ Queen::Queen(const Queen &piece,  bool needToCheckSelfCheck) : ChessPieces(piece
     
 }
 
-// Queen (v|h|d *n)
-//      +nv || -nv || +nh || -nh
-//      +nv+nh || +nv-nh || -nv+nh || -nv-nh
 std::vector<PossibleMove> Queen::getPossibleMoves(const Board & board) {
     checkOpponent=false;
     std::vector<PossibleMove> possMoves;

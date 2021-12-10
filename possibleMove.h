@@ -4,11 +4,9 @@
 #include "chessPieces.h"
 #include <memory>
 struct PossibleMove {
-    // Position from;
     Position to;
     // ' ' if no capture
     char capture;
-    // ChessPieces* capture;
     bool kingSideCastle=false;
 	bool queenSideCastle=false;
     Position rookFrom;
@@ -17,9 +15,6 @@ struct PossibleMove {
     Position enPassantLoc;
     bool isPromotion=false;
     char promotionType;
-
-
-
     
     PossibleMove(){}
     PossibleMove(const PossibleMove& pm) {
@@ -56,10 +51,3 @@ struct PossibleMove {
 };
 
 #endif
-
-// white: pawn e1  ->  vector<possiblemove>
-// for loop Board cpyboard  -> Board cpyboard   g3
-//
-// currentplayer pieces black: 
-// for loop pieces -> findPossibleMove() ->  vector<possiblemove>
-// possition to == g3 

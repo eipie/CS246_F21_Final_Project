@@ -1,6 +1,5 @@
 #include "rook.h"
 #include "position.h"
-// #include "possibleMove.h"
 
 Rook::Rook(Position p, int identifier, bool isFirstMove) : ChessPieces(p, identifier, isFirstMove){
     weight = 5;
@@ -18,9 +17,6 @@ Rook::Rook(const Rook &piece,  bool needToCheckSelfCheck) : ChessPieces(piece, n
     
 }
 
-// Rook (v|h *n)
-//      +nv || -nv || +nh || -nh
-// *castling*
 std::vector<PossibleMove> Rook::getPossibleMoves(const Board & board) {
     checkOpponent=false;
     std::vector<PossibleMove> possMoves;

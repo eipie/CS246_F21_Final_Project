@@ -25,7 +25,6 @@ class Board{
     void resetBoard();
     bool removePiece(Position p, int currentPlayer);
     bool addPiece(Position p, char c);
-    // to be implemented, dummy variable
     bool isBoardSetupValid() const;
     char getPieceCharAt(Position p) const;
     std::shared_ptr<ChessPieces> getPieceAt(Position p) const;

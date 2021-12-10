@@ -41,10 +41,6 @@ bool King::isKingNextToKing(Position candidate, const Board & board) {
     return false;
 }
 
-// King (v|h|d *1)
-//      +1v || -1v || +1h || -1h
-//      +1v+1h || +1v-1h || -1v+1h || -1v-1h
-// *castling*
 std::vector<PossibleMove> King::getPossibleMoves(const Board & board) {
     checkOpponent=false;
     std::vector<PossibleMove> possMoves;
@@ -122,7 +118,7 @@ bool King::Queensidecastle(const Board & board) {
         if (board.getPieceCharAt(Position{1, pos.y}) != rookChar) {
             return false;
         }
-        if (!((board.getPieceAt(Position{1, pos.y}))->isFirstMove)) { //???
+        if (!((board.getPieceAt(Position{1, pos.y}))->isFirstMove)) {
             return false;
         }
         Move newMove;
@@ -140,8 +136,6 @@ bool King::Queensidecastle(const Board & board) {
     return false;
 }
 
-
-
 bool King::Kingsidecastle(const Board & board) {
     for(int i = 6; i <= HIGHER_BOUND - 1; i++) {
         Position shouldBeEmpty;
@@ -157,7 +151,6 @@ bool King::Kingsidecastle(const Board & board) {
     } else {
         rookChar = 'r';
     }
-    //white king
     if (this->isFirstMove) {
         if (board.getPieceCharAt(Position{HIGHER_BOUND, pos.y}) != rookChar) {
             return false;

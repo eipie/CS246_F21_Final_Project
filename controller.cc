@@ -73,7 +73,6 @@ int main() {
                 gameHasStarted = true;
             } else if (command == "resign"&&gameHasStarted) {
                 std::cout << chess->resign() << std::endl;
-                //break;
             } else if (command == "hint" &&gameHasStarted){
                 std::string from_str;
                 Position from;
@@ -97,21 +96,17 @@ int main() {
                     nextMove.from = from;
                     nextMove.to = to;
                     char promo;
-                    //std::cout << "line91" << std::endl;
                     if (ss >> promo) {
                         nextMove.isPromotion = true;
                         nextMove.promotionType = promo;
                         Move nextMove(from , to, promo);
-                        //std::cout << "receiving promotion" << std::endl;
                         moveResult = chess->makeAMove(nextMove);
                     } else {
                         Move nextMove(from, to);
-                        //std::cout << "received input" << std::endl;
                         moveResult = chess->makeAMove(nextMove);
                     }
                 } else {
                     Move nextMove;
-                    //std::cout << "line106" << std::endl;
                     moveResult = chess->makeAMove(nextMove);
                 }
                 if(chess.get()->roundEnds) {
