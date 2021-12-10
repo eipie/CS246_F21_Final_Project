@@ -39,7 +39,7 @@ class ChessGame {
     std::string resign();
     double whitePlayerScore();
     double blackPlayerScore();
-    void giveHintAt(Position focus);
+    void giveHintAt(Position focus, std::ostream& out);
 };
 
 #endif
