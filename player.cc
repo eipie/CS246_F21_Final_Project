@@ -101,8 +101,11 @@ int Player::getAllPieceScore() const {
     return allKingMove;
 }    */
 
-void Player::removePieces(Position p) {
-    playerPieces.erase(p);
+bool Player::removePieces(Position p) {
+    if(playerPieces.erase(p)==0) {
+        return false;
+    }
+    return true;
 }
 
 char Player::getPieceCharAt(Position p) const {

@@ -22,7 +22,7 @@ class ChessGame {
     std::shared_ptr<Board> board;
     std::vector<Observer *> observers;
     std::shared_ptr<Observer> textObserver;
-    std::shared_ptr<Observer> graphicObserver;
+    //std::shared_ptr<Observer> graphicObserver;
     // std::vector<Observer> observers;
     public:
     bool roundEnds=true;
@@ -36,7 +36,7 @@ class ChessGame {
     std::string makeAMove(Move nextMove);
     void makeBlankBoard();
     void newRound();
-    void removePiece(Position p);
+    bool removePiece(Position p);
     bool addPiece(Position p, char c);
     bool isBoardSetupValid();
     char getPieceCharAt(Position p);

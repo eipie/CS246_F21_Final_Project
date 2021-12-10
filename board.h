@@ -23,7 +23,7 @@ class Board{
     Board(const Board &board,  bool needToCheckSelfCheck=true);
     int makeAMove(Move m, int currentPlayer);
     void resetBoard();
-    void removePiece(Position p, int currentPlayer);
+    bool removePiece(Position p, int currentPlayer);
     bool addPiece(Position p, char c);
     // to be implemented, dummy variable
     bool isBoardSetupValid() const;

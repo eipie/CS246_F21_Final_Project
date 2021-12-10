@@ -165,8 +165,11 @@ int main() {
                     Position pos;
                     pos.x = pos_str[0] - 'a' + 1;
                     pos.y = pos_str[1] - '0';
-                    chess->removePiece(pos);
-                    chess->render();
+                    if(chess->removePiece(pos)) {
+                        chess->render();
+                    } else {
+                        std::cout << "Error, chess piece not valid" << std::endl;
+                    }
                     } else {
                         std::cout << "Error, the command should be in the form '- e1'" << std::endl;
                     }

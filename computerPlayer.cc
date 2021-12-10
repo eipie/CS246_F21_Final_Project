@@ -41,7 +41,8 @@ PossibleMove ComputerPlayer::randomLegalMove(Board &board, Position &from_positi
             random_index--;
         }
     }
-
+    PossibleMove null;
+    return null;
 }
 
 bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
@@ -157,11 +158,8 @@ PossibleMove ComputerPlayer::escapeCapture(Board &board, Position p) {
         // return Position{-1, -1}; 
         PossibleMove escape{escapeChoices->at(0)};
         escape.to = Position{-1, -1};
-    } else {
-        // could be a random move here
-        return escapeChoices->at(0);
     }
-
+    return escapeChoices->at(0);
 }
 
 

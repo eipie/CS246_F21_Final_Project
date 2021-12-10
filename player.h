@@ -43,7 +43,7 @@ class Player {
     // talley all scores from pieces for level4 computer
     int getAllPieceScore() const;
     // remove a piece from current player, do nothing if current player does not have piece at p
-    void removePieces(Position p);
+    bool removePieces(Position p);
     // used to reset all pieces to initial position, when creating new round
     void resetAllPieces();
     // move a piece from Position form to to inside board, without checking rules; remove captured piece from board

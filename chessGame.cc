@@ -8,7 +8,7 @@
 #include "humanPlayer.h"
 #include "computerPlayer.h"
 #include <iostream>
-#include "graphic_display.h"
+//#include "graphic_display.h"
 // #include  "boardSetup.h"
 
 ChessGame::ChessGame(bool isHuman1, bool isHuman2,  std::vector<int> levels) : currentPlayer{white} {
@@ -31,10 +31,10 @@ ChessGame::ChessGame(bool isHuman1, bool isHuman2,  std::vector<int> levels) : c
     // board.get()->resetBoard();
     textObserver = std::make_shared<Text_Display>(this);
     observers.emplace_back(textObserver.get());
-     graphicObserver = std::make_shared<GraphicDisplay>(this);
+    //graphicObserver = std::make_shared<GraphicDisplay>(this);
     //graphicObserver.reset(new GraphicDisplay(this));
     // observers.emplace_back(new GraphicDisplay(this));
-    observers.emplace_back(graphicObserver.get());
+    //observers.emplace_back(graphicObserver.get());
     render();
 }
 
@@ -62,10 +62,12 @@ std::string ChessGame::resign() {
     if(currentPlayer==white) {
         players[black].get()->currentScore++;
         newRound();
+        roundEnds=true;
         return "Black Wins!";
     } else {
         players[white].get()->currentScore++;
         newRound();
+        roundEnds=true;
         return "White Wins!";
     }
 }
@@ -199,9 +201,11 @@ void ChessGame::giveHintAt(Position focus) {
     }
 }
 
-void ChessGame::removePiece(Position p) {
-    board.get()->removePiece(p, white);
-    board.get()->removePiece(p, black);
+bool ChessGame::removePiece(Position p) {
+    if(board.get()->removePiece(p, white) || board.get()->removePiece(p, black)) {
+        return true;
+    }
+    return false;
 }
 bool ChessGame::addPiece(Position p, char c) {
     return board.get()->addPiece(p, c);

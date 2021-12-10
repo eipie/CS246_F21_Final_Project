@@ -85,8 +85,8 @@ void Board::disableAllEnPassant() {
     }
 }
 
-void Board::removePiece(Position p, int currentPlayer) {
-    players[currentPlayer].get()->removePieces(p);
+bool Board::removePiece(Position p, int currentPlayer) {
+    return players[currentPlayer].get()->removePieces(p);
 }
 
 void Board::resetBoard() {
