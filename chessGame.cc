@@ -8,8 +8,7 @@
 #include "humanPlayer.h"
 #include "computerPlayer.h"
 #include <iostream>
-// #include "graphic_display.h"
-// #include "graphic_display.h"
+#include "graphic_display.h"
 // #include  "boardSetup.h"
 
 ChessGame::ChessGame(bool isHuman1, bool isHuman2,  std::vector<int> levels) : currentPlayer{white} {
@@ -18,13 +17,11 @@ ChessGame::ChessGame(bool isHuman1, bool isHuman2,  std::vector<int> levels) : c
     if(isHuman1) {
         playerOne = std::make_shared<HumanPlayer>(1);
     } else if(!isHuman1) {
-        std::cout<<"white computer"<<std::endl;
         playerOne = std::make_shared<ComputerPlayer>(1, levels[0]);
     }
     if(isHuman2) {
         playerTwo = std::make_shared<HumanPlayer>(0);
     } else if(!isHuman2) {
-        std::cout<<"black computer"<<std::endl;
         playerTwo = std::make_shared<ComputerPlayer>(0, levels[1]);
     }
     players.emplace_back(playerTwo);
@@ -34,9 +31,13 @@ ChessGame::ChessGame(bool isHuman1, bool isHuman2,  std::vector<int> levels) : c
     // board.get()->resetBoard();
     textObserver = std::make_shared<Text_Display>(this);
     observers.emplace_back(textObserver.get());
+     graphicObserver = std::make_shared<GraphicDisplay>(this);
+    //graphicObserver.reset(new GraphicDisplay(this));
     // observers.emplace_back(new GraphicDisplay(this));
+    observers.emplace_back(graphicObserver.get());
     render();
 }
+
 
 void ChessGame::setCurrentPlayer(int playerId) {
     currentPlayer = playerId;
@@ -141,9 +142,9 @@ std::string ChessGame::makeAMove(Move nextMove) {
     return outputString;
 }
 
-void ChessGame::attachObserver(Observer *o) {
+/* void ChessGame::attachObserver(Observer *o) {
     observers.emplace_back(o);
-}
+} */
 
 void ChessGame::makeBlankBoard() {
     std::vector<int> change;
@@ -160,7 +161,7 @@ void ChessGame::makeBlankBoard() {
     }
 }
 
-void ChessGame::detachObserver(Observer *o) {
+/* void ChessGame::detachObserver(Observer *o) {
     for (auto it = observers.begin(); it != observers.end();) {
         if (*it == o) {
             it = observers.erase(it);
@@ -168,7 +169,7 @@ void ChessGame::detachObserver(Observer *o) {
             ++it;
         }
    }
-}
+} */
 
 void ChessGame::notifyObservers() {
     for (auto ob: observers) {

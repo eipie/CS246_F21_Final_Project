@@ -14,7 +14,7 @@ class Board{
     
     const int white =1;
     const int black = 0;
-    
+    bool noPawnFirstLastRow() const;
     public:
     std::vector<std::shared_ptr<Player>> players;
     // constructor
@@ -40,8 +40,6 @@ class Board{
     bool ifInCheck(int identifier) const;
     void disableAllEnPassant();
     void makeAMoveWithoutCheck(Position from, Position to, int identifier);
-    bool noPawnFirstLastRow() const;
-    // std::cout << "already reached here" << std::endl;
 };
 
 #endif

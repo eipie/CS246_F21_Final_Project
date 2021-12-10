@@ -22,6 +22,7 @@ class ChessGame {
     std::shared_ptr<Board> board;
     std::vector<Observer *> observers;
     std::shared_ptr<Observer> textObserver;
+    std::shared_ptr<Observer> graphicObserver;
     // std::vector<Observer> observers;
     public:
     bool roundEnds=true;
@@ -41,8 +42,8 @@ class ChessGame {
     char getPieceCharAt(Position p);
     // void changePieceAt(Position ini_p, Position target_p);
 
-    void attachObserver(Observer *o);
-    void detachObserver(Observer *o);
+    //void attachObserver(Observer *o);
+    //void detachObserver(Observer *o);
     void notifyObservers();
     void render();
     std::string resign();

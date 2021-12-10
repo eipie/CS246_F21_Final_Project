@@ -105,7 +105,7 @@ void Player::removePieces(Position p) {
     playerPieces.erase(p);
 }
 
-char Player::getPieceCharAt(Position p) {
+char Player::getPieceCharAt(Position p) const {
     // std::cout<< "searching location: " << p.x << ", "<< p.y << std::endl;
     auto findResult = playerPieces.find(p);
     if(findResult != playerPieces.end()) {
@@ -125,7 +125,7 @@ std::shared_ptr<ChessPieces> Player::getKing() {
     return nullptr;
 }
 
-int Player::countKing() {
+int Player::countKing() const{
     int count = 0;
     if(identifier==1) {
             for(auto pieceSet: playerPieces) {

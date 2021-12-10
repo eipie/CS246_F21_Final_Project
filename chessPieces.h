@@ -11,9 +11,6 @@ extern int HIGHER_BOUND;
 class ChessPieces {
     // 0:black; 1:white;
     protected:
-   
-    
-    
     // return 0: if candidate is empty, add success
     // return 1: if candidate is enemy, add success
     // return -1: if candidate is currentPlayer's piece, add fail;
@@ -28,22 +25,12 @@ class ChessPieces {
     bool checkOpponent;
     bool availableForEnPassant = false;
     bool needCheckSelfCheck = true;
-    // void makingAMove(Position form, Position to);
-    // if(isFirstMove==true);
-            // all pieces except Pawn:
-            // change isFirstMove=false;
-            // for Pawn:
-            // 1) to.y-from.y == 1
-            //      change isFirstMove=false;
-            // 1) to.y-from.y == 2;
-            //      change isFirstMove=false;
-    // else 
-    //      do nothing
     Position pos;
     char icon;
     int weight = 0;
     ChessPieces(Position p, int identifier, bool isFirstMove=true);
     ChessPieces(const ChessPieces &chessPieces,  bool needToCheckSelfCheck);
+    // helper for copy constructor
     virtual std::shared_ptr<ChessPieces> clone( bool needToCheckSelfCheck) =0;
     virtual std::vector<PossibleMove> getPossibleMoves(const Board & board) = 0;
     void setPos(const Position newPos);
