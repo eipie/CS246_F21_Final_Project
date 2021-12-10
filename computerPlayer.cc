@@ -197,7 +197,7 @@ bool ComputerPlayer::smartMove(Board &board) {
     int opponentValue = board.getPlayerAllPiecesWeight(opponentIdentifier);
     int bestValue = playerValue - opponentValue;
     int currentValue;
-    Position moveFrom{-1, -1};
+    Position moveFrom;
     PossibleMove moveTo = randomLegalMove(board, moveFrom);
     for (auto i: allPossibleMoves) {
         for (auto j: *i.second) {
