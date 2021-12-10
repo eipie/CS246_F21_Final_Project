@@ -1,0 +1,8 @@
+game human human
+setup
++ K c4
++ p f7
++ R f4
++ k b2
+done
+hint f4

@@ -8,6 +8,7 @@
 #include "humanPlayer.h"
 #include "computerPlayer.h"
 #include <iostream>
+#include "graphic_display.h"
 
 ChessGame::ChessGame(bool isHuman1, bool isHuman2,  std::vector<int> levels) : currentPlayer{white} {
     std::shared_ptr<Player> playerOne;
@@ -27,6 +28,8 @@ ChessGame::ChessGame(bool isHuman1, bool isHuman2,  std::vector<int> levels) : c
     board = std::make_shared<Board>(players);
     textObserver = std::make_shared<Text_Display>(this);
     observers.emplace_back(textObserver.get());
+    graphicObserver = std::make_shared<GraphicDisplay>(this);
+    observers.emplace_back(graphicObserver.get());
     render();
 }
 

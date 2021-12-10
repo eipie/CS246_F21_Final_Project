@@ -13,6 +13,7 @@ int main() {
     bool isFirstTime = true;
     bool inSetUp = false;
     bool isSetUpAllowed=true;
+    std::cout << "Welcome!! Enter your prefered player types to start! (e.g. \"game human computer[1]\")"<<std::endl;
     while (std::getline(std::cin, line)) {
         std::string command;
         std::stringstream ss(line);
