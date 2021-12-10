@@ -18,9 +18,6 @@ Knight::Knight(const Knight &piece,  bool needToCheckSelfCheck) : ChessPieces(pi
     
 }
 
-// Knight 
-//      +1v+2h || +2v+1h || -1v+2h || -2v+1h
-//      +1v-2h || +2v-1h || -1v-2h || -2v-1h
 std::vector<PossibleMove> Knight::getPossibleMoves(const Board & board) {
     checkOpponent=false;
     std::vector<PossibleMove> possMoves;

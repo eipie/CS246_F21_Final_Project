@@ -10,28 +10,19 @@ struct Position;
 class ChessPieces;
 class Board;
 class Player {
-/*     int numPawn = 8;
-    int numKnight = 2;
-    int numRook = 2;
-    int numBishop = 2;
-    int numKing = 1;
-    int numQueen = 1; */
     
     protected:
     // 0:black; 1:white;
     int identifier;
     int opponentIdentifier;
     std::shared_ptr<ChessPieces> getKing();
-    // computer always true
     bool tryDoPawnPromotion(char promotion, Position promoteLoc, int identifier, Board & board);
-    // computer always true
     bool moveWithSpecial(PossibleMove possMove);
     // return all possible ways current player can escape Check
     void enPassantAvailabilityCorrect(std::shared_ptr<ChessPieces> pieceToBeMoved, Board & board, Position from, Position to);
     
     public:
     bool isHuman;
-    // use map for easier lookup
     bool isInCheck = false;
     double currentScore=0;
     std::map<Position, std::shared_ptr<ChessPieces>> playerPieces;

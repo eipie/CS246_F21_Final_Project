@@ -8,8 +8,6 @@
 #include "humanPlayer.h"
 #include "computerPlayer.h"
 #include <iostream>
-// #include "graphic_display.h"
-// #include  "boardSetup.h"
 
 ChessGame::ChessGame(bool isHuman1, bool isHuman2,  std::vector<int> levels) : currentPlayer{white} {
     std::shared_ptr<Player> playerOne;
@@ -27,17 +25,10 @@ ChessGame::ChessGame(bool isHuman1, bool isHuman2,  std::vector<int> levels) : c
     players.emplace_back(playerTwo);
     players.emplace_back(playerOne);
     board = std::make_shared<Board>(players);
-    // populate board
-    // board.get()->resetBoard();
     textObserver = std::make_shared<Text_Display>(this);
     observers.emplace_back(textObserver.get());
-    // graphicObserver = std::make_shared<GraphicDisplay>(this);
-    //graphicObserver.reset(new GraphicDisplay(this));
-    // observers.emplace_back(new GraphicDisplay(this));
-    // observers.emplace_back(graphicObserver.get());
     render();
 }
-
 
 void ChessGame::setCurrentPlayer(int playerId) {
     currentPlayer = playerId;
@@ -50,7 +41,6 @@ void ChessGame::nextTurn() {
         currentPlayer=black;
     }
 }
-
 
 void ChessGame::newRound() {
     board.get()->resetBoard();
@@ -72,7 +62,6 @@ std::string ChessGame::resign() {
     }
 }
 
-
 double ChessGame::whitePlayerScore() {
     return players[white].get()->currentScore;
 }
@@ -83,7 +72,6 @@ double ChessGame::blackPlayerScore() {
 
 std::string ChessGame::makeAMove(Move nextMove) {
     roundEnds=false;
-    // std::cout << nextMove.from.x << nextMove.from.y << "   " << nextMove.to.x <<nextMove.to.y  << std::endl;
     if((players[currentPlayer].get()->isHuman && !nextMove.containsInput)||(!players[currentPlayer].get()->isHuman&&nextMove.containsInput)) {
         return "Input not match player type!! Please enter again";
     }
@@ -97,8 +85,6 @@ std::string ChessGame::makeAMove(Move nextMove) {
     
     std::string outputString="";
     if (moveResult!=-1) {
-        // pass to next player; 
-        // ***issue still increment by one if moving opponent piece
         switch (moveResult)
         {
         case 0:
@@ -122,19 +108,16 @@ std::string ChessGame::makeAMove(Move nextMove) {
             break;
         case 3:
             for(auto player:players) {
-                // ++ works but +=0.5 don't!
                 player.get()->currentScore+=0.5;
                 outputString = "Stalemate!";
             }
         default:
-            //error
             break;
         }
         nextTurn();
         render();
         if(moveResult==2 || moveResult==3) {
             newRound();
-            //alert controller
             roundEnds=true;
         }
     } else {
@@ -143,10 +126,6 @@ std::string ChessGame::makeAMove(Move nextMove) {
     }
     return outputString;
 }
-
-/* void ChessGame::attachObserver(Observer *o) {
-    observers.emplace_back(o);
-} */
 
 void ChessGame::makeBlankBoard() {
     std::vector<int> change;
@@ -162,16 +141,6 @@ void ChessGame::makeBlankBoard() {
         }  
     }
 }
-
-/* void ChessGame::detachObserver(Observer *o) {
-    for (auto it = observers.begin(); it != observers.end();) {
-        if (*it == o) {
-            it = observers.erase(it);
-        } else {
-            ++it;
-        }
-   }
-} */
 
 void ChessGame::notifyObservers() {
     for (auto ob: observers) {

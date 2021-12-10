@@ -17,7 +17,6 @@ std::shared_ptr<ChessPieces> Bishop::clone( bool needToCheckSelfCheck) {
 Bishop::Bishop(const Bishop &piece,  bool needToCheckSelfCheck) : ChessPieces(piece, needToCheckSelfCheck){
     
 }
-// Bishop (v|h|d *1)
 
 std::vector<PossibleMove> Bishop::getPossibleMoves(const Board & board) {
     checkOpponent=false;

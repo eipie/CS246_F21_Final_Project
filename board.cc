@@ -25,7 +25,6 @@ int Board::makeAMove(Move m, int currentPlayer) {
    
     if (players[currentPlayer].get()->tryMakeMove(m,*this)) {
         
-        // enPassantAvailabilityCorrect(players[currentPlayer].get()->getPieceAt(m.to), m.from, m.to);
         // check if checked opponent
         int opponent;
         if(currentPlayer==white) {
@@ -135,7 +134,6 @@ char Board::isOpponentPiece(Position target, int identifier) const{
     return ' ';
 }
 
-
 // return ' ' if not find 
 char Board::getPieceCharAt(Position p) const{
     char c = ' ';
@@ -177,7 +175,6 @@ std::vector<std::shared_ptr<ChessPieces>> Board::putInCheck(int identifier) cons
     for(auto pieceSet: playerPieces) {
         auto currentPiece = pieceSet.second;
         if(currentPiece.get()->checkOpponent) {
-            // std::cout<< currentPiece.get()->icon << "can capture " << identifier << " king" << std::endl;
             opponentPieceThatCheck.emplace_back(currentPiece);
         }
     }
@@ -189,13 +186,10 @@ std::vector<std::shared_ptr<ChessPieces>> Board::putInCheck(int identifier) cons
 std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> Board::getPlayerPossibleMoves (int idenfitier)  const {
     std::map<Position, std::shared_ptr<ChessPieces>> playerPieces = players[idenfitier].get()->playerPieces;
     std::map<std::shared_ptr<ChessPieces>, std::shared_ptr<std::vector<PossibleMove>>> playerAllPossMoves;
-    //players[idenfitier].get()->getAllPossMoves(playerAllPossMoves, *this);
     for(auto pieceSet: playerPieces) {
         std::shared_ptr<ChessPieces> currentPiece = pieceSet.second;
-        // std::vector<PossibleMove> piecePossMoves = currentPiece.get()->getPossibleMoves(*this);
         auto piecePossMoves = std::make_shared<std::vector<PossibleMove>>(currentPiece.get()->getPossibleMoves(*this));
         currentPiece.get()->setPos(pieceSet.first);
-        // std::cout << "storing... " << currentPiece.get()->pos.x << "|" << currentPiece.get()->pos.y << std::endl;
         playerAllPossMoves[currentPiece]  = piecePossMoves;
     }
     return playerAllPossMoves;
