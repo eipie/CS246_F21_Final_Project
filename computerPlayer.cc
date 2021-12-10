@@ -65,9 +65,6 @@ bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
 bool ComputerPlayer::SimpleMakeMove(Position currentPosition, PossibleMove nextMove, Board &board) {
 
     std::shared_ptr<ChessPieces> targetPiece = getPieceAt(currentPosition);
-    if(targetPiece==nullptr) {
-        std::cout <<"nullptr outer..." <<std::endl;
-    }
     if (nextMove.kingSideCastle || nextMove.queenSideCastle) {
         movePiece(nextMove.rookFrom, nextMove.rookTo, board);
     }
@@ -198,15 +195,12 @@ bool ComputerPlayer::smartMove(Board &board) {
             // the algorithm still prefers check over anything else, since check is the most important move of all moves in the game 
                 // so if there's a check move available for the player, then the player has found the best move for this round;
             if (tempBoard.putInCheck(opponentIdentifier).size()!=0) {
-                std::cout << "check move found: that's the best move" << std::endl;
                 moveFrom = i.first.get()->pos;
                 moveTo = j;
                 break;
             }
             playerValue = tempBoard.getPlayerAllPiecesWeight(identifier);
             opponentValue = tempBoard.getPlayerAllPiecesWeight(opponentIdentifier);
-            std::cout << "player value: " << playerValue << std::endl;
-            std::cout << "opponent value: " << opponentValue << std::endl;
             currentValue = playerValue - opponentValue;
             if (currentValue > bestValue) {
                 bestValue = currentValue;
@@ -215,9 +209,6 @@ bool ComputerPlayer::smartMove(Board &board) {
             }
         }
     }
-    std::cout << "best value possible is: " << bestValue << std::endl;
-    std::cout << "moving to " << moveTo.to.x << "|" << moveTo.to.y << std::endl;
-    std::cout << "from " <<  moveFrom.x << "|" << moveFrom.y << std::endl;
     SimpleMakeMove(moveFrom, moveTo, board);
     return true;
 }
