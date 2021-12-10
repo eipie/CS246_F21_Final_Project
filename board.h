@@ -40,6 +40,7 @@ class Board{
     bool ifInCheck(int identifier) const;
     void disableAllEnPassant();
     void makeAMoveWithoutCheck(Position from, Position to, int identifier);
+    Position getHint(Position starting_position, std::vector<PossibleMove> possMoves, int identifier) const;
 };
 
 #endif

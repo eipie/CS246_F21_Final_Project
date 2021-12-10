@@ -57,3 +57,4 @@ bool HumanPlayer::tryMakeMove(Move m, Board & board) {
     }
     return false;
 }
+

@@ -179,7 +179,7 @@ void ChessGame::notifyObservers() {
     }
 }
 
-void ChessGame::giveHintAt(Position focus) {
+void ChessGame::giveHintAt(Position focus, std::ostream& out) {
     std::shared_ptr<ChessPieces> piece;
     for(auto player:players) {
         piece = player.get()->getPieceAt(focus);
@@ -189,15 +189,32 @@ void ChessGame::giveHintAt(Position focus) {
     }
     
     if(piece==nullptr) {
-        std::cout << "no piece exist at input location!"<<std::endl;
+        out << "no piece exist at input location!"<<'\n';
+        return;
+    } else if(piece.get()->ownerIdentifier!=currentPlayer){
+        out << "Focus on your own piece please"<<'\n';
+        return;
     } else {
-        std::cout << piece.get()->icon <<std::endl;
+        const char iniRef='a';
         auto possMoves = piece.get()->getPossibleMoves(*board.get());
-        for(auto move : possMoves) {
-            std::cout << "You can move: "  << piece.get()->icon<< std::endl;
-            std::cout << piece.get()->pos.x << " | " << piece.get()->pos.y  << std::endl;
-            std::cout << move.to.x << " | " << move.to.y  << std::endl;
+        out << piece.get()->icon << " can move from " << (char)(piece.get()->pos.x-1+iniRef) << piece.get()->pos.y << " to: "<< '\n';
+        if(possMoves.size()==0) {
+            out << "No valid move exist!"<<'\n';
+            return ;
         }
+        Position bestMove = board.get()->getHint(focus, possMoves, currentPlayer);
+        for(auto move : possMoves) {
+            if(move.capture!=' ') {
+                out << (char)(move.to.x-1+iniRef) << move.to.y  << " [capture]";
+            } else {
+                out << (char)(move.to.x-1+iniRef) << move.to.y;
+            }    
+            if(bestMove==move.to &&!(bestMove==focus)) {
+                    out<< " *recommended*";
+                }
+            out << '\n';
+        }
+        return;
     }
 }
 

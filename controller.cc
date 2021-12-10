@@ -80,7 +80,7 @@ int main() {
                 if(ss>>from_str) {
                     from.x = from_str[0] - 'a' + 1;
                     from.y = from_str[1] - '0';
-                    chess->giveHintAt(from);
+                    chess->giveHintAt(from,std::cout);
                 }
             } else if (command == "move"&&gameHasStarted) {
                 isSetUpAllowed=false;

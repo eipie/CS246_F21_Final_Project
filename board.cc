@@ -251,3 +251,31 @@ bool Board::ifInCheck(int identifier) const{
     return players[identifier].get()->isInCheck;
 }
 
+// if starting_position==
+Position Board::getHint( Position starting_position, std::vector<PossibleMove> possMoves, int identifier) const{
+    int opponentIdentifier=1;
+    if(identifier==1) {
+        opponentIdentifier=0;
+    }
+    int playerValue = getPlayerAllPiecesWeight(identifier);
+    int opponentValue = getPlayerAllPiecesWeight(opponentIdentifier);
+    int bestValue = playerValue - opponentValue;
+    int currentValue;
+    Position moveTo=starting_position;
+    for(auto move : possMoves) {
+        Position target_position = move.to;
+        Board tempBoard{*this};
+        tempBoard.makeAMoveWithoutCheck(starting_position, target_position, identifier);
+        if (tempBoard.putInCheck(opponentIdentifier).size()!=0) {
+            return move.to;
+        }
+        playerValue = tempBoard.getPlayerAllPiecesWeight(identifier);
+        opponentValue = tempBoard.getPlayerAllPiecesWeight(opponentIdentifier);
+        currentValue = playerValue - opponentValue;
+        if (currentValue > bestValue) {
+            moveTo = move.to;
+            bestValue = currentValue;
+        }
+    }
+    return moveTo;
+}
