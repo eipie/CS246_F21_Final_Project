@@ -24,7 +24,6 @@ PossibleMove ComputerPlayer::randomLegalMove(Board &board, Position &from_positi
             totalNumMoves++;
         }
     }
-    //加下面这行
     std::srand(std::time(nullptr));
     int random_index = std::rand() % totalNumMoves;
     for (auto pieceSet : choices) {
@@ -32,7 +31,6 @@ PossibleMove ComputerPlayer::randomLegalMove(Board &board, Position &from_positi
         // std::cout << "at " << pieceSet.first.get()->icon << std::endl;
         for(auto move : *possMoves.get()) {
             if(random_index==0) {
-                //这里
                 PossibleMove nextMove = move;
                 // Position from = pieceSet.first.get()->pos;
                 from_position = pieceSet.first.get()->pos;
@@ -50,23 +48,21 @@ bool ComputerPlayer::tryMakeMove(Move move, Board & board) {
     // std::cout << "try to make a move for computer" << std::endl;
 
     if (level == 1) {
-        Position from{-1, -1};
+        Position from;
         PossibleMove nextMove = randomLegalMove(board, from);
         SimpleMakeMove(from, nextMove, board);
     }
     else if (level == 2) {
         // Call level 2 make move
-        // std::cout << "computer make move at level 2" << std::endl;
         captureCheckPriorityMove(board);
     }
     else if (level == 3) {
-        // std::cout << "computer make move at level 3" << std::endl;
+        // Call level 3 make move
         avoidCapturePriorityMove(board);
     }
     else {
-        // std::cout << "computer make move at level 4" << std::endl;
-        smartMove(board);
         // Call level 4 make move
+        smartMove(board);
     }
 
     return true;
@@ -199,7 +195,7 @@ bool ComputerPlayer::smartMove(Board &board) {
     int opponentValue = board.getPlayerAllPiecesWeight(opponentIdentifier);
     int bestValue = playerValue - opponentValue;
     int currentValue;
-    Position moveFrom{-1, -1};
+    Position moveFrom;
     PossibleMove moveTo = randomLegalMove(board, moveFrom);
     for (auto i: allPossibleMoves) {
         for (auto j: *i.second) {
@@ -207,6 +203,14 @@ bool ComputerPlayer::smartMove(Board &board) {
             Position starting_position = i.first->pos;
             Position target_position = j.to;
             tempBoard.makeAMoveWithoutCheck(starting_position, target_position, identifier);
+            // the algorithm still prefers check over anything else, since check is the most important move of all moves in the game 
+                // so if there's a check move available for the player, then the player has found the best move for this round;
+            if (tempBoard.putInCheck(opponentIdentifier).size()!=0) {
+                std::cout << "check move found: that's the best move" << std::endl;
+                moveFrom = i.first.get()->pos;
+                moveTo = j;
+                break;
+            }
             playerValue = tempBoard.getPlayerAllPiecesWeight(identifier);
             opponentValue = tempBoard.getPlayerAllPiecesWeight(opponentIdentifier);
             std::cout << "player value: " << playerValue << std::endl;
@@ -214,8 +218,8 @@ bool ComputerPlayer::smartMove(Board &board) {
             currentValue = playerValue - opponentValue;
             if (currentValue > bestValue) {
                 bestValue = currentValue;
-                moveTo = j;
                 moveFrom = i.first.get()->pos;
+                moveTo = j;
             }
         }
     }
